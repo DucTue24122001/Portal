@@ -1,46 +1,62 @@
 import React from 'react'
-import './header.module.css'
-import { Menu, Row, Col } from 'antd'
+import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import {
-  SettingOutlined,
-  PoweroffOutlined
-} from '@ant-design/icons'
-const Header = ({ router }) => {
-  console.log(router)
-  const handleClick = () => {
-    console.log(1)
-  }
+import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
+import style from './header.module.css'
+const { Title } = Typography
+const user = 'Vu Van Vinh'
+
+const Header = () => {
+  const handleClick = () => {}
+
   return (
     <>
       <Row>
         <Col span={24}>
-          <div className='header'>
-            <Row className='header-row'>
-              <Col span={12} className='header-title'>
-                <Link to='/home'>Relipa Protal</Link>
+          <div className={style.header}>
+            <Row className={style.header_row}>
+              <Col span={12} className={style.header_title}>
+                <Title>
+                  <Link to='/'>Relipa Protal</Link>
+                </Title>
               </Col>
-              <Col span={6} className='header-info'>
-              Welcome <b>Vũ Văn Vịnh</b>
+              <Col span={6} className={style.header_info}>
+                Welcome <b>{user}</b>
               </Col>
-              <Col span={6} className='header-nav-right'>
-                <Menu onClick={handleClick} mode='horizontal'>
-                  <Menu.Item key='changepass' icon={<SettingOutlined />}>
-                  Change Password
+              <Col span={6} className={style.header_nav_right}>
+                <Menu
+                  style={{ border: 'none' }}
+                  onClick={handleClick}
+                  mode='horizontal'
+                >
+                  <Menu.Item
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    key='changepass'
+                    icon={<SettingOutlined />}
+                  >
+                    Change Password
                   </Menu.Item>
-                  <Menu.Item key='logout' icon={<PoweroffOutlined />}>
-                  Log out
+                  <Menu.Item
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    key='logout'
+                    icon={<PoweroffOutlined />}
+                  >
+                    Log out
                   </Menu.Item>
                 </Menu>
               </Col>
             </Row>
             <Row>
               <Col>
-                <Menu onClick={handleClick} mode='horizontal'>
+                <Menu
+                  style={{ border: 'none' }}
+                  onClick={handleClick}
+                  mode='horizontal'
+                >
                   <Menu.Item key='home'>
-                    <Link to='/home'>Home</Link>
+                    <Link to='/'>Home</Link>
                   </Menu.Item>
-                  <Menu.Item key='timesheet' >
+                  <Menu.Item key='timesheet'>
                     <Link to='/timesheet'>Timesheet</Link>
                   </Menu.Item>
                   <Menu.Item key='leave'>
@@ -58,7 +74,6 @@ const Header = ({ router }) => {
           </div>
         </Col>
       </Row>
-      {router}
     </>
   )
 }

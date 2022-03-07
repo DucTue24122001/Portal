@@ -1,22 +1,20 @@
 import React from 'react'
 import s from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
-// import { useDispatch } from "react-redux";
-// import {login} from '../../redux/actions/userAction'
 const { Title } = Typography
+
 const LoginPage = () => {
-//   const dispatch = useDispatch()
   const onFinish = (values) => {
-    // dispatch(login(values))
-    console.log(values)
   }
+
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo)
   }
 
   return (
     <div className={s.wrapper}>
-      <Title className={s.title_form} ><span className={s.title_form}>Relipa Portal</span></Title>
+      <Title className={s.title_form}>
+        <span className={s.title_form}>Relipa Portal</span>
+      </Title>
       <Form
         className={s.form_login}
         name='basic'
@@ -34,7 +32,6 @@ const LoginPage = () => {
         autoComplete='off'
       >
         <Form.Item
-
           className={s.form_item}
           name='email'
           rules={[
@@ -48,7 +45,6 @@ const LoginPage = () => {
         </Form.Item>
 
         <Form.Item
-
           className={s.form_item}
           name='password'
           rules={[
@@ -62,9 +58,9 @@ const LoginPage = () => {
         </Form.Item>
 
         <div className={s.form_item}>
-          <Form.Item >
+          <Form.Item>
             <Button className={s.item_input} type='primary' htmlType='submit'>
-            Đăng nhập
+              Đăng nhập
             </Button>
           </Form.Item>
         </div>
