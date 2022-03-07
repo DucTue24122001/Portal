@@ -1,0 +1,20 @@
+.header{
+padding: 20px;
+}
+
+.header-title a{
+    font-size: 25pt;
+    font-weight: 700;
+}
+.header-info{
+text-align: right;
+}
+
+.header-row{
+justify-content: center;
+align-items: center;
+}
+
+.header-nav-right{
+border: none;
+}

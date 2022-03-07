@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'
 import Router from './routers.js'
 import { CookiesProvider } from 'react-cookie'
 import AppLayout from './layouts/App'
-
+import 'antd/dist/antd.css'
 const App = () => {
   return (
     <CookiesProvider>

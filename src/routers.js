@@ -6,27 +6,31 @@ import { useCookies } from 'react-cookie'
 import { STORAGEKEY } from '@/utils/storage'
 import { checkPermission } from '@/utils/JWT'
 import NotFoundRoute from './pages/404'
+import LoginPage from './pages/login'
+import MyLeavePage from './pages/myleave'
+import NoicePage from './pages/notice'
+import RequestsPage from './pages/requests'
+import TimesheetPage from './pages/timesheet'
 
 const browserHistory = createBrowserHistory()
 
 const PrivateRoute = (props) => {
-  const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
-
+  // const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
+  const Component = props.component
   return (
     <Route {...props.rest} exact
       render = {(prop) => (
-        const Component = prop.component;
-        cookies[STORAGEKEY.ACCESS_TOKEN] ? (
-          <Component {...prop} />
-        )
-          : (
-            <Redirect
-              to={{
-                pathname: '/login',
-                state: { redirect_url: prop.location }
-              }}
-            />
-          )
+        // cookies[STORAGEKEY.ACCESS_TOKEN] ? (
+        <Component {...prop} />
+        // )
+        //   : (
+        //     <Redirect
+        //       to={{
+        //         pathname: '/login',
+        //         state: { redirect_url: prop.location }
+        //       }}
+        //     />
+        //   )
       )}
     />
   )
@@ -53,14 +57,69 @@ export const appRouter = [
     name: 'Dashboard',
     path: '/',
     component: App,
-    icon: 'fa fa-diamond',
     meta: {
       role: '*',
       isPrivate: true,
       hidden: false,
       child: false
     }
+  },
+  {
+    name: 'MyLeave',
+    path: '/leave',
+    component: MyLeavePage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Notice',
+    path: '/notice',
+    component: NoicePage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Requests',
+    path: '/requests',
+    component: RequestsPage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Timesheet',
+    path: '/timesheet',
+    component: TimesheetPage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Login',
+    path: '/login',
+    component: LoginPage,
+    meta: {
+      role: '*',
+      isPrivate: false,
+      hidden: true,
+      child: false
+    }
   }
+
 ]
 
 const renderRouter = (routes) => {
@@ -89,7 +148,8 @@ const routes = () => {
       <Router history={browserHistory}>
         <Switch>
           { renderRouter(appRouter).map(render => render) }
-          <PrivateRoute path='/test/:id' component={Keyword} />
+          {/* <PrivateRoute path='/test/:id' component={Keyword} /> */}
+          <PrivateRoute path='/test/:id' />
           <Route path='*' component={NotFoundRoute} />
         </Switch>
       </Router>
