@@ -1,7 +1,6 @@
 import React from 'react'
-import { Route, Router, Switch, Redirect } from 'react-router-dom'
-
-import { createBrowserHistory } from 'history'
+import { Route, Switch, Redirect } from 'react-router-dom'
+// import { createBrowserHistory } from 'history'
 import { useCookies } from 'react-cookie'
 import { STORAGEKEY } from '@/utils/storage'
 import { checkPermission } from '@/utils/JWT'
@@ -13,7 +12,7 @@ import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
 import Home from './pages/home'
 
-const browserHistory = createBrowserHistory()
+// const browserHistory = createBrowserHistory()
 
 const PrivateRoute = (props) => {
   // const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
