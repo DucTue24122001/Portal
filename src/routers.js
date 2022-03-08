@@ -11,11 +11,11 @@ const browserHistory = createBrowserHistory()
 
 const PrivateRoute = (props) => {
   const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
+  const Component = props.component
 
   return (
     <Route {...props.rest} exact
       render = {(prop) => (
-        const Component = prop.component;
         cookies[STORAGEKEY.ACCESS_TOKEN] ? (
           <Component {...prop} />
         )
@@ -89,7 +89,7 @@ const routes = () => {
       <Router history={browserHistory}>
         <Switch>
           { renderRouter(appRouter).map(render => render) }
-          <PrivateRoute path='/test/:id' component={Keyword} />
+          {/* <PrivateRoute path='/test/:id' component={Keyword} /> */}
           <Route path='*' component={NotFoundRoute} />
         </Switch>
       </Router>
