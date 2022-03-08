@@ -6,9 +6,8 @@ import style from './header.module.css'
 
 const { Title } = Typography
 
-
 const Header = () => {
-  const [user, setUser] = useState('Vu Van Vinh')
+  const [user] = useState('Vu Van Vinh')
 
   const handleClick = () => {}
 
@@ -20,22 +19,22 @@ const Header = () => {
             <Row className={style.header_row}>
               <Col span={12} className={style.header_title}>
                 <Title>
-                  <Link to="/">Relipa Protal</Link>
+                  <Link to='/'>Relipa Protal</Link>
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
                 Welcome <b>{user}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
-                <Menu style={{ border: 'none' }} onClick={handleClick} mode="horizontal">
+                <Menu style={{ border: 'none' }} onClick={handleClick} mode='horizontal'>
                   <Menu.Item
                     style={{ display: 'flex', alignItems: 'center' }}
-                    key="changepass"
+                    key='changepass'
                     icon={<SettingOutlined />}
                   >
                     Change Password
                   </Menu.Item>
-                  <Menu.Item style={{ display: 'flex', alignItems: 'center' }} key="logout" icon={<PoweroffOutlined />}>
+                  <Menu.Item style={{ display: 'flex', alignItems: 'center' }} key='logout' icon={<PoweroffOutlined />}>
                     Log out
                   </Menu.Item>
                 </Menu>
@@ -43,21 +42,21 @@ const Header = () => {
             </Row>
             <Row>
               <Col>
-                <Menu style={{ border: 'none' }} onClick={handleClick} mode="horizontal">
-                  <Menu.Item key="home">
-                    <Link to="/">Home</Link>
+                <Menu style={{ border: 'none' }} onClick={handleClick} mode='horizontal'>
+                  <Menu.Item key='home'>
+                    <Link to='/'>Home</Link>
                   </Menu.Item>
-                  <Menu.Item key="timesheet">
-                    <Link to="/timesheet">Timesheet</Link>
+                  <Menu.Item key='timesheet'>
+                    <Link to='/timesheet'>Timesheet</Link>
                   </Menu.Item>
-                  <Menu.Item key="leave">
-                    <Link to="/leave">My Leave</Link>
+                  <Menu.Item key='leave'>
+                    <Link to='/leave'>My Leave</Link>
                   </Menu.Item>
-                  <Menu.Item key="requests">
-                    <Link to="/requests">Request</Link>
+                  <Menu.Item key='requests'>
+                    <Link to='/requests'>Request</Link>
                   </Menu.Item>
-                  <Menu.Item key="Notice">
-                    <Link to="/notice">Notice</Link>
+                  <Menu.Item key='Notice'>
+                    <Link to='/notice'>Notice</Link>
                   </Menu.Item>
                 </Menu>
               </Col>

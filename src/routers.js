@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
-// import { createBrowserHistory } from 'history'
 import { useCookies } from 'react-cookie'
 import { STORAGEKEY } from '@/utils/storage'
 import { checkPermission } from '@/utils/JWT'
@@ -11,6 +10,7 @@ import NoicePage from './pages/notice'
 import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
 import Home from './pages/home'
+// import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
 
@@ -41,8 +41,7 @@ const PrivateRoute = (props) => {
 const WhiteListRoute = (props) => {
   const whiteList = ['/login', '/forget-password']
   const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
-  const isWhiteList = (path) =>
-    !cookies[STORAGEKEY.ACCESS_TOKEN] && whiteList.indexOf(path) >= 0
+  const isWhiteList = (path) => !cookies[STORAGEKEY.ACCESS_TOKEN] && whiteList.indexOf(path) >= 0
 
   return (
     <Route
@@ -68,8 +67,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false
-    }
+      child: false,
+    },
   },
   {
     name: 'MyLeave',
@@ -79,8 +78,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false
-    }
+      child: false,
+    },
   },
   {
     name: 'Notice',
@@ -90,8 +89,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false
-    }
+      child: false,
+    },
   },
   {
     name: 'Requests',
@@ -101,8 +100,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false
-    }
+      child: false,
+    },
   },
   {
     name: 'Timesheet',
@@ -112,8 +111,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false
-    }
+      child: false,
+    },
   },
   {
     name: 'Login',
@@ -123,27 +122,18 @@ export const appRouter = [
       role: '*',
       isPrivate: false,
       hidden: true,
-      child: false
-    }
-  }
+      child: false,
+    },
+  },
 ]
 
 const renderRouter = (routes) => {
   let arr = []
   routes.forEach((route) => {
     const tmpRoute = route.meta.isPrivate ? (
-      <PrivateRoute
-        exact
-        path={route.path}
-        component={route.component}
-        key={route.name}
-      />
+      <PrivateRoute exact path={route.path} component={route.component} key={route.name} />
     ) : (
-      <WhiteListRoute
-        path={route.path}
-        component={route.component}
-        key={route.name}
-      />
+      <WhiteListRoute path={route.path} component={route.component} key={route.name} />
     )
     if (checkPermission(route.meta.role)) {
       arr.push(tmpRoute)
@@ -165,8 +155,8 @@ const routes = () => {
       <Switch>
         {renderRouter(appRouter).map((render) => render)}
         {/* <PrivateRoute path='/test/:id' component={Keyword} /> */}
-        <PrivateRoute path='/test/:id' />
-        <Route path='*' component={NotFoundRoute} />
+        <PrivateRoute path="/test/:id" />
+        <Route path="*" component={NotFoundRoute} />
       </Switch>
     </div>
   )

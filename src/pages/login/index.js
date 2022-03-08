@@ -1,65 +1,63 @@
 import React from 'react'
-import s from './login.module.css'
+import style from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
+
 const { Title } = Typography
-
 const LoginPage = () => {
-  const onFinish = (values) => {
-  }
+  const onFinish = (values) => {}
 
-  const onFinishFailed = (errorInfo) => {
-  }
+  const onFinishFailed = (errorInfo) => {}
 
   return (
-    <div className={s.wrapper}>
-      <Title className={s.title_form}>
-        <span className={s.title_form}>Relipa Portal</span>
+    <div className={style.wrapper}>
+      <Title className={style.title_form}>
+        <span className={style.title_form}>Relipa Portal</span>
       </Title>
       <Form
-        className={s.form_login}
-        name='basic'
+        className={style.form_login}
+        name="basic"
         labelCol={{
-          span: 8
+          span: 8,
         }}
         wrapperCol={{
-          span: 16
+          span: 16,
         }}
         initialValues={{
-          remember: true
+          remember: true,
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete='off'
+        autoComplete="off"
       >
         <Form.Item
-          className={s.form_item}
-          name='email'
+          className={style.form_item}
+          name="email"
           rules={[
             {
               required: true,
-              message: 'Please input your email!'
-            }
+              message: 'Please input your email!',
+            },
           ]}
         >
-          <Input className={s.item_input} placeholder='Email' />
+          <Input className={style.item_input} placeholder="Email" />
         </Form.Item>
 
         <Form.Item
-          className={s.form_item}
-          name='password'
+          className={style.form_item}
+          name="password"
           rules={[
             {
               required: true,
-              message: 'Please input your password!'
-            }
+              message: 'Please input your password!',
+            },
           ]}
         >
-          <Input.Password className={s.item_input} placeholder='Password' />
+          <Input.Password className={style.item_input} placeholder="Password" />
         </Form.Item>
 
-        <div className={s.form_item}>
+        <div className={style.form_item}>
           <Form.Item>
-            <Button className={s.item_input} type='primary' htmlType='submit'>
+            <Button className={style.item_input} type="primary" htmlType="submit">
               Đăng nhập
             </Button>
           </Form.Item>
