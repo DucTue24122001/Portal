@@ -1,14 +1,15 @@
 import React from 'react'
-import '@/App.css'
+import Header from '../layouts/components/header/index'
+import style from './App.module.css'
 
 const App = (props) => {
   const { renderRouter } = props
+
   return (
-    <>
-      <div className={`main`}>
-        { renderRouter() }
-      </div>
-    </>
+    <div className={style.wrapper}>
+      <Header />
+      <div className={style.main}>{renderRouter()}</div>
+    </div>
   )
 }
 
