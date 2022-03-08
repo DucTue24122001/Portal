@@ -1,0 +1,24 @@
+.wrapper {
+  padding: 0;
+}
+.header {
+  padding: 10px 0;
+}
+.header_title a {
+  font-size: 25pt;
+  font-weight: 700;
+}
+.header_info {
+  text-align: right;
+}
+.header_row {
+  justify-content: center;
+  align-items: center;
+}
+.header_top ul li {
+  display: flex;
+  align-items: center;
+}
+.header_top_right {
+  border: none;
+}

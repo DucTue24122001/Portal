@@ -40,7 +40,7 @@ const put = async(url, data = {}) => {
     } else {
       response = await instance.put(getUrlPrefix() + url, data, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json'
         }
       })
@@ -81,6 +81,4 @@ const _errorHandler = (err) => {
   throw err
 }
 
-export {
-  get, post, del, put
-}
+export { get, post, del, put }
