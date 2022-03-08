@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { getCookie, STORAGEKEY } from '@/utils/storage'
 
 const PageNotFound = () => {
-  const history = useHistory()
-  const token = getCookie(STORAGEKEY.ACCESS_TOKEN)
+  // const history = useHistory()
+  // const token = getCookie(STORAGEKEY.ACCESS_TOKEN)
 
-  useEffect(() => {
-    if (!token) history.push('login')
-  }, [])
+  // useEffect(() => {
+  //   if (!token) history.push('login')
+  // }, [])
   return (
     <div>Page not found</div>
   )
