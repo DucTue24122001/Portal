@@ -8,7 +8,7 @@ import { CookiesProvider } from 'react-cookie'
 import AppLayout from './layouts/App'
 import 'antd/dist/antd.css'
 import { createBrowserHistory } from 'history'
-import { Router } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const browserHistory = createBrowserHistory()
 const App = () => {

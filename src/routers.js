@@ -67,8 +67,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false,
-    },
+      child: false
+    }
   },
   {
     name: 'MyLeave',
@@ -78,8 +78,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false,
-    },
+      child: false
+    }
   },
   {
     name: 'Notice',
@@ -89,8 +89,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false,
-    },
+      child: false
+    }
   },
   {
     name: 'Requests',
@@ -100,8 +100,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false,
-    },
+      child: false
+    }
   },
   {
     name: 'Timesheet',
@@ -111,8 +111,8 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false,
-    },
+      child: false
+    }
   },
   {
     name: 'Login',
@@ -122,9 +122,9 @@ export const appRouter = [
       role: '*',
       isPrivate: false,
       hidden: true,
-      child: false,
-    },
-  },
+      child: false
+    }
+  }
 ]
 
 const renderRouter = (routes) => {
@@ -155,8 +155,8 @@ const routes = () => {
       <Switch>
         {renderRouter(appRouter).map((render) => render)}
         {/* <PrivateRoute path='/test/:id' component={Keyword} /> */}
-        <PrivateRoute path="/test/:id" />
-        <Route path="*" component={NotFoundRoute} />
+        <PrivateRoute path='/test/:id' />
+        <Route path='*' component={NotFoundRoute} />
       </Switch>
     </div>
   )
