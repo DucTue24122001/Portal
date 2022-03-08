@@ -4,5 +4,5 @@ export const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  listMemberComp: []
+  listMemberComp: [],
 }
