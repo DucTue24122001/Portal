@@ -3,18 +3,22 @@ import ReactDOM from 'react-dom'
 import './assets/css/index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min'
-import Router from './routers.js'
+import router from './routers.js'
 import { CookiesProvider } from 'react-cookie'
 import AppLayout from './layouts/App'
+import 'antd/dist/antd.css'
+import { createBrowserHistory } from 'history'
+import { BrowserRouter as Router } from 'react-router-dom'
 
+const browserHistory = createBrowserHistory()
 const App = () => {
   return (
     <CookiesProvider>
-      <AppLayout renderRouter={Router} />
+      <Router history={browserHistory}>
+        <AppLayout renderRouter={router} />
+      </Router>
     </CookiesProvider>
   )
 }
-ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-)
+
+ReactDOM.render(<App />, document.getElementById('app'))
