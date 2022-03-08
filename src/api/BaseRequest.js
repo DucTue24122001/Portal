@@ -4,7 +4,7 @@ import { getCookie, STORAGEKEY } from '@/utils/storage'
 const getUrlPrefix = () => '/'
 
 const instance = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: process.env.API_URL
 })
 
 // instance.interceptors.request.use(function (config) {
@@ -22,7 +22,7 @@ const instance = axios.create({
 const token = getCookie(STORAGEKEY.ACCESS_TOKEN)
 if (token) instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-const get = async (url, params = {}) => {
+const get = async(url, params = {}) => {
   try {
     const config = { params: params }
     const response = await instance.get(getUrlPrefix() + url, config)
@@ -32,7 +32,7 @@ const get = async (url, params = {}) => {
   }
 }
 
-const put = async (url, data = {}) => {
+const put = async(url, data = {}) => {
   try {
     let response = {}
     if (data.toLocaleString() === '[object FormData]') {
@@ -41,8 +41,8 @@ const put = async (url, data = {}) => {
       response = await instance.put(getUrlPrefix() + url, data, {
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+          'Content-Type': 'application/json'
+        }
       })
     }
     return _responseHandler(response)
@@ -51,7 +51,7 @@ const put = async (url, data = {}) => {
   }
 }
 
-const post = async (url, data = {}) => {
+const post = async(url, data = {}) => {
   try {
     const response = await instance.post(getUrlPrefix() + url, data)
     return _responseHandler(response)
@@ -60,7 +60,7 @@ const post = async (url, data = {}) => {
   }
 }
 
-const del = async (url, data = {}) => {
+const del = async(url, data = {}) => {
   try {
     const response = await instance.delete(getUrlPrefix() + url, { data })
     return _responseHandler(response)
