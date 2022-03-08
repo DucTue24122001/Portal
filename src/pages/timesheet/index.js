@@ -1,10 +1,15 @@
 import React from 'react'
+import FormTimeSheet from './timesheet/indexFormRedux'
+import { Provider } from 'react-redux'
+import { store } from './timeSheetRedux'
 
 const TimesheetPage = () => {
   return (
-    <div>
-      TimesheetPage
-    </div>
+    <>
+      <Provider store={store}>
+        <FormTimeSheet />
+      </Provider>
+    </>
   )
 }
 
