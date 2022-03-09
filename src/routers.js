@@ -12,6 +12,8 @@ import TimesheetPage from './pages/timesheet'
 import Home from './pages/home'
 // import { createBrowserHistory } from 'history'
 
+// const browserHistory = createBrowserHistory()
+
 const PrivateRoute = (props) => {
   // const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
   const Component = props.component
