@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { useState } from 'react'
 import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
