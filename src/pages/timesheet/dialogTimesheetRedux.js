@@ -8,7 +8,7 @@ export default function DialogTimeSheetRedux({ isModalVisible, handleOk, handleC
 
   return (
     <>
-      <Modal title='Time logs' visible={isModalVisible} onOk={onOk} onCancel={onCancel}>
+      <Modal title="Time logs" visible={isModalVisible} onOk={onOk} onCancel={onCancel}>
         <Table columns={columsModal} dataSource={valueModal} pagination={false} />
       </Modal>
     </>

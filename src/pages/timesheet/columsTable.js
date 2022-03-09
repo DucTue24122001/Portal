@@ -9,22 +9,22 @@ export const columns = [
   {
     title: 'No',
     dataIndex: 'id',
-    width: '4%'
+    width: '4%',
   },
   {
     title: 'Date',
     dataIndex: 'date',
-    width: '8%'
+    width: '8%',
   },
   {
     title: 'Check In',
     dataIndex: 'checkin',
-    width: '5%'
+    width: '5%',
   },
   {
     title: 'Check Out',
     dataIndex: 'checkout',
-    width: '5%'
+    width: '5%',
   },
   {
     title: 'Late',
@@ -38,7 +38,7 @@ export const columns = [
           </Text>
         </>
       )
-    }
+    },
   },
   {
     title: 'Early',
@@ -52,12 +52,12 @@ export const columns = [
           </Text>
         </>
       )
-    }
+    },
   },
   {
     title: 'In Officle',
     dataIndex: 'inOfficle',
-    width: '5%'
+    width: '5%',
   },
   {
     title: 'OT',
@@ -69,7 +69,7 @@ export const columns = [
           <Text type={record.Ot === null || record.Note.includes('Approved', 'OT') ? '' : 'danger'}>{Ot}</Text>
         </>
       )
-    }
+    },
   },
   {
     title: 'Work Time',
@@ -84,17 +84,17 @@ export const columns = [
                 ? ''
                 : moment(record.Worktime, 'hh:mm').isBefore(moment('08:00', 'hh:mm')) ||
                   record.colorWorkTime === 'default'
-                  ? record.Note.includes('Approved', 'Late/Early') === true
-                    ? 'warning'
-                    : 'danger'
-                  : ''
+                ? record.Note.includes('Approved', 'Late/Early') === true
+                  ? 'warning'
+                  : 'danger'
+                : ''
             }
           >
             {Worktime}
           </Text>
         </>
       )
-    }
+    },
   },
   {
     title: 'Lack',
@@ -117,22 +117,22 @@ export const columns = [
           </Text>
         </>
       )
-    }
+    },
   },
   {
     title: 'Comp',
     dataIndex: 'comp',
-    width: '4%'
+    width: '4%',
   },
   {
     title: 'Pleave',
     dataIndex: 'pleave',
-    width: '4%'
+    width: '4%',
   },
   {
     title: 'Uleave',
     dataIndex: 'uleave',
-    width: '4%'
+    width: '4%',
   },
   {
     title: 'Note',
@@ -144,7 +144,7 @@ export const columns = [
           <Text>{Note}</Text>
         </>
       )
-    }
+    },
   },
   {
     title: 'Action',
@@ -169,25 +169,25 @@ export const columns = [
           </Text>
         </Space>
       )
-    }
-  }
+    },
+  },
 ]
 
 export const columsModal = [
   {
     title: 'Date',
-    dataIndex: 'date'
+    dataIndex: 'date',
   },
   {
     title: 'Check in',
-    dataIndex: 'checkin'
+    dataIndex: 'checkin',
   },
   {
     title: 'Check in',
-    dataIndex: 'checkout'
+    dataIndex: 'checkout',
   },
   {
     title: 'Late',
-    dataIndex: 'late'
-  }
+    dataIndex: 'late',
+  },
 ]

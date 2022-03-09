@@ -6,7 +6,7 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  listMemberComp: []
+  listMemberComp: [],
 }
 
 export const timeSheetReducer = (state = initState, action) => {
@@ -15,33 +15,33 @@ export const timeSheetReducer = (state = initState, action) => {
       return {
         ...state,
         data: action.payload,
-        optionSearch: 1
+        optionSearch: 1,
       }
     }
     case 'timeSheet/loading': {
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       }
     }
     case 'timeSheet/length': {
       return {
         ...state,
         length: action.payload.length,
-        listMemberComp: action.payload.dataComp
+        listMemberComp: action.payload.dataComp,
       }
     }
     case 'timeSheet/getdata': {
       return {
         ...state,
         data: action.payload,
-        optionSearch: 0
+        optionSearch: 0,
       }
     }
     case 'timeSheet/btnLoading': {
       return {
         ...state,
-        btnLoading: action.payload
+        btnLoading: action.payload,
       }
     }
     default:
@@ -49,27 +49,27 @@ export const timeSheetReducer = (state = initState, action) => {
   }
 }
 
-export const selectTableTimeSheetApI = (params) => async(dispatch) => {
+export const selectTableTimeSheetApI = (params) => async (dispatch) => {
   try {
     const { page, pageSize } = params
     const data = await getApiTable('apiStaff', page, pageSize)
     dispatch({
       type: 'timeSheet/getdata',
-      payload: data
+      payload: data,
     })
     dispatch({
       type: 'timeSheet/loading',
-      payload: false
+      payload: false,
     })
   } catch (error) {
     dispatch({
       type: 'timeSheet/getdata',
-      payload: []
+      payload: [],
     })
   }
 }
 
-export const searchTableTimeSheetApI = (value, params, btnLoading) => async(dispatch) => {
+export const searchTableTimeSheetApI = (value, params, btnLoading) => async (dispatch) => {
   const { Date, Sort, radioBtn } = value
   const { page, pageSize } = params
   try {
@@ -78,22 +78,22 @@ export const searchTableTimeSheetApI = (value, params, btnLoading) => async(disp
       if (btnLoading === true) {
         dispatch({
           type: 'timeSheet/btnLoading',
-          payload: false
+          payload: false,
         })
       }
       dispatch({
         type: 'timeSheet/search',
-        payload: data
+        payload: data,
       })
       dispatch({
         type: 'timeSheet/loading',
-        payload: false
+        payload: false,
       })
     }
   } catch (err) {
     dispatch({
       type: 'timeSheet/search',
-      payload: []
+      payload: [],
     })
   }
 }
@@ -101,11 +101,11 @@ export const searchTableTimeSheetApI = (value, params, btnLoading) => async(disp
 export const loadingTableTrue = () => {
   return {
     type: 'timeSheet/loading',
-    payload: true
+    payload: true,
   }
 }
 
-export const lengthTableTimeSheetAPI = () => async(dispatch) => {
+export const lengthTableTimeSheetAPI = () => async (dispatch) => {
   try {
     const data = await getAllApiTable('apiStaff')
     const dataComp = []
@@ -116,26 +116,26 @@ export const lengthTableTimeSheetAPI = () => async(dispatch) => {
     })
     dispatch({
       type: 'timeSheet/length',
-      payload: { dataComp: dataComp, length: data.length }
+      payload: { dataComp: dataComp, length: data.length },
     })
   } catch (error) {
     dispatch({
       type: 'timeSheet/length',
-      payload: []
+      payload: [],
     })
   }
 }
 
-export const btnLoadingSearch = (value) => async(dispatch) => {
+export const btnLoadingSearch = (value) => async (dispatch) => {
   try {
     dispatch({
       type: 'timeSheet/btnLoading',
-      payload: value
+      payload: value,
     })
   } catch (err) {
     dispatch({
       type: 'timeSheet/btnLoading',
-      payload: null
+      payload: null,
     })
   }
 }
