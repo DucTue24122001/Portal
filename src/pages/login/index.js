@@ -1,10 +1,16 @@
 import React from 'react'
 import style from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
+import { useDispatch } from 'react-redux'
+import { login } from '../../redux/login'
 
 const { Title } = Typography
 const LoginPage = () => {
-  const onFinish = (values) => {}
+  const dispatch = useDispatch()
+
+  const onFinish = (values) => {
+    dispatch(login(values))
+  }
 
   const onFinishFailed = (errorInfo) => {}
 

@@ -1,0 +1,22 @@
+.content {
+  padding: 0px 20px;
+}
+.content-title {
+  font-size: 20pt;
+  font-weight: 600;
+  color: #1890ff;
+  padding-bottom: 10px;
+}
+.row-info {
+  padding-bottom: 10px;
+}
+.row-info-title {
+  font-weight: bold;
+}
+.table {
+  border: 1px solid rgb(185, 172, 172);
+  margin-top: 20px;
+}
+.form-requests {
+  padding-bottom: 20px;
+}
