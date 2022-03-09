@@ -19,7 +19,7 @@ export const convertData = (data, dataComp) => {
       pleave: item.paid_leave,
       uleave: item.unpaid_leave,
       is_holiday: item.is_holiday,
-      colorWorkTime: '',
+      colorWorkTime: ''
     }
     if (item.note === null) {
       valueData.Note = ''
