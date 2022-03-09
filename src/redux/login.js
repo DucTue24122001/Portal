@@ -24,7 +24,8 @@ export const login = (dataForm) => async(dispatch) => {
 // Reducer
 const initialState = {
   user: {},
-  success: false
+  success: false,
+  loading: false
 }
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {

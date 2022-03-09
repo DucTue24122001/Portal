@@ -8,11 +8,11 @@ import { useHistory } from 'react-router'
 const { Title } = Typography
 const LoginPage = () => {
   const history = useHistory()
-  const { success } = useSelector((state) => state.login)
+  const { success, loading } = useSelector((state) => state.login)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (success) {
+    if (success === true) {
       history.push('/')
     }
   }, [success])
@@ -72,7 +72,7 @@ const LoginPage = () => {
 
         <div className={style.form_item}>
           <Form.Item>
-            <Button className={style.item_input} type='primary' htmlType='submit'>
+            <Button className={style.item_input} loading={loading} type='primary' htmlType='submit'>
               Đăng nhập
             </Button>
           </Form.Item>
