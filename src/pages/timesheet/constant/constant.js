@@ -1,5 +1,0 @@
-export const TIMESHEET_SEARCH_SORT = 'timeSheet/search'
-export const TIMESHEET_LENGTH = 'timeSheet/length'
-export const TIMESHEET_GETDATA = 'timeSheet/getdata'
-export const TIMESHEET_BTNLOADING = 'timeSheet/btnLoading'
-export const TIMESHEET_LOADING = 'timeSheet/loading'

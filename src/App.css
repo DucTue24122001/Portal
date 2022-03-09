@@ -1,7 +1,0 @@
-.boder-table {
-    border: 1px solid rgb(182, 182, 182);
-    width: 100vw;
-}
-.boder-table .ant-table .ant-table-tbody > tr:hover > td {
-    background: rgb(208, 218, 74);
-}

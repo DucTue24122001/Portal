@@ -1,7 +1,7 @@
 import React from 'react'
 import { Space, Typography } from 'antd'
 import moment from 'moment'
-import styles from '../timesheet.module.css'
+import styles from './styles.module.css'
 
 const { Text } = Typography
 

@@ -29,7 +29,7 @@ export const getApiTable = async(url, page, pageSize) => {
 export const getSortTable = async(url, search, sort, page, pageSize) => {
   try {
     const config = {
-      params: { sortBy: 'Note', order: sort, page: page, limit: pageSize }
+      params: { sortBy: 'id', order: sort, page: page, limit: pageSize }
     }
     const response = await instance.get(getUrlPrefix() + url, config)
     return _responseHandler(response)

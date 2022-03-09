@@ -3,10 +3,10 @@ import React from 'react'
 import Layout, { Content } from 'antd/lib/layout/layout'
 import { Button, Col, DatePicker, Form, Radio, Row, Select, Typography } from 'antd'
 import Title from 'antd/lib/typography/Title'
-import styles from '../timesheet.module.css'
+import styles from './styles.module.css'
 import { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { btnLoadingSearch, loadingTableTrue } from '../timeSheetRedux'
+import { btnLoadingSearch, loadingTableTrue } from '../../redux/timesheet'
 
 const SearchTimeSheetRedux = ({ onSearch }) => {
   const { Text } = Typography
@@ -14,7 +14,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
   const dateFormat = 'DD/MM/YY'
   const [radioBtn, setRadioBtn] = useState(1)
   const [rolesTimestart, setRolesTimeStart] = useState({})
-  const btnLoadingRedux = useSelector((state) => state.btnLoading)
+  const btnLoadingRedux = useSelector((state) => state.timesheet.btnLoading)
   const [valueTime, setValueTime] = useState({
     startValue: null,
     endValue: null,
