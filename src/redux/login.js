@@ -11,12 +11,10 @@ export const login = (dataForm) => async(dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST })
 
-    const { data } = await axios.post(`api`, dataForm)
-
+    const { data } = await axios.post(`https://d4dyv3.sse.codesandbox.io/users`, dataForm)
     if (data) {
-      setCookie(STORAGEKEY.ACCESS_TOKEN, data.access_token)
+      setCookie(STORAGEKEY.ACCESS_TOKEN, data.accessToken)
     }
-
     dispatch({ type: LOGIN_SUCCESS, payload: data.user })
   } catch (error) {
     dispatch({ type: LOGIN_FAIL, payload: 'Dang nhap that bai' })
@@ -25,7 +23,8 @@ export const login = (dataForm) => async(dispatch) => {
 
 // Reducer
 const initialState = {
-  user: {}
+  user: {},
+  success: false
 }
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -37,6 +36,7 @@ export const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        success: true,
         user: action.payload
       }
 

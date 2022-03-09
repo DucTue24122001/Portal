@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import style from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../redux/login'
+import { useHistory } from 'react-router'
 
 const { Title } = Typography
 const LoginPage = () => {
+  const history = useHistory()
+  const { success } = useSelector((state) => state.login)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (success) {
+      history.push('/')
+    }
+  }, [success])
 
   const onFinish = (values) => {
     dispatch(login(values))
