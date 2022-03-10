@@ -14,7 +14,7 @@ const App = (props) => {
   const { success } = useSelector((state) => state.login)
 
   useEffect(() => {
-    if (success == true) {
+    if (success === true) {
       setHiddenMenu(true)
     }
   }, [success])
