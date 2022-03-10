@@ -14,10 +14,10 @@ import {
   loadingTableTrue
 } from '../../redux/timesheet'
 import { convertData } from './convertData'
-import ModalForget from './modal/modalForget'
-import ModalLateEarly from './modal/modalLateEarly'
-import ModalLeave from './modal/modalLeave'
-import ModalOT from './modal/modalOT'
+import ModalForget from '../../components/modalTimesheet/modalForget'
+import ModalLateEarly from '../../components/modalTimesheet/modalLateEarly'
+import ModalLeave from '../../components/modalTimesheet/modalLeave'
+import ModalOT from '../../components/modalTimesheet/modalOT'
 
 const TimesheetPage = () => {
   const { Text } = Typography
