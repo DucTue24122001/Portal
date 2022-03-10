@@ -10,6 +10,9 @@ import NoicePage from './pages/notice'
 import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
 import Home from './pages/home'
+import RegisterLateEarly from './layouts/components/registerLateEarly'
+import EditLateEarly from './layouts/components/updateLateEarly'
+import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
@@ -121,6 +124,50 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Login',
+    path: '/login',
+    component: LoginPage,
+    meta: {
+      role: '*',
+      isPrivate: false,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'registerLateEarly',
+    path: '/registerLateEarly',
+    component: RegisterLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'updateLateEarly',
+    path: '/updateLateEarly',
+    component: EditLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'confirmLateEarly',
+    path: '/confirmLateEarly',
+    component: ConfirmRegisterLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
       child: false
     }
   }
