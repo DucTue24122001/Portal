@@ -1,12 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import style from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../redux/login'
+import { useHistory } from 'react-router'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const { Title } = Typography
 const LoginPage = () => {
+  const history = useHistory()
+  const { success, loading, error } = useSelector((state) => state.login)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (success === true) {
+      history.push('/')
+    }
+  }, [success])
+
+  useEffect(() => {
+    if (error !== '') {
+      toast(error)
+    }
+  }, [error])
 
   const onFinish = (values) => {
     dispatch(login(values))
@@ -63,12 +80,13 @@ const LoginPage = () => {
 
         <div className={style.form_item}>
           <Form.Item>
-            <Button className={style.item_input} type='primary' htmlType='submit'>
+            <Button className={style.item_input} loading={loading} type='primary' htmlType='submit'>
               Đăng nhập
             </Button>
           </Form.Item>
         </div>
       </Form>
+      <ToastContainer />
     </div>
   )
 }

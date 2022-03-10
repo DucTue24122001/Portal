@@ -3,13 +3,18 @@ import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
 import style from './header.module.css'
+import { logout } from '../../../redux/logout'
+import { useDispatch } from 'react-redux'
 
 const { Title } = Typography
-
 const Header = () => {
+  const dispatch = useDispatch()
   const [user] = useState('Vu Van Vinh')
 
-  const handleClick = () => {}
+  const handleLogout = async() => {
+    await dispatch(logout())
+    window.location.reload()
+  }
 
   return (
     <>
@@ -26,7 +31,7 @@ const Header = () => {
                 Welcome <b>{user}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
-                <Menu style={{ border: 'none' }} onClick={handleClick} mode='horizontal'>
+                <Menu style={{ border: 'none' }} mode='horizontal'>
                   <Menu.Item
                     style={{ display: 'flex', alignItems: 'center' }}
                     key='changepass'
@@ -34,7 +39,12 @@ const Header = () => {
                   >
                     Change Password
                   </Menu.Item>
-                  <Menu.Item style={{ display: 'flex', alignItems: 'center' }} key='logout' icon={<PoweroffOutlined />}>
+                  <Menu.Item
+                    onClick={handleLogout}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    key='logout'
+                    icon={<PoweroffOutlined />}
+                  >
                     Log out
                   </Menu.Item>
                 </Menu>
@@ -42,7 +52,7 @@ const Header = () => {
             </Row>
             <Row>
               <Col>
-                <Menu style={{ border: 'none' }} onClick={handleClick} mode='horizontal'>
+                <Menu style={{ border: 'none' }} mode='horizontal'>
                   <Menu.Item key='home'>
                     <Link to='/'>Home</Link>
                   </Menu.Item>
