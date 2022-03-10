@@ -1,0 +1,27 @@
+.content1 {
+  padding: 10px 20px;
+}
+.content1-header {
+  border: 1px solid rgb(185, 172, 172);
+  padding-bottom: 30px;
+}
+.content1-header-title {
+  background: white;
+  margin-top: -25px;
+  margin-left: 20px;
+  font-size: 20pt;
+  font-weight: 600;
+  width: 110px;
+  color: #1890ff;
+}
+.cow-content {
+  padding: 20px 0px;
+  margin-bottom: 10px;
+}
+.pagination {
+  padding-top: 20px;
+}
+.table {
+  border: 1px solid rgb(185, 172, 172);
+  margin-top: 20px;
+}
