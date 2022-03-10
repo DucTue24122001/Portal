@@ -14,9 +14,9 @@ import {
 import { convertData } from './convertData'
 import { columns } from './columsTable'
 
-const TimesheetPage = () => {
-  const { Text } = Typography
+const { Text } = Typography
 
+const TimesheetPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
   const [params, setParams] = useState({ page: 1, pageSize: 10 })

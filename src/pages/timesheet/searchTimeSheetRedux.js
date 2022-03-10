@@ -8,10 +8,11 @@ import { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { btnLoadingSearch, loadingTableTrue } from '../../redux/timesheet'
 
+const { Text } = Typography
+const { Option } = Select
+const dateFormat = 'DD/MM/YY'
+
 const SearchTimeSheetRedux = ({ onSearch }) => {
-  const { Text } = Typography
-  const { Option } = Select
-  const dateFormat = 'DD/MM/YY'
   const [radioBtn, setRadioBtn] = useState(1)
   const [rolesTimestart, setRolesTimeStart] = useState({})
   const btnLoadingRedux = useSelector((state) => state.timesheet.btnLoading)
