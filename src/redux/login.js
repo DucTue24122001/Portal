@@ -11,7 +11,7 @@ export const login = (dataForm) => async(dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST })
 
-    const { data } = await axios.post(`https://d4dyv3.sse.codesandbox.io/users`, dataForm)
+    const { data } = await axios.post(`https://o9dqpi-3000.sse.codesandbox.io/users`, dataForm)
     if (data) {
       setCookie(STORAGEKEY.ACCESS_TOKEN, data.accessToken)
     }
@@ -24,8 +24,8 @@ export const login = (dataForm) => async(dispatch) => {
 // Reducer
 const initialState = {
   user: {},
-  success: false,
-  loading: false
+  loading: false,
+  success: false
 }
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -44,6 +44,7 @@ export const loginReducer = (state = initialState, action) => {
     case LOGIN_FAIL:
       return {
         ...state,
+        success: false,
         loading: false,
         user: null,
         error: action.payload
