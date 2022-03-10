@@ -13,6 +13,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
   const { Option } = Select
   const dateFormat = 'DD/MM/YY'
   const [radioBtn, setRadioBtn] = useState(1)
+  const [disableRadio, setDisableRadio] = useState({ radioSort: false, radioTime: true })
   const [rolesTimestart, setRolesTimeStart] = useState({})
   const btnLoadingRedux = useSelector((state) => state.timesheet.btnLoading)
   const [valueTime, setValueTime] = useState({
@@ -80,10 +81,14 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
   const onFinishFailed = () => {}
   const onChangeRadio = (e) => {
     setRadioBtn(e.target.value)
+    if (e.target.value === 2) {
+      setDisableRadio({ radioSort: true, radioTime: false })
+    } else if (e.target.value === 1) {
+      setDisableRadio({ radioSort: false, radioTime: true })
+    }
     dispatch(btnLoadingSearch(false))
   }
 
-  // start validate time
   const disabledStartDate = (startValue) => {
     const { endValue } = valueTime
     if (!startValue || !endValue) {
@@ -114,7 +119,6 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
   const onEndChange = (value) => {
     onChange('endValue', value)
   }
-  // end validate time start - end
 
   return (
     <>
@@ -154,10 +158,10 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         className={styles.selectOption}
                         {...rolesTimestart.rulesRadioSort}
                       >
-                        <Select placeholder='Select time'>
-                          <Option value='date'>this date</Option>
-                          <Option value='month'>this month</Option>
-                          <Option value='year'>this year</Option>
+                        <Select placeholder='Select time' disabled={disableRadio.radioSort}>
+                          <Option value='date'>This date</Option>
+                          <Option value='month'>This month</Option>
+                          <Option value='year'>This year</Option>
                         </Select>
                       </Form.Item>
                     </Col>
@@ -169,7 +173,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                       className={styles.toTheRight}
                     >
                       <Form.Item label='Sort by work date' name='Sort' {...rolesTimestart.rulesRadioSort}>
-                        <Select placeholder='Select sort' style={{ width: '160px' }}>
+                        <Select placeholder='Select sort' style={{ width: '160px' }} disabled={disableRadio.radioSort}>
                           <Option value='asc'>Ascending</Option>
                           <Option value='desc'>Decrease</Option>
                         </Select>
@@ -193,6 +197,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                           value={valueTime.startValue}
                           placeholder='Start'
                           onChange={onStartChange}
+                          disabled={disableRadio.radioTime}
                         />
                       </Form.Item>
                     </Col>
@@ -211,6 +216,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                           value={valueTime.endValue}
                           placeholder='End'
                           onChange={onEndChange}
+                          disabled={disableRadio.radioTime}
                         />
                       </Form.Item>
                     </Col>

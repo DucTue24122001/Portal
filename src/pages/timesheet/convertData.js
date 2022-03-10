@@ -57,5 +57,6 @@ export const convertData = (data, dataComp) => {
     }
     return valueData
   })
+
   return value
 }
