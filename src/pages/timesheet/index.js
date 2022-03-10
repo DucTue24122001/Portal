@@ -1,4 +1,5 @@
 import React from 'react'
+import 'antd/dist/antd.css'
 import { Col, Row, Select, Table, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import styles from './styles.module.css'
@@ -14,9 +15,9 @@ import {
 import { convertData } from './convertData'
 import { columns } from './columsTable'
 
-const { Text } = Typography
-
 const TimesheetPage = () => {
+  const { Text } = Typography
+
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
   const [params, setParams] = useState({ page: 1, pageSize: 10 })
