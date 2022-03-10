@@ -1,10 +1,11 @@
 import React from 'react'
 import 'antd/dist/antd.css'
-import { Col, Row, Select, Table, Typography } from 'antd'
+import { Col, Row, Select, Table, Space, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import styles from './styles.module.css'
 import DialogTimeSheetRedux from './dialogTimesheetRedux'
 import SearchTimeSheetRedux from './searchTimeSheetRedux'
+import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   lengthTableTimeSheetAPI,
@@ -13,12 +14,13 @@ import {
   loadingTableTrue
 } from '../../redux/timesheet'
 import { convertData } from './convertData'
-import { columns } from './columsTable'
+import DialogTimeSheetReduxModal from './modal/modalForget'
 
 const TimesheetPage = () => {
   const { Text } = Typography
 
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalForget, setisModalForget] = useState(false)
   const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
   const [params, setParams] = useState({ page: 1, pageSize: 10 })
   const [valueSearch, setValueSearch] = useState(null)
@@ -44,21 +46,12 @@ const TimesheetPage = () => {
 
   const dataSource = convertData(dataRedux, dataComp)
 
-  const showModal = () => {
-    setIsModalVisible(true)
-  }
-
   const handleOk = () => {
     setIsModalVisible(false)
   }
 
   const handleCancel = () => {
     setIsModalVisible(false)
-  }
-
-  const onShowModal = (value) => {
-    showModal()
-    setValueModal([value])
   }
 
   const onChangeElement = (e) => {
@@ -85,6 +78,189 @@ const TimesheetPage = () => {
       dispatch(loadingTableTrue())
     }
   }
+
+  const onAction = (e, name) => {
+    e.stopPropagation()
+    if (name === 'Forget') {
+      setisModalForget(true)
+    }
+  }
+
+  const cancelModal = () => {
+    setisModalForget(false)
+  }
+
+  const onClickRow = (record) => {
+    setValueModal([record])
+    setIsModalVisible(true)
+  }
+
+  const columns = [
+    {
+      title: 'No',
+      dataIndex: 'id',
+      width: '4%'
+    },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      width: '8%'
+    },
+    {
+      title: 'Check In',
+      dataIndex: 'checkin',
+      width: '5%'
+    },
+    {
+      title: 'Check Out',
+      dataIndex: 'checkout',
+      width: '5%'
+    },
+    {
+      title: 'Late',
+      dataIndex: 'late',
+      width: '4%',
+      render: (late, record) => {
+        return (
+          <>
+            <Text type={record.late === null || record.Note.includes('Approved', 'Late/Early') ? '' : 'danger'}>
+              {late}
+            </Text>
+          </>
+        )
+      }
+    },
+    {
+      title: 'Early',
+      dataIndex: 'early',
+      width: '4%',
+      render: (early, record) => {
+        return (
+          <>
+            <Text type={record.early === null || record.Note.includes('Approved', 'Late/Early') ? '' : 'danger'}>
+              {early}
+            </Text>
+          </>
+        )
+      }
+    },
+    {
+      title: 'In Officle',
+      dataIndex: 'inOfficle',
+      width: '5%'
+    },
+    {
+      title: 'OT',
+      dataIndex: 'Ot',
+      width: '4%',
+      render: (Ot, record) => {
+        return (
+          <>
+            <Text type={record.Ot === null || record.Note.includes('Approved', 'OT') ? '' : 'danger'}>{Ot}</Text>
+          </>
+        )
+      }
+    },
+    {
+      title: 'Work Time',
+      dataIndex: 'Worktime',
+      width: '4%',
+      render: (Worktime, record) => {
+        return (
+          <>
+            <Text
+              type={
+                record.Worktime === '00:00'
+                  ? ''
+                  : moment(record.Worktime, 'hh:mm').isBefore(moment('08:00', 'hh:mm')) ||
+                    record.colorWorkTime === 'default'
+                    ? record.Note.includes('Approved', 'Late/Early') === true
+                      ? 'warning'
+                      : 'danger'
+                    : ''
+              }
+            >
+              {Worktime}
+            </Text>
+          </>
+        )
+      }
+    },
+    {
+      title: 'Lack',
+      dataIndex: 'lack',
+      width: '4%',
+      render: (lack, record) => {
+        return (
+          <>
+            <Text
+              type={
+                record.Note.includes('Approved', 'Late/Early') === true ||
+                record.Note.includes('Approved', 'Leave') === true ||
+                record.Note.includes('Approved', 'check-in/out') === true ||
+                record.Note.includes('Approved', 'Forget') === true
+                  ? ''
+                  : 'danger'
+              }
+            >
+              {lack}
+            </Text>
+          </>
+        )
+      }
+    },
+    {
+      title: 'Comp',
+      dataIndex: 'comp',
+      width: '4%'
+    },
+    {
+      title: 'Pleave',
+      dataIndex: 'pleave',
+      width: '4%'
+    },
+    {
+      title: 'Uleave',
+      dataIndex: 'uleave',
+      width: '4%'
+    },
+    {
+      title: 'Note',
+      dataIndex: 'Note',
+      width: '8%',
+      render: (Note) => {
+        return (
+          <>
+            <Text>{Note}</Text>
+          </>
+        )
+      }
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      width: '12%',
+      render: () => {
+        return (
+          <Space>
+            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'Forget')}>
+              Forget
+            </Text>
+            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'LateEarly')}>
+              Late/Early
+            </Text>
+            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'Leave')}>
+              Leave
+            </Text>
+            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'Ot')}>
+              OT
+            </Text>
+          </Space>
+        )
+      }
+    }
+  ]
 
   return (
     <>
@@ -120,15 +296,15 @@ const TimesheetPage = () => {
           }}
           onRow={(record, rowIndex) => {
             return {
-              onClick: (event) => onShowModal(record)
+              onClick: () => onClickRow(record)
             }
           }}
-          scroll={{ x: 1500 }}
-          rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : '')}
+          rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : 'name')}
           className='boder-table'
           bordered={true}
           loading={loading}
         />
+        <DialogTimeSheetReduxModal isModalVisible={isModalForget} handleOk={cancelModal} handleCancel={cancelModal} />
         <DialogTimeSheetRedux
           isModalVisible={isModalVisible}
           handleOk={handleOk}
