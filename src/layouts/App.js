@@ -14,9 +14,12 @@ const App = (props) => {
   const { success } = useSelector((state) => state.login)
 
   useEffect(() => {
-    if (success) {
+    if (success == true) {
       setHiddenMenu(true)
     }
+  }, [success])
+
+  useEffect(() => {
     if (cookies[STORAGEKEY.ACCESS_TOKEN]) {
       setHiddenMenu(true)
     }
