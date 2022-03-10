@@ -3,11 +3,9 @@
     position: relative;
     margin-bottom: 20px;
 }
-
 .bl {
     border: 1px solid black;
 }
-
 .timesheetTitle {
     position: absolute;
     left: 10px;
@@ -25,25 +23,20 @@
     display: flex;
     flex-direction: row-reverse;
 }
-
 .optionSearch {
     margin-top: 20px;
 }
-
 .radioOption {
     background-color: #fff;
 }
-
 .marginleft {
     margin-left: 1px;
 }
-
 .buttonTable {
     border: transparent;
     background-color: transparent;
     color: #3590ff;
 }
-
 .marginBottom {
     margin-bottom: 10px;
 }
@@ -54,20 +47,16 @@ a {
     display: flex;
     justify-content: center;
 }
-
 .selectOption {
     width: 160px;
 }
-
 .boderTable {
     border: 1px solid rgb(182, 182, 182);
     width: 100vw;
 }
-
 .tableRowLight {
     background-color: #e2e1b7;
 }
-
 @media only screen and (min-width: 900px) {
     .body {
         padding: 0 50px 0 50px;
