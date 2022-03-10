@@ -21,6 +21,7 @@ export const convertData = (data, dataComp) => {
       is_holiday: item.is_holiday,
       colorWorkTime: ''
     }
+
     if (item.note === null) {
       valueData.Note = ''
     } else {
