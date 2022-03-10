@@ -3,10 +3,18 @@ import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
 import style from './header.module.css'
-const { Title } = Typography
+import { logout } from '../../../redux/logout'
+import { useDispatch } from 'react-redux'
 
-const Header = ({ logout }) => {
+const { Title } = Typography
+const Header = () => {
+  const dispatch = useDispatch()
   const [user] = useState('Vu Van Vinh')
+
+  const handleLogout = async() => {
+    await dispatch(logout())
+    window.location.reload()
+  }
 
   return (
     <>
@@ -32,7 +40,7 @@ const Header = ({ logout }) => {
                     Change Password
                   </Menu.Item>
                   <Menu.Item
-                    onClick={(e) => logout()}
+                    onClick={handleLogout}
                     style={{ display: 'flex', alignItems: 'center' }}
                     key='logout'
                     icon={<PoweroffOutlined />}
