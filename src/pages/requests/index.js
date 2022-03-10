@@ -11,7 +11,27 @@ const RequestsPage = () => {
   const [rangePickerDisabled, setRangePickerDisable] = useState(true)
   const [params, setParams] = useState({ page: 1, limit: 5 })
   const valuecheckbox = [1, 2, 3]
-  const valueStatus = ['Sent', 'Confirmed', 'Approved']
+  const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
+  const datatable = [
+    {
+      name: 'Ms. Emmett Douglas',
+      requests_type: 4,
+      requests_date: '2042-03-22T09:17:35.811Z',
+      status: 0,
+      comp_time: '3:00',
+      compensation_date: '2091-09-12T20:22:26.242Z',
+      id: '1'
+    },
+    {
+      name: 'Tonya Medhurst',
+      requests_type: 5,
+      requests_date: '2045-12-17T05:44:29.036Z',
+      status: 1,
+      comp_time: '3:30',
+      compensation_date: '2034-12-27T16:15:12.878Z',
+      id: '2'
+    }
+  ]
   const onCheckboxChange = (e) => {
     if (e.target.value === 0) {
       setSelectDisable(!selectDisabled)
@@ -24,9 +44,7 @@ const RequestsPage = () => {
 
   const handleChange = (value) => {}
 
-  const handleChangeSearchStatus = (value) => {
-    console.log(value)
-  }
+  const handleChangeSearchStatus = (value) => {}
 
   const onChangePage = (e) => {
     setParams({
@@ -35,10 +53,11 @@ const RequestsPage = () => {
     })
   }
 
-  const handleReset = () => {
-    setSelectDisable(true)
-    setRangePickerDisable(true)
+  const onDateChange = (date, dateString) => {
+    console.log('From: ', dateString[0], ', to: ', dateString[1])
   }
+
+  const handleReset = () => {}
 
   const handleSearch = () => {
     setParams({
@@ -46,6 +65,7 @@ const RequestsPage = () => {
       page: 1
     })
   }
+
   const columns = [
     {
       title: 'No',
@@ -133,6 +153,7 @@ const RequestsPage = () => {
       width: '8%',
       render: (record) => {
         let status = ''
+        if (record === -1) status = 'reject'
         if (record === 0) status = 'sent'
         if (record === 1) status = 'comfirmed'
         if (record === 2) status = 'approved'
@@ -151,7 +172,11 @@ const RequestsPage = () => {
     },
     {
       title: 'Action',
-      align: 'center'
+      align: 'center',
+      key: 'status',
+      render: (record) => {
+        return <Space>1</Space>
+      }
     }
   ]
 
@@ -170,7 +195,9 @@ const RequestsPage = () => {
                         <Space direction='vertical' size={30}>
                           <Row justify='space-around' align='middle'>
                             <Col span={24}>
-                              <Radio value={0}>Choose from list</Radio>
+                              <Radio value={0} checked={true}>
+                                Choose from list
+                              </Radio>
                               <Select style={{ width: 150 }} disabled={selectDisabled} onChange={handleChange}>
                                 {valuecheckbox.map((item) => (
                                   <Option key={item} value={item}>
@@ -183,7 +210,14 @@ const RequestsPage = () => {
                           <Row justify='space-around' align='middle'>
                             <Col>
                               <Radio value={1}>Choose start,end</Radio>
-                              <RangePicker disabled={rangePickerDisabled} />
+                              <RangePicker
+                                disabled={rangePickerDisabled}
+                                ranges={{
+                                  Today: [moment(), moment()],
+                                  'This Month': [moment().startOf('month'), moment().endOf('month')]
+                                }}
+                                onChange={onDateChange}
+                              />
                             </Col>
                           </Row>
                         </Space>
@@ -205,7 +239,7 @@ const RequestsPage = () => {
                           <Col span={12}>
                             <Select style={{ width: 150 }} onChange={handleChangeSearchStatus}>
                               {valueStatus.map((item, index) => (
-                                <Option key={item} value={index}>
+                                <Option key={item} value={index - 1}>
                                   {item}
                                 </Option>
                               ))}
@@ -246,7 +280,7 @@ const RequestsPage = () => {
                       <Space direction='vertical' size={30} align='center'>
                         <Table
                           columns={columns}
-                          dataSource={[]}
+                          dataSource={datatable}
                           pagination={false}
                           rowKey={(dataSource) => dataSource?.id}
                           bordered
