@@ -4,11 +4,13 @@ import { Form, Input, Button, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../redux/login'
 import { useHistory } from 'react-router'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const { Title } = Typography
 const LoginPage = () => {
   const history = useHistory()
-  const { success, loading } = useSelector((state) => state.login)
+  const { success, loading, error } = useSelector((state) => state.login)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -16,6 +18,12 @@ const LoginPage = () => {
       history.push('/')
     }
   }, [success])
+
+  useEffect(() => {
+    if (error !== '') {
+      toast(error)
+    }
+  }, [error])
 
   const onFinish = (values) => {
     dispatch(login(values))
@@ -78,6 +86,7 @@ const LoginPage = () => {
           </Form.Item>
         </div>
       </Form>
+      <ToastContainer />
     </div>
   )
 }
