@@ -204,8 +204,8 @@ const RequestsPage = () => {
                           <Col span={12}>Status</Col>
                           <Col span={12}>
                             <Select style={{ width: 150 }} onChange={handleChangeSearchStatus}>
-                              {valueStatus.map((item) => (
-                                <Option key={item} value={item.index}>
+                              {valueStatus.map((item, index) => (
+                                <Option key={item} value={index}>
                                   {item}
                                 </Option>
                               ))}
