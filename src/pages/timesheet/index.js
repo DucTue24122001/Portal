@@ -11,7 +11,7 @@ import {
   lengthTableTimeSheetAPI,
   selectTableTimeSheetApI,
   searchTableTimeSheetApI,
-  loadingTableTrue,
+  loadingTableTrue
 } from '../../redux/timesheet'
 import { convertData } from './convertData'
 import ModalForget from '../../components/modalTimesheet/modalForget'
@@ -22,13 +22,11 @@ import ModalOT from '../../components/modalTimesheet/modalOT'
 const TimesheetPage = () => {
   const { Text } = Typography
 
-  const [isModalVisible, setIsModalVisible] = useState({
-    modalTable: false,
-    modalForget: false,
-    modalLate: false,
-    modalLeave: false,
-    modalOt: false,
-  })
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalForget, setIsModalForget] = useState(false)
+  const [isModalLate, setIsModalLate] = useState(false)
+  const [isModalLeave, setIsModalLeave] = useState(false)
+  const [isModalOT, setIsModalOT] = useState(false)
   const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
   const [params, setParams] = useState({ page: 1, pageSize: 10 })
   const [valueSearch, setValueSearch] = useState(null)
@@ -56,24 +54,24 @@ const TimesheetPage = () => {
   const dataSource = convertData(dataRedux, dataComp)
 
   const handleOk = () => {
-    setIsModalVisible({ ...isModalVisible, modalTable: false })
+    setIsModalVisible(false)
   }
 
   const handleCancel = () => {
-    setIsModalVisible({ ...isModalVisible, modalTable: false })
+    setIsModalVisible(false)
   }
 
   const onChangeElement = (e) => {
     setParams({
       ...params,
-      pageSize: e,
+      pageSize: e
     })
   }
 
   const handleChange = (e) => {
     setParams({
       ...params,
-      page: e,
+      page: e
     })
     dispatch(loadingTableTrue())
   }
@@ -88,60 +86,67 @@ const TimesheetPage = () => {
     }
   }
 
-  const onAction = (e, name) => {
+  const onActionForget = (e) => {
     e.stopPropagation()
-    if (name === 'Forget') {
-      setIsModalVisible({ ...isModalVisible, modalForget: true })
-    } else if (name === 'LateEarly') {
-      setIsModalVisible({ ...isModalVisible, modalLate: true })
-    } else if (name === 'Leave') {
-      setIsModalVisible({ ...isModalVisible, modalLeave: true })
-    } else if (name === 'Ot') {
-      setIsModalVisible({ ...isModalVisible, modalOt: true })
-    }
+    setIsModalForget(true)
+  }
+
+  const onActionLate = (e) => {
+    e.stopPropagation()
+    setIsModalLate(true)
+  }
+
+  const onActionLeave = (e) => {
+    e.stopPropagation()
+    setIsModalLeave(true)
+  }
+
+  const onActionOT = (e) => {
+    e.stopPropagation()
+    setIsModalOT(true)
   }
 
   const cancelModalForget = () => {
-    setIsModalVisible({ ...isModalVisible, modalForget: false })
+    setIsModalForget(false)
   }
 
   const cancelMadalLate = () => {
-    setIsModalVisible({ ...isModalVisible, modalLate: false })
+    setIsModalLate(false)
   }
 
   const cancelModalLeave = () => {
-    setIsModalVisible({ ...isModalVisible, modalLeave: false })
+    setIsModalLeave(false)
   }
 
   const cancelModalOT = () => {
-    setIsModalVisible({ ...isModalVisible, modalOt: false })
+    setIsModalOT(false)
   }
 
   const onClickRow = (record) => {
     setValueModal([record])
-    setIsModalVisible({ ...isModalVisible, modalTable: true })
+    setIsModalVisible(true)
   }
 
   const columns = [
     {
       title: 'No',
       dataIndex: 'id',
-      width: '4%',
+      width: '4%'
     },
     {
       title: 'Date',
       dataIndex: 'date',
-      width: '8%',
+      width: '8%'
     },
     {
       title: 'Check In',
       dataIndex: 'checkin',
-      width: '5%',
+      width: '5%'
     },
     {
       title: 'Check Out',
       dataIndex: 'checkout',
-      width: '5%',
+      width: '5%'
     },
     {
       title: 'Late',
@@ -155,7 +160,7 @@ const TimesheetPage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Early',
@@ -169,13 +174,13 @@ const TimesheetPage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'In Officle',
       dataIndex: 'inOfficle',
       width: '5%',
-      responsive: ['xxl', 'xl', 'lg', 'md'],
+      responsive: ['xxl', 'xl', 'lg', 'md']
     },
     {
       title: 'OT',
@@ -188,7 +193,7 @@ const TimesheetPage = () => {
             <Text type={record.Ot === null || record.Note.includes('Approved', 'OT') ? '' : 'danger'}>{Ot}</Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Work Time',
@@ -203,17 +208,17 @@ const TimesheetPage = () => {
                   ? ''
                   : moment(record.Worktime, 'hh:mm').isBefore(moment('08:00', 'hh:mm')) ||
                     record.colorWorkTime === 'default'
-                  ? record.Note.includes('Approved', 'Late/Early') === true
-                    ? 'warning'
-                    : 'danger'
-                  : ''
+                    ? record.Note.includes('Approved', 'Late/Early') === true
+                      ? 'warning'
+                      : 'danger'
+                    : ''
               }
             >
               {Worktime}
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Lack',
@@ -237,25 +242,25 @@ const TimesheetPage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Comp',
       dataIndex: 'comp',
       width: '4%',
-      responsive: ['xxl', 'xl', 'lg'],
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Pleave',
       dataIndex: 'pleave',
       width: '4%',
-      responsive: ['xxl', 'xl', 'lg'],
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Uleave',
       dataIndex: 'uleave',
       width: '4%',
-      responsive: ['xxl', 'xl', 'lg'],
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Note',
@@ -268,7 +273,7 @@ const TimesheetPage = () => {
             <Text>{Note}</Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Action',
@@ -278,22 +283,22 @@ const TimesheetPage = () => {
       render: () => {
         return (
           <Space>
-            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'Forget')}>
+            <Text className={styles.buttonTable} underline onClick={onActionForget}>
               Forget
             </Text>
-            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'LateEarly')}>
+            <Text className={styles.buttonTable} underline onClick={onActionLate}>
               Late/Early
             </Text>
-            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'Leave')}>
+            <Text className={styles.buttonTable} underline onClick={onActionLeave}>
               Leave
             </Text>
-            <Text className={styles.buttonTable} underline onClick={(e) => onAction(e, 'Ot')}>
+            <Text className={styles.buttonTable} underline onClick={onActionOT}>
               OT
             </Text>
           </Space>
         )
-      },
-    },
+      }
+    }
   ]
 
   return (
@@ -307,11 +312,11 @@ const TimesheetPage = () => {
           </Text>
         </Col>
         <Col span={12} className={styles.toTheRight}>
-          <Select defaultValue="10" onChange={onChangeElement}>
-            <Select.Option value="10">10 / page</Select.Option>
-            <Select.Option value="20">20 / page</Select.Option>
-            <Select.Option value="50">50 / page</Select.Option>
-            <Select.Option value="100">100 / page</Select.Option>
+          <Select defaultValue='10' onChange={onChangeElement}>
+            <Select.Option value='10'>10 / page</Select.Option>
+            <Select.Option value='20'>20 / page</Select.Option>
+            <Select.Option value='50'>50 / page</Select.Option>
+            <Select.Option value='100'>100 / page</Select.Option>
           </Select>
           <Text>Item per page &ensp;</Text>
         </Col>
@@ -325,11 +330,11 @@ const TimesheetPage = () => {
           total: length,
           current: params.page,
           onChange: handleChange,
-          showSizeChanger: false,
+          showSizeChanger: false
         }}
         onRow={(record, rowIndex) => {
           return {
-            onClick: () => onClickRow(record),
+            onClick: () => onClickRow(record)
           }
         }}
         rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : '')}
@@ -337,24 +342,12 @@ const TimesheetPage = () => {
         bordered={true}
         loading={loading}
       />
-      <ModalForget
-        isModalVisible={isModalVisible.modalForget}
-        handleOk={cancelModalForget}
-        handleCancel={cancelModalForget}
-      />
-      <ModalLateEarly
-        isModalVisible={isModalVisible.modalLate}
-        handleOk={cancelMadalLate}
-        handleCancel={cancelMadalLate}
-      />
-      <ModalLeave
-        isModalVisible={isModalVisible.modalLeave}
-        handleOk={cancelModalLeave}
-        handleCancel={cancelModalLeave}
-      />
-      <ModalOT isModalVisible={isModalVisible.modalOt} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
+      <ModalForget isModalVisible={isModalForget} handleOk={cancelModalForget} handleCancel={cancelModalForget} />
+      <ModalLateEarly isModalVisible={isModalLate} handleOk={cancelMadalLate} handleCancel={cancelMadalLate} />
+      <ModalLeave isModalVisible={isModalLeave} handleOk={cancelModalLeave} handleCancel={cancelModalLeave} />
+      <ModalOT isModalVisible={isModalOT} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
       <DialogTimeSheetRedux
-        isModalVisible={isModalVisible.modalTable}
+        isModalVisible={isModalVisible}
         handleOk={handleOk}
         handleCancel={handleCancel}
         valueModal={valueModal}
