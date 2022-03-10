@@ -14,13 +14,21 @@ import {
   loadingTableTrue
 } from '../../redux/timesheet'
 import { convertData } from './convertData'
-import DialogTimeSheetReduxModal from './modal/modalForget'
+import ModalForget from './modal/modalForget'
+import ModalLateEarly from './modal/modalLateEarly'
+import ModalLeave from './modal/modalLeave'
+import ModalOT from './modal/modalOT'
 
 const TimesheetPage = () => {
   const { Text } = Typography
 
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isModalForget, setisModalForget] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState({
+    modalTable: false,
+    modalForget: false,
+    modalLate: false,
+    modalLeave: false,
+    modalOt: false
+  })
   const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
   const [params, setParams] = useState({ page: 1, pageSize: 10 })
   const [valueSearch, setValueSearch] = useState(null)
@@ -47,11 +55,11 @@ const TimesheetPage = () => {
   const dataSource = convertData(dataRedux, dataComp)
 
   const handleOk = () => {
-    setIsModalVisible(false)
+    setIsModalVisible({ ...isModalVisible, modalTable: false })
   }
 
   const handleCancel = () => {
-    setIsModalVisible(false)
+    setIsModalVisible({ ...isModalVisible, modalTable: false })
   }
 
   const onChangeElement = (e) => {
@@ -82,17 +90,35 @@ const TimesheetPage = () => {
   const onAction = (e, name) => {
     e.stopPropagation()
     if (name === 'Forget') {
-      setisModalForget(true)
+      setIsModalVisible({ ...isModalVisible, modalForget: true })
+    } else if (name === 'LateEarly') {
+      setIsModalVisible({ ...isModalVisible, modalLate: true })
+    } else if (name === 'Leave') {
+      setIsModalVisible({ ...isModalVisible, modalLeave: true })
+    } else if (name === 'Ot') {
+      setIsModalVisible({ ...isModalVisible, modalOt: true })
     }
   }
 
-  const cancelModal = () => {
-    setisModalForget(false)
+  const cancelModalForget = () => {
+    setIsModalVisible({ ...isModalVisible, modalForget: false })
+  }
+
+  const cancelMadalLate = () => {
+    setIsModalVisible({ ...isModalVisible, modalLate: false })
+  }
+
+  const cancelModalLeave = () => {
+    setIsModalVisible({ ...isModalVisible, modalLeave: false })
+  }
+
+  const cancelModalOT = () => {
+    setIsModalVisible({ ...isModalVisible, modalOt: false })
   }
 
   const onClickRow = (record) => {
     setValueModal([record])
-    setIsModalVisible(true)
+    setIsModalVisible({ ...isModalVisible, modalTable: true })
   }
 
   const columns = [
@@ -304,9 +330,24 @@ const TimesheetPage = () => {
           bordered={true}
           loading={loading}
         />
-        <DialogTimeSheetReduxModal isModalVisible={isModalForget} handleOk={cancelModal} handleCancel={cancelModal} />
+        <ModalForget
+          isModalVisible={isModalVisible.modalForget}
+          handleOk={cancelModalForget}
+          handleCancel={cancelModalForget}
+        />
+        <ModalLateEarly
+          isModalVisible={isModalVisible.modalLate}
+          handleOk={cancelMadalLate}
+          handleCancel={cancelMadalLate}
+        />
+        <ModalLeave
+          isModalVisible={isModalVisible.modalLeave}
+          handleOk={cancelModalLeave}
+          handleCancel={cancelModalLeave}
+        />
+        <ModalOT isModalVisible={isModalVisible.modalOt} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
         <DialogTimeSheetRedux
-          isModalVisible={isModalVisible}
+          isModalVisible={isModalVisible.modalTable}
           handleOk={handleOk}
           handleCancel={handleCancel}
           valueModal={valueModal}
