@@ -15,25 +15,24 @@ import Home from './pages/home'
 // const browserHistory = createBrowserHistory()
 
 const PrivateRoute = (props) => {
-  // const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
+  const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
   const Component = props.component
   return (
     <Route
       {...props.rest}
       exact
-      render={(prop) => (
-        // cookies[STORAGEKEY.ACCESS_TOKEN] ? (
-        <Component {...prop} />
-        // )
-        //   : (
-        //     <Redirect
-        //       to={{
-        //         pathname: '/login',
-        //         state: { redirect_url: prop.location }
-        //       }}
-        //     />
-        //   )
-      )}
+      render={(prop) =>
+        cookies[STORAGEKEY.ACCESS_TOKEN] ? (
+          <Component {...prop} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { redirect_url: prop.location }
+            }}
+          />
+        )
+      }
     />
   )
 }
@@ -67,6 +66,17 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Login',
+    path: '/login',
+    component: LoginPage,
+    meta: {
+      role: '*',
+      isPrivate: false,
+      hidden: true,
       child: false
     }
   },
@@ -111,17 +121,6 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: false,
-      child: false
-    }
-  },
-  {
-    name: 'Login',
-    path: '/login',
-    component: LoginPage,
-    meta: {
-      role: '*',
-      isPrivate: false,
-      hidden: true,
       child: false
     }
   }

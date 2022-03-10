@@ -1,5 +1,6 @@
 import { getAllApiTable, getApiTable, getSortTable } from '../api/apiTimesheet'
-//InitSate
+
+// InitSate
 const initState = {
   data: [],
   length: 0,
@@ -8,7 +9,7 @@ const initState = {
   optionSearch: 0,
   listMemberComp: []
 }
-//Reducer
+// Reducer
 export const timeSheetReducer = (state = initState, action) => {
   switch (action.type) {
     case 'timeSheet/search': {
