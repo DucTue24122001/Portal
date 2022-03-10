@@ -59,17 +59,6 @@ a {
     width: 160px;
 }
 
-.boderTable {
-    border: 1px solid rgb(182, 182, 182);
-    width: 100vw;
-}
-
 .tableRowLight {
     background-color: #e2e1b7;
-}
-
-@media only screen and (min-width: 900px) {
-    .body {
-        padding: 0 50px 0 50px;
-    }
 }

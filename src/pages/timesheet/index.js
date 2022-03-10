@@ -173,12 +173,14 @@ const TimesheetPage = () => {
     {
       title: 'In Officle',
       dataIndex: 'inOfficle',
-      width: '5%'
+      width: '5%',
+      responsive: ['xxl', 'xl', 'lg', 'md']
     },
     {
       title: 'OT',
       dataIndex: 'Ot',
       width: '4%',
+      responsive: ['xxl', 'xl', 'lg', 'md'],
       render: (Ot, record) => {
         return (
           <>
@@ -216,6 +218,7 @@ const TimesheetPage = () => {
       title: 'Lack',
       dataIndex: 'lack',
       width: '4%',
+      responsive: ['xxl', 'xl', 'lg', 'md'],
       render: (lack, record) => {
         return (
           <>
@@ -238,22 +241,26 @@ const TimesheetPage = () => {
     {
       title: 'Comp',
       dataIndex: 'comp',
-      width: '4%'
+      width: '4%',
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Pleave',
       dataIndex: 'pleave',
-      width: '4%'
+      width: '4%',
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Uleave',
       dataIndex: 'uleave',
-      width: '4%'
+      width: '4%',
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Note',
       dataIndex: 'Note',
       width: '8%',
+      responsive: ['xxl', 'xl', 'lg'],
       render: (Note) => {
         return (
           <>
@@ -290,69 +297,67 @@ const TimesheetPage = () => {
 
   return (
     <>
-      <div className={styles.body}>
-        <SearchTimeSheetRedux onSearch={onSearch} />
+      <SearchTimeSheetRedux onSearch={onSearch} />
 
-        <Row className={styles.marginBottom}>
-          <Col span={12}>
-            <Text>
-              Total number of records : <Text strong> {length}</Text>
-            </Text>
-          </Col>
-          <Col span={12} className={styles.toTheRight}>
-            <Select defaultValue='10' onChange={onChangeElement}>
-              <Select.Option value='10'>10 / page</Select.Option>
-              <Select.Option value='20'>20 / page</Select.Option>
-              <Select.Option value='50'>50 / page</Select.Option>
-              <Select.Option value='100'>100 / page</Select.Option>
-            </Select>
-            <Text>Item per page &ensp;</Text>
-          </Col>
-        </Row>
-        <Table
-          columns={columns}
-          dataSource={dataSource || []}
-          pagination={{
-            position: ['bottomCenter'],
-            pageSize: params.pageSize,
-            total: length,
-            current: params.page,
-            onChange: handleChange,
-            showSizeChanger: false
-          }}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: () => onClickRow(record)
-            }
-          }}
-          rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : 'name')}
-          className='boder-table'
-          bordered={true}
-          loading={loading}
-        />
-        <ModalForget
-          isModalVisible={isModalVisible.modalForget}
-          handleOk={cancelModalForget}
-          handleCancel={cancelModalForget}
-        />
-        <ModalLateEarly
-          isModalVisible={isModalVisible.modalLate}
-          handleOk={cancelMadalLate}
-          handleCancel={cancelMadalLate}
-        />
-        <ModalLeave
-          isModalVisible={isModalVisible.modalLeave}
-          handleOk={cancelModalLeave}
-          handleCancel={cancelModalLeave}
-        />
-        <ModalOT isModalVisible={isModalVisible.modalOt} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
-        <DialogTimeSheetRedux
-          isModalVisible={isModalVisible.modalTable}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
-          valueModal={valueModal}
-        />
-      </div>
+      <Row className={styles.marginBottom}>
+        <Col span={12}>
+          <Text>
+            Total number of records : <Text strong> {length}</Text>
+          </Text>
+        </Col>
+        <Col span={12} className={styles.toTheRight}>
+          <Select defaultValue='10' onChange={onChangeElement}>
+            <Select.Option value='10'>10 / page</Select.Option>
+            <Select.Option value='20'>20 / page</Select.Option>
+            <Select.Option value='50'>50 / page</Select.Option>
+            <Select.Option value='100'>100 / page</Select.Option>
+          </Select>
+          <Text>Item per page &ensp;</Text>
+        </Col>
+      </Row>
+      <Table
+        columns={columns}
+        dataSource={dataSource || []}
+        pagination={{
+          position: ['bottomCenter'],
+          pageSize: params.pageSize,
+          total: length,
+          current: params.page,
+          onChange: handleChange,
+          showSizeChanger: false
+        }}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: () => onClickRow(record)
+          }
+        }}
+        rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : '')}
+        className={styles.boderTable}
+        bordered={true}
+        loading={loading}
+      />
+      <ModalForget
+        isModalVisible={isModalVisible.modalForget}
+        handleOk={cancelModalForget}
+        handleCancel={cancelModalForget}
+      />
+      <ModalLateEarly
+        isModalVisible={isModalVisible.modalLate}
+        handleOk={cancelMadalLate}
+        handleCancel={cancelMadalLate}
+      />
+      <ModalLeave
+        isModalVisible={isModalVisible.modalLeave}
+        handleOk={cancelModalLeave}
+        handleCancel={cancelModalLeave}
+      />
+      <ModalOT isModalVisible={isModalVisible.modalOt} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
+      <DialogTimeSheetRedux
+        isModalVisible={isModalVisible.modalTable}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        valueModal={valueModal}
+      />
     </>
   )
 }
