@@ -9,11 +9,8 @@ import AppLayout from './layouts/App'
 import 'antd/dist/antd.css'
 import { createBrowserHistory } from 'history'
 import { BrowserRouter as Router } from 'react-router-dom'
-<<<<<<< HEAD
-=======
 import { Provider } from 'react-redux'
 import store from './redux/store/store'
->>>>>>> c52cbd4a4fa959b11ae5961e1322e2ed57576a78
 
 const browserHistory = createBrowserHistory()
 const App = () => {
