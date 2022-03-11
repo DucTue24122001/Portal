@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import style from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../redux/login'
+import { authActions } from '../../redux/auth'
 import { useHistory } from 'react-router'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,23 +10,23 @@ import 'react-toastify/dist/ReactToastify.css'
 const { Title } = Typography
 const LoginPage = () => {
   const history = useHistory()
-  const { success, loading, error } = useSelector((state) => state.login)
+  const { successLogin, loadingLogin, errorLogin } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (success === true) {
+    if (successLogin === true) {
       history.push('/')
     }
-  }, [success])
+  }, [successLogin])
 
   useEffect(() => {
-    if (error !== '') {
-      toast(error)
+    if (errorLogin !== '') {
+      toast(errorLogin)
     }
-  }, [error])
+  }, [errorLogin])
 
   const onFinish = (values) => {
-    dispatch(login(values))
+    dispatch(authActions.login(values))
   }
 
   const onFinishFailed = (errorInfo) => {}
@@ -80,7 +80,7 @@ const LoginPage = () => {
 
         <div className={style.form_item}>
           <Form.Item>
-            <Button className={style.item_input} loading={loading} type='primary' htmlType='submit'>
+            <Button className={style.item_input} loading={loadingLogin} type='primary' htmlType='submit'>
               Đăng nhập
             </Button>
           </Form.Item>

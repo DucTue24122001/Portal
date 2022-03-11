@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../layouts/components/header/index'
 import style from './App.module.css'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { STORAGEKEY } from '@/utils/storage'
+import { getInfoUser } from '../redux/inforUser'
 
 const App = (props) => {
+  const dispatch = useDispatch()
   const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
   const { renderRouter } = props
   const [hiddenMenu, setHiddenMenu] = useState(false)
-  const { success } = useSelector((state) => state.login)
-  const { successLogout } = useSelector((state) => state.logout)
+  const { successLogin, successLogout } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if (success === true) {
+    if (successLogin === true) {
       setHiddenMenu(true)
     }
-  }, [success])
+  }, [successLogin])
 
   useEffect(() => {
     if (successLogout === true) {
