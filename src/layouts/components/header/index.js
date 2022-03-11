@@ -10,7 +10,6 @@ import { getInfoUser } from '../../../redux/inforUser'
 const { Title } = Typography
 const Header = () => {
   const dispatch = useDispatch()
-  const [userName, setUserName] = useState('')
   const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
 
   const handleLogout = async() => {
@@ -21,12 +20,6 @@ const Header = () => {
   useEffect(() => {
     dispatch(getInfoUser())
   }, [])
-
-  useEffect(() => {
-    if (successGetInfo === true) {
-      setUserName(infoUser.name)
-    }
-  }, [successGetInfo])
 
   return (
     <>
@@ -40,7 +33,7 @@ const Header = () => {
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
-                Welcome <b>{userName}</b>
+                Welcome <b>{successGetInfo ? infoUser.name : ''}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>
