@@ -13,6 +13,7 @@ import Home from './pages/home'
 import RegisterLateEarly from './layouts/components/registerLateEarly'
 import EditLateEarly from './layouts/components/updateLateEarly'
 import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
+import RegisterOT from './layouts/components/registerOT'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
@@ -164,6 +165,17 @@ export const appRouter = [
     name: 'confirmLateEarly',
     path: '/confirmLateEarly',
     component: ConfirmRegisterLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'registerOT',
+    path: '/registerOT',
+    component: RegisterOT,
     meta: {
       role: '*',
       isPrivate: true,
