@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { registerOT } from '../../../redux/registerOT'
+import { useDispatch, useSelector } from 'react-redux'
+// import { registerOT } from '../../../redux/registerOT'
+import { OtAction } from '../../../redux/registerOT'
 import { Row, Col, TimePicker, Button, Modal, Form, Input } from 'antd'
 import 'antd/dist/antd.css'
 import style from './registerOT.module.css'
@@ -11,6 +12,7 @@ const format = 'HH:mm'
 const RegisterOT = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
+  const registerOtLoading = useSelector((state) => state.registerOT.loading)
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [reason, setReason] = useState('')
@@ -19,6 +21,7 @@ const RegisterOT = () => {
 
   const showModal = () => {
     setIsModalVisible(true)
+    form.resetFields()
   }
 
   const handleRegisterOT = () => {
@@ -31,8 +34,12 @@ const RegisterOT = () => {
       actual_overtime: actualOvertime,
       reason: reason
     }
-    dispatch(registerOT(value))
-    setIsModalVisible(false)
+    if (reason !== '' && requestOT !== 0) {
+      setTimeout(dispatch(OtAction.registerOt(value)), 6000)
+      setIsModalVisible(false)
+      setReason('')
+      setRequestOT(0)
+    }
   }
 
   const handleCancel = () => {
@@ -141,17 +148,14 @@ const RegisterOT = () => {
                   }
                 ]}
               >
-                <Input.TextArea
-                  style={{ height: '120px' }}
-                  onChange={(e) => setReason(e.target.value)}
-                />
+                <Input.TextArea style={{ height: '120px' }} onChange={(e) => setReason(e.target.value)} />
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={30} justify='center'>
             <Col>
-              <Button type='primary' htmlType='submit' onClick={handleRegisterOT}>
+              <Button type='primary' htmlType='submit' loading={registerOtLoading} onClick={handleRegisterOT}>
                 Register
               </Button>
             </Col>

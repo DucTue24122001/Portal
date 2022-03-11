@@ -12,14 +12,13 @@ const initState = {
 }
 
 // Reducer
-const registerOTReducer = (state = initState, action) => {
-  console.log('action', action)
+export const registerOTReducer = (state = initState, action) => {
   switch (action.type) {
     case REGISTER_OT_REQUEST:
       return {
         loading: true
       }
-    case REGISTER_OT_REQUEST:
+    case REGISTER_OT_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -31,22 +30,22 @@ const registerOTReducer = (state = initState, action) => {
   }
 }
 
-export default registerOTReducer
-
 // Actions
-export const registerOT = (dataRegisterOT) => async(dispatch) => {
-  try {
-    dispatch({ type: REGISTER_OT_REQUEST })
+export const OtAction = {
+  registerOt: (dataRegisterOT) => async(dispatch) => {
+    try {
+      dispatch({ type: REGISTER_OT_REQUEST })
 
-    const response = await post('registerOT', dataRegisterOT)
-    dispatch({
-      type: REGISTER_OT_SUCCESS,
-      payload: response
-    })
-  } catch (error) {
-    dispatch({
-      type: REGISTER_OT_FAIL,
-      payload: 'Register OT failed!'
-    })
+      const response = await post('registerOT', dataRegisterOT)
+      dispatch({
+        type: REGISTER_OT_SUCCESS,
+        payload: response
+      })
+    } catch (error) {
+      dispatch({
+        type: REGISTER_OT_FAIL,
+        payload: 'Register OT failed!'
+      })
+    }
   }
 }
