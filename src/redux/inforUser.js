@@ -43,6 +43,7 @@ export const infoUserReducer = (state = initialState, action) => {
 }
 
 // Actions
+
 export const getInfoUser = () => async(dispatch) => {
   try {
     dispatch({ type: GET_INFO_USER_REQUEST })

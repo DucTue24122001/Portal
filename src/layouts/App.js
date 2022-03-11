@@ -16,7 +16,6 @@ const App = (props) => {
 
   useEffect(() => {
     if (success === true) {
-      dispatch(getInfoUser())
       setHiddenMenu(true)
     }
   }, [success])
@@ -35,7 +34,7 @@ const App = (props) => {
 
   return (
     <div className={style.wrapper}>
-      {hiddenMenu && <Header />}
+      {hiddenMenu && <Header/>}
       <div className={style.main}>{renderRouter()}</div>
     </div>
   )
