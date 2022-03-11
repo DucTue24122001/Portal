@@ -1,20 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
 import style from './header.module.css'
 import { logout } from '../../../redux/logout'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getInfoUser } from '../../../redux/inforUser'
 
 const { Title } = Typography
 const Header = () => {
   const dispatch = useDispatch()
-  const [user] = useState('Vu Van Vinh')
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
 
   const handleLogout = async() => {
     await dispatch(logout())
     window.location.reload()
   }
+
+  useEffect(() => {
+    dispatch(getInfoUser())
+  }, [])
 
   return (
     <>
@@ -28,7 +33,7 @@ const Header = () => {
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
-                Welcome <b>{user}</b>
+                Welcome <b>{successGetInfo ? infoUser.name : ''}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>
