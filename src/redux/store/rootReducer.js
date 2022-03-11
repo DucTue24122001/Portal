@@ -8,7 +8,6 @@ import { infoUserReducer } from '../inforUser'
 export default combineReducers({
   auth: authReducer,
   timesheet: timeSheetReducer,
-  logout: logoutReducer,
   lateEarly: lateEarlyReducer,
   registerOT: registerOTReducer,
   infoUser: infoUserReducer
