@@ -1,0 +1,101 @@
+.timesheet {
+  border: 2px solid rgb(207, 199, 199);
+  width: 100%;
+  position: relative;
+  margin-top: 20px;
+  padding: 3rem 1rem 3rem 5rem;
+}
+.timesheet_title {
+  position: absolute;
+  left: 10px;
+  top: -15px;
+  background-color: #fff;
+}
+.f_font{
+  font-family: cursive;
+}
+.Container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.d_flex {
+  display: flex;
+  justify-content: space-between;
+}
+.avatar {
+  display: flex;
+  align-items: flex-end;
+  margin-right: 20px;
+}
+.userInfo {
+  margin-left: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-weight: bold;
+}
+.e_button{
+  box-shadow: 2px 2px 0 rgb(0, 0, 0, 10%);
+}
+.divider {
+  border: 1px solid rgb(209, 205, 205);
+  min-width: 0;
+  margin: 28px 12.5%;
+  width: 70%;
+}
+.c_flex{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 400px;
+  font-weight: bold;
+}
+.flex_mr{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-right: 6rem;
+  height: 350px;
+  font-weight: bold;
+}
+.f_overrall{
+  height: 150px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.f_overrall_mr{
+  height: 150px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 8rem;
+}
+.col_flex {
+  display: flex;
+  flex-direction: column;
+}
+.m_right {
+  margin-right: 1rem;
+}
+.l_width {
+  width: 50%;
+}
+.r_width {
+  width: 30rem;
+}
+.mr_right {
+  margin-right: 18rem;
+}
+.rr_width {
+  width: 13rem;
+}
+.w_width {
+  width: 115%;
+}
+.mrr_right{
+    margin-right: 1.5rem;
+}

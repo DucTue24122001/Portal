@@ -9,6 +9,8 @@ import MyLeavePage from './pages/myleave'
 import NoicePage from './pages/notice'
 import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
+import profileContentPage from './pages/profiles/profileContent'
+import profileContentUpdate from './pages/profiles/profileContentUpdate'
 import Home from './pages/home'
 // import { createBrowserHistory } from 'history'
 
@@ -63,6 +65,28 @@ export const appRouter = [
     name: 'Home',
     path: '/',
     component: Home,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Profile',
+    path: '/profile',
+    component: profileContentPage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'ProfileUpdate',
+    path: '/profileUpdate',
+    component: profileContentUpdate,
     meta: {
       role: '*',
       isPrivate: true,

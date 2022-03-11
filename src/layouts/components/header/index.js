@@ -46,6 +46,9 @@ const Header = () => {
                   <Menu.Item key='home'>
                     <Link to='/'>Home</Link>
                   </Menu.Item>
+                  <Menu.Item key='profile'>
+                    <Link to='/profile'>Profile</Link>
+                  </Menu.Item>
                   <Menu.Item key='timesheet'>
                     <Link to='/timesheet'>Timesheet</Link>
                   </Menu.Item>
