@@ -10,6 +10,11 @@
   margin-bottom: 0;
 }
 
+.row {
+  margin-bottom: 10px;
+  align-items: center;
+}
+
 .w_40p {
   width: 40%;
 }
