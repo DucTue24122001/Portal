@@ -21,14 +21,21 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
       setIsStatus(true)
     }, 2000)
   }
+
   const onFinishFailed = () => {}
+
   const onCheckin = (time) => {
     const disabledTimeCheckOut = []
-    for (let i = moment(time).hour(); i > 0; i--) {
-      disabledTimeCheckOut.push(i)
+    if (time) {
+      disabledTimeCheckOut.pop()
+    } else {
+      for (let i = moment(time).hour(); i > 0; i--) {
+        disabledTimeCheckOut.push(i)
+      }
+      setDisableTimeCheckIn([...disabledTimeCheckIn, ...disabledTimeCheckOut])
     }
-    setDisableTimeCheckIn([...disabledTimeCheckIn, ...disabledTimeCheckOut])
   }
+
   const onCheckout = (time) => {
     setCheckOut(time.format('HH:mm'))
   }
