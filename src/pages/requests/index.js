@@ -30,6 +30,33 @@ const RequestsPage = () => {
       comp_time: '3:30',
       compensation_date: '2034-12-27T16:15:12.878Z',
       id: '2'
+    },
+    {
+      name: 'Mercedes Robel',
+      requests_type: 1,
+      requests_date: '2029-02-11T16:55:19.499Z',
+      status: 0,
+      comp_time: '1:30',
+      compensation_date: '2074-02-12T14:59:55.743Z',
+      id: '3'
+    },
+    {
+      name: 'Natalie Crooks',
+      requests_type: 2,
+      requests_date: '2049-07-02T03:46:57.877Z',
+      status: 0,
+      comp_time: '1:00',
+      compensation_date: '2081-08-30T03:34:10.578Z',
+      id: '4'
+    },
+    {
+      name: 'Lillian Quitzon Sr.',
+      requests_type: 3,
+      requests_date: '2069-03-13T06:09:45.904Z',
+      status: 2,
+      comp_time: '4:00',
+      compensation_date: '2070-03-18T17:12:03.345Z',
+      id: '5'
     }
   ]
   const onCheckboxChange = (e) => {
@@ -66,6 +93,10 @@ const RequestsPage = () => {
     })
   }
 
+  const onActionClick = () => {}
+
+  const onActionView = () => {}
+
   const columns = [
     {
       title: 'No',
@@ -78,7 +109,7 @@ const RequestsPage = () => {
       dataIndex: 'name',
       key: 'name',
       align: 'left',
-      width: '12%'
+      width: '10%'
     },
     {
       title: 'Date',
@@ -98,10 +129,10 @@ const RequestsPage = () => {
       align: 'center',
       render: (record) => {
         let requests = ''
-        if (record === 1) requests = 'forget check-in/out'
-        if (record === 2) requests = 'paid leave'
-        if (record === 3) requests = 'unpaid leave'
-        if (record === 4) requests = 'late/early'
+        if (record === 1) requests = 'Forget check-in/out'
+        if (record === 2) requests = 'Paid leave'
+        if (record === 3) requests = 'Unpaid leave'
+        if (record === 4) requests = 'Late/early'
         if (record === 5) requests = 'OT'
         return <Space>{requests}</Space>
       }
@@ -131,7 +162,7 @@ const RequestsPage = () => {
       title: 'Pleave',
       key: 'comp_time, requests_type',
       align: 'center',
-      width: '8%',
+      width: '7%',
       render: (record) => {
         return <Space>{record.requests_type === 2 ? `${record.comp_time}` : ''}</Space>
       }
@@ -140,7 +171,7 @@ const RequestsPage = () => {
       title: 'Uleave',
       key: 'comp_time ,requests_type',
       align: 'center',
-      width: '8%',
+      width: '7%',
       render: (record) => {
         return <Space>{record.requests_type === 3 ? `${record.comp_time}` : ''}</Space>
       }
@@ -153,10 +184,10 @@ const RequestsPage = () => {
       width: '8%',
       render: (record) => {
         let status = ''
-        if (record === -1) status = 'reject'
-        if (record === 0) status = 'sent'
-        if (record === 1) status = 'comfirmed'
-        if (record === 2) status = 'approved'
+        if (record === -1) status = 'Reject'
+        if (record === 0) status = 'Sent'
+        if (record === 1) status = 'Comfirmed'
+        if (record === 2) status = 'Approved'
         return <Space>{status}</Space>
       }
     },
@@ -173,9 +204,26 @@ const RequestsPage = () => {
     {
       title: 'Action',
       align: 'center',
-      key: 'status',
+      key: 'status, requests_type',
       render: (record) => {
-        return <Space>1</Space>
+        let status = ''
+        if (record.status === 0) status = 'Comfirmed'
+        else if (record.status === 1) status = 'Approved'
+        else status = ''
+        return (
+          <>
+            {status === '' ? (
+              ' '
+            ) : (
+              <Space>
+                <Button type='primary' onClick={onActionClick}>
+                  {status}
+                </Button>
+                <Button onClick={onActionView}>View</Button>
+              </Space>
+            )}
+          </>
+        )
       }
     }
   ]
