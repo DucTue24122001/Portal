@@ -11,21 +11,22 @@ export const login = (dataForm) => async(dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST })
 
-    const { data } = await axios.post(`api`, dataForm)
-
+    const { data } = await axios.post(`http://14.232.214.101:8111/api/v1/user/login`, dataForm)
     if (data) {
-      setCookie(STORAGEKEY.ACCESS_TOKEN, data.access_token)
+      setCookie(STORAGEKEY.ACCESS_TOKEN, data.token)
     }
-
-    dispatch({ type: LOGIN_SUCCESS, payload: data.user })
+    dispatch({ type: LOGIN_SUCCESS, payload: data.message })
   } catch (error) {
-    dispatch({ type: LOGIN_FAIL, payload: 'Dang nhap that bai' })
+    dispatch({ type: LOGIN_FAIL, payload: 'Login fail' })
   }
 }
 
 // Reducer
 const initialState = {
-  user: {}
+  message: '',
+  error: '',
+  loading: false,
+  success: false
 }
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -37,14 +38,15 @@ export const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        user: action.payload
+        success: true,
+        message: action.payload
       }
 
     case LOGIN_FAIL:
       return {
         ...state,
+        success: false,
         loading: false,
-        user: null,
         error: action.payload
       }
 

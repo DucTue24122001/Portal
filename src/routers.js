@@ -12,30 +12,32 @@ import TimesheetPage from './pages/timesheet'
 import profileContentPage from './pages/profiles/profileContent'
 import profileContentUpdate from './pages/profiles/profileContentUpdate'
 import Home from './pages/home'
+import RegisterLateEarly from './layouts/components/registerLateEarly'
+import EditLateEarly from './layouts/components/updateLateEarly'
+import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
 
 const PrivateRoute = (props) => {
-  // const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
+  const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
   const Component = props.component
   return (
     <Route
       {...props.rest}
       exact
-      render={(prop) => (
-        // cookies[STORAGEKEY.ACCESS_TOKEN] ? (
-        <Component {...prop} />
-        // )
-        //   : (
-        //     <Redirect
-        //       to={{
-        //         pathname: '/login',
-        //         state: { redirect_url: prop.location }
-        //       }}
-        //     />
-        //   )
-      )}
+      render={(prop) =>
+        cookies[STORAGEKEY.ACCESS_TOKEN] ? (
+          <Component {...prop} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { redirect_url: prop.location }
+            }}
+          />
+        )
+      }
     />
   )
 }
@@ -145,6 +147,39 @@ export const appRouter = [
     meta: {
       role: '*',
       isPrivate: false,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'registerLateEarly',
+    path: '/registerLateEarly',
+    component: RegisterLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'updateLateEarly',
+    path: '/updateLateEarly',
+    component: EditLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'confirmLateEarly',
+    path: '/confirmLateEarly',
+    component: ConfirmRegisterLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
       hidden: true,
       child: false
     }
