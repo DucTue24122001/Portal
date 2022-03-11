@@ -1,0 +1,26 @@
+.confirmLateEarly {
+    width: 1000px;
+    margin: auto;
+  }
+  .date_corer_up {
+    line-height: 30px;
+    margin-top: 10px;
+  }
+  .reason {
+    line-height: 30px;
+    margin-bottom: 30px;
+  }
+  .status {
+    line-height: 10px;
+    margin-bottom: 40px;
+  }
+  .comment {
+    line-height: 30px;
+    margin-bottom: 40px;
+  }
+  .row_lineHeight {
+    line-height: 30px;
+  }
+  .form_item_rule {
+    font-size: 11px;
+  }
