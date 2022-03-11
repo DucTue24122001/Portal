@@ -4,17 +4,20 @@ import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
 import style from './header.module.css'
 import { logout } from '../../../redux/logout'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const { Title } = Typography
 const Header = () => {
   const dispatch = useDispatch()
-  const [user] = useState('Vu Van Vinh')
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
+  const [userName, setUserName] = useState('')
 
   const handleLogout = async() => {
     await dispatch(logout())
     window.location.reload()
   }
+  console.log(successGetInfo)
+  console.log(infoUser)
 
   return (
     <>
@@ -28,7 +31,7 @@ const Header = () => {
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
-                Welcome <b>{user}</b>
+                Welcome <b>{userName}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>
