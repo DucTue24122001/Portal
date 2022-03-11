@@ -22,11 +22,10 @@ export const getInfoUser = () => async(dispatch) => {
 
 // Reducer
 const initialState = {
-  messageGetInfo: '',
-  errorGetInfo: '',
-  loadingGetInfo: false,
+  infoUser: {},
   successGetInfo: false,
-  infoUser: {}
+  errorGetInfo: '',
+  loadingGetInfo: false
 }
 export const infoUserReducer = (state = initialState, action) => {
   switch (action.type) {

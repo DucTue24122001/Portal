@@ -1,23 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
 import style from './header.module.css'
 import { logout } from '../../../redux/logout'
 import { useDispatch, useSelector } from 'react-redux'
+import { getInfoUser } from '../../../redux/inforUser'
 
 const { Title } = Typography
 const Header = () => {
   const dispatch = useDispatch()
-  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
   const [userName, setUserName] = useState('')
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
 
   const handleLogout = async() => {
     await dispatch(logout())
     window.location.reload()
   }
-  console.log(successGetInfo)
-  console.log(infoUser)
+
+  useEffect(() => {
+    dispatch(getInfoUser())
+  }, [])
+
+  useEffect(() => {
+    if (successGetInfo === true) {
+      setUserName(infoUser.name)
+    }
+  }, [successGetInfo])
 
   return (
     <>
