@@ -1,20 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import style from './FormLeave.module.css'
 import moment from 'moment'
-import {
-  DatePicker,
-  TimePicker,
-  Checkbox,
-  Radio,
-  Input,
-  Button,
-  Form,
-  Spin,
-  Row,
-  Col
-} from 'antd'
+import { DatePicker, TimePicker, Checkbox, Radio, Input, Button, Form, Spin, Row, Col } from 'antd'
 import { useDispatch } from 'react-redux'
-// import { createLeave } from '../../redux/actions/leaveActions'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
@@ -37,14 +25,8 @@ const FormRegisterLeave = ({ onCancel }) => {
   const [lackTime, setLackTime] = useState(0)
   const [loading, setLoading] = useState(false)
   const [loadingSubmit, setLoadingSubmit] = useState(false)
-  const [disabledTimeCheckin, setDisabledTimeCheckin] = useState([
-    ...disabledTimeAM,
-    ...disabledTimePM
-  ])
-  const [disabledStartTime, setDisabledStartTime] = useState([
-    ...disabledTimeAM,
-    ...disabledTimePM
-  ])
+  const [disabledTimeCheckin, setDisabledTimeCheckin] = useState([...disabledTimeAM, ...disabledTimePM])
+  const [disabledStartTime, setDisabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
 
   useEffect(() => {
     if (checkout >= moment.duration(`13:00:00`).asSeconds()) {
@@ -65,24 +47,14 @@ const FormRegisterLeave = ({ onCancel }) => {
       RegisterForDate: moment(RegisterForDate).format('DD-MM-YYYY'),
       checkIn: moment(checkIn).format('HH:mm'),
       checkOut: moment(checkOut).format('HH:mm'),
-      workTime: moment
-        .utc(moment.duration(workTime, 'seconds').as('milliseconds'))
-        .format('HH:mm'),
-      lackTime: moment
-        .utc(moment.duration(lackTime, 'seconds').as('milliseconds'))
-        .format('HH:mm'),
-      Range: moment
-        .utc(moment.duration(timeCount, 'seconds').as('milliseconds'))
-        .format('HH:mm'),
-      RangeStart: moment
-        .utc(moment.duration(Range[0], 'seconds').as('milliseconds'))
-        .format('HH:mm'),
-      RangeEnd: moment
-        .utc(moment.duration(Range[1], 'seconds').as('milliseconds'))
-        .format('HH:mm'),
+      workTime: moment.utc(moment.duration(workTime, 'seconds').as('milliseconds')).format('HH:mm'),
+      lackTime: moment.utc(moment.duration(lackTime, 'seconds').as('milliseconds')).format('HH:mm'),
+      Range: moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm'),
+      RangeStart: moment.utc(moment.duration(Range[0], 'seconds').as('milliseconds')).format('HH:mm'),
+      RangeEnd: moment.utc(moment.duration(Range[1], 'seconds').as('milliseconds')).format('HH:mm'),
       status: 'Sent'
     }
-    // dispatch(createLeave(dataForm))
+    dispatch()
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -90,9 +62,7 @@ const FormRegisterLeave = ({ onCancel }) => {
   }
 
   const onCheckin = (time, timeString) => {
-    const totalSecondsCheckin = moment
-      .duration(time.format('HH:mm'))
-      .asSeconds()
+    const totalSecondsCheckin = moment.duration(time.format('HH:mm')).asSeconds()
     const disabledTimeCheckout = []
     for (var i = moment(time).hour(); i > 0; i--) {
       disabledTimeCheckout.push(i)
@@ -102,19 +72,13 @@ const FormRegisterLeave = ({ onCancel }) => {
   }
 
   const onCheckout = (time, timeString) => {
-    const totalSecondsCheckout = moment
-      .duration(time.format('HH:mm'))
-      .asSeconds()
+    const totalSecondsCheckout = moment.duration(time.format('HH:mm')).asSeconds()
     setCheckout(totalSecondsCheckout)
   }
 
   const rangerTime = (time) => {
-    const totalSecondsStart = moment
-      .duration(time[0].format('HH:mm'))
-      .asSeconds()
-    const totalSecondsEnd = moment
-      .duration(time[1].format('HH:mm'))
-      .asSeconds()
+    const totalSecondsStart = moment.duration(time[0].format('HH:mm')).asSeconds()
+    const totalSecondsEnd = moment.duration(time[1].format('HH:mm')).asSeconds()
     setTimeCount(totalSecondsEnd - totalSecondsStart)
   }
 
@@ -216,15 +180,10 @@ const FormRegisterLeave = ({ onCancel }) => {
                 <span>
                   {checkout == ''
                     ? 0
-                    : moment
-                      .utc(
-                        moment
-                          .duration(workTime, 'seconds')
-                          .as('milliseconds')
-                      )
-                      .format('HH:mm')}
+                    : moment.utc(moment.duration(workTime, 'seconds').as('milliseconds')).format('HH:mm')}
                 </span>
               </Col>
+
               <Col span={4} className={style.form_item}>
                 Lack time:
               </Col>
@@ -232,13 +191,7 @@ const FormRegisterLeave = ({ onCancel }) => {
                 <span>
                   {checkout == ''
                     ? 0
-                    : moment
-                      .utc(
-                        moment
-                          .duration(lackTime, 'seconds')
-                          .as('milliseconds')
-                      )
-                      .format('HH:mm')}
+                    : moment.utc(moment.duration(lackTime, 'seconds').as('milliseconds')).format('HH:mm')}
                 </span>
               </Col>
 
@@ -255,13 +208,10 @@ const FormRegisterLeave = ({ onCancel }) => {
               </Col>
 
               <Col span={4} className={style.form_item}>
-                  Range:
+                Range:
               </Col>
               <Col span={8} className={style.form_item}>
-                <Form.Item
-                  name='Range'
-                  {...rangeConfig}
-                >
+                <Form.Item name='Range' {...rangeConfig}>
                   <RangePicker
                     className={style.timeBox}
                     disabledHours={() => disabledStartTime}
@@ -270,13 +220,9 @@ const FormRegisterLeave = ({ onCancel }) => {
                   />
                 </Form.Item>
               </Col>
+
               <Col span={4} className={style.form_item} className={style.timeBox}>
-                <Form.Item
-                  name='radio-group'
-                  rules={[
-                    { required: true, message: 'Please pick an item!' }
-                  ]}
-                >
+                <Form.Item name='radio-group' rules={[{ required: true, message: 'Please pick an item!' }]}>
                   <Radio.Group className={style.wrapper_button_radio}>
                     <Radio value={1}>Paid</Radio>
                     <Radio value={2}>Unpaid</Radio>
@@ -285,25 +231,18 @@ const FormRegisterLeave = ({ onCancel }) => {
               </Col>
 
               <Col span={8} className={style.form_item}>
-                  Time count:
+                Time count:
                 <span
                   style={{
-                    color:
-                        timeCount < moment.duration(`1:00:00`).asSeconds()
-                          ? 'red'
-                          : 'unset'
+                    color: timeCount < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset'
                   }}
                 >
-                  {moment
-                    .utc(
-                      moment.duration(timeCount, 'seconds').as('milliseconds')
-                    )
-                    .format('HH:mm')}
+                  {moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm')}
                 </span>
               </Col>
 
               <Col span={4} className={style.form_item}>
-                    Reason:
+                Reason:
               </Col>
               <Col span={18} className={style.form_item}>
                 <Form.Item

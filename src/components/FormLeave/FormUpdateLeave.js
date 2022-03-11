@@ -1,152 +1,109 @@
-import React, { memo, useEffect, useRef, useState } from "react";
-import style from "./FormLeave.module.css";
-import moment from "moment";
-import {
-  DatePicker,
-  TimePicker,
-  Checkbox,
-  Radio,
-  Input,
-  Button,
-  Form,
-  Spin,
-  Col,
-  Row,
-} from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { getLeave } from "../../redux/actions/leaveActions";
+import React, { useEffect, useRef, useState } from 'react'
+import style from './FormLeave.module.css'
+import moment from 'moment'
+import { DatePicker, TimePicker, Checkbox, Radio, Input, Button, Form, Spin, Col, Row } from 'antd'
+import { useDispatch} from 'react-redux'
 
-const { RangePicker } = TimePicker;
+const { RangePicker } = TimePicker
 const rangeConfig = {
-  rules: [{ type: "array", required: true, message: "Please select time!" }],
-};
-const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7];
-const disabledTimePM = [18, 19, 20, 21, 22, 23];
+  rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+}
+const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
+const disabledTimePM = [18, 19, 20, 21, 22, 23]
 const initialStatus = {
-  1: "Sent",
-  2: "Confirmed",
-  3: "Approved",
-};
-const initialStatusDisable = ["Confirmed", "Approved"];
-const initialTotalWorkTime = moment.duration(`08:00:00`).asSeconds();
-const initialFreeTime = moment.duration(`01:00:00`).asSeconds();
-const dateFormat = "DD-MM-YYYY";
-const timeFormat = "HH:mm";
+  1: 'Sent',
+  2: 'Confirmed',
+  3: 'Approved',
+}
+const initialStatusDisable = ['Confirmed', 'Approved']
+const initialTotalWorkTime = moment.duration(`08:00:00`).asSeconds()
+const initialFreeTime = moment.duration(`01:00:00`).asSeconds()
+const dateFormat = 'DD-MM-YYYY'
+const timeFormat = 'HH:mm'
 
 const FormUpdateLeave = ({ onCancel, idLeave }) => {
-//   const { leave, loading } = useSelector((state) => state.leave);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const [leave] = useState({})
   const [loading] = useState(false)
-  const totalWorkTime = useRef(initialTotalWorkTime);
-  const registerDate = useRef(moment().format("DD-MM-YY hh:mm"));
-  const [status, setStatus] = useState(initialStatus[1]);
-  const [disabled, setDisabled] = useState(false);
-  const [checkin, setCheckin] = useState(
-    leave ? moment.duration(leave.checkIn).asSeconds() : 0
-  );
-  const [checkout, setCheckout] = useState(
-    leave ? moment.duration(leave.checkOut).asSeconds() : 0
-  );
-  const [freeTime, setFreetime] = useState(0);
-  const [workTime, setWorkTime] = useState(
-    leave ? moment.duration(leave.workTime).asSeconds() : 0
-  );
-  const [lackTime, setLackTime] = useState(
-    leave ? moment.duration(leave.lackTime).asSeconds() : 0
-  );
-  const [timeCount, setTimeCount] = useState(
-    leave ? moment.duration(leave.Range).asSeconds() : 0
-  );
-  const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [disabledTimeCheckin, setDisabledTimeCheckin] = useState([
-    ...disabledTimeAM,
-    ...disabledTimePM,
-  ]);
-  const [disabledStartTime, setDisabledStartTime] = useState([
-    ...disabledTimeAM,
-    ...disabledTimePM,
-  ]);
+  const totalWorkTime = useRef(initialTotalWorkTime)
+  const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
+  const [status, setStatus] = useState(initialStatus[1])
+  const [disabled, setDisabled] = useState(false)
+  const [checkin, setCheckin] = useState(leave ? moment.duration(leave.checkIn).asSeconds() : 0)
+  const [checkout, setCheckout] = useState(leave ? moment.duration(leave.checkOut).asSeconds() : 0)
+  const [freeTime, setFreetime] = useState(0)
+  const [workTime, setWorkTime] = useState(leave ? moment.duration(leave.workTime).asSeconds() : 0)
+  const [lackTime, setLackTime] = useState(leave ? moment.duration(leave.lackTime).asSeconds() : 0)
+  const [timeCount, setTimeCount] = useState(leave ? moment.duration(leave.Range).asSeconds() : 0)
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const [disabledTimeCheckin, setDisabledTimeCheckin] = useState([...disabledTimeAM, ...disabledTimePM])
+  const [disabledStartTime, setDisabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
 
   useEffect(() => {
-    // dispatch(getLeave(idLeave));
-  }, []);
+    dispatch()
+  }, [])
 
   useEffect(() => {
     if (initialStatusDisable.includes(status)) {
-      setDisabled(true);
+      setDisabled(true)
     }
     if (checkout >= moment.duration(`13:00:00`).asSeconds()) {
-      setFreetime(initialFreeTime);
+      setFreetime(initialFreeTime)
     }
     if (checkout < moment.duration(`13:00:00`).asSeconds()) {
-      setFreetime(moment.duration(`00:00:00`).asSeconds());
+      setFreetime(moment.duration(`00:00:00`).asSeconds())
     }
-    setWorkTime(checkout - checkin - freeTime);
-    setLackTime(totalWorkTime.current - workTime);
-  }, [status, checkout, checkin]);
+    setWorkTime(checkout - checkin - freeTime)
+    setLackTime(totalWorkTime.current - workTime)
+  }, [status, checkout, checkin])
 
   const onFinish = (values) => {
-    console.log("Success:", values);
-    const { Reason, RegisterForDate, checkIn, checkOut } = values;
+    console.log('Success:', values)
+    const { Reason, RegisterForDate, checkIn, checkOut } = values
     const dataForm = {
       Reason: Reason,
-      RegisterForDate: moment(RegisterForDate).format("DD-MM-YYYY"),
-      checkIn: moment(checkIn).format("HH:mm"),
-      checkOut: moment(checkOut).format("HH:mm"),
-      workTime: moment
-        .utc(moment.duration(workTime, "seconds").as("milliseconds"))
-        .format("HH:mm"),
-      lackTime: moment
-        .utc(moment.duration(lackTime, "seconds").as("milliseconds"))
-        .format("HH:mm"),
-      timeCount: moment
-        .utc(moment.duration(timeCount, "seconds").as("milliseconds"))
-        .format("HH:mm"),
-      status: "Confirmed",
-    };
-  };
+      RegisterForDate: moment(RegisterForDate).format('DD-MM-YYYY'),
+      checkIn: moment(checkIn).format('HH:mm'),
+      checkOut: moment(checkOut).format('HH:mm'),
+      workTime: moment.utc(moment.duration(workTime, 'seconds').as('milliseconds')).format('HH:mm'),
+      lackTime: moment.utc(moment.duration(lackTime, 'seconds').as('milliseconds')).format('HH:mm'),
+      timeCount: moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm'),
+      status: 'Confirmed',
+    }
+  }
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+    console.log('Failed:', errorInfo)
+  }
 
   const onCheckin = (time, timeString) => {
-    const totalSecondsCheckin = moment
-      .duration(time.format("HH:mm:ss"))
-      .asSeconds();
-    const disabledTimeCheckout = [];
+    const totalSecondsCheckin = moment.duration(time.format('HH:mm:ss')).asSeconds()
+    const disabledTimeCheckout = []
     for (var i = moment(time).hour(); i > 0; i--) {
-      disabledTimeCheckout.push(i);
+      disabledTimeCheckout.push(i)
     }
-    setDisabledTimeCheckin([...disabledTimeCheckin, ...disabledTimeCheckout]);
-    setCheckin(totalSecondsCheckin);
-  };
+    setDisabledTimeCheckin([...disabledTimeCheckin, ...disabledTimeCheckout])
+    setCheckin(totalSecondsCheckin)
+  }
 
   const onCheckout = (time, timeString) => {
-    const totalSecondsCheckout = moment
-      .duration(time.format("HH:mm:ss"))
-      .asSeconds();
-    setCheckout(totalSecondsCheckout);
-  };
+    const totalSecondsCheckout = moment.duration(time.format('HH:mm:ss')).asSeconds()
+    setCheckout(totalSecondsCheckout)
+  }
 
   const rangerTime = (time) => {
-    const totalSecondsStart = moment
-      .duration(time[0].format("HH:mm:ss"))
-      .asSeconds();
-    const totalSecondsEnd = moment
-      .duration(time[1].format("HH:mm:ss"))
-      .asSeconds();
+    const totalSecondsStart = moment.duration(time[0].format('HH:mm:ss')).asSeconds()
+    const totalSecondsEnd = moment.duration(time[1].format('HH:mm:ss')).asSeconds()
 
-    setTimeCount(totalSecondsEnd - totalSecondsStart);
-  };
+    setTimeCount(totalSecondsEnd - totalSecondsStart)
+  }
 
   const enterLoading = () => {
-    setLoadingSubmit(true);
+    setLoadingSubmit(true)
     setTimeout(() => {
-      setLoadingSubmit(false);
-    }, 2000);
-  };
+      setLoadingSubmit(false)
+    }, 2000)
+  }
 
   return (
     <>
@@ -180,19 +137,18 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your register date!",
+                      message: 'Please input your register date!',
                     },
                   ]}
                 >
                   <DatePicker
-                    defaultValue={
-                      leave ? moment(leave.RegisterForDate, dateFormat) : ""
-                    }
+                    defaultValue={leave ? moment(leave.RegisterForDate, dateFormat) : ''}
                     format={dateFormat}
                     className={style.timeBox}
                   />
                 </Form.Item>
               </Col>
+
               <Col span={4} className={style.form_item}>
                 Check-in:
               </Col>
@@ -202,14 +158,12 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your checkin time!",
+                      message: 'Please input your checkin time!',
                     },
                   ]}
                 >
                   <TimePicker
-                    defaultValue={
-                      leave ? moment(leave.checkIn, timeFormat) : ""
-                    }
+                    defaultValue={leave ? moment(leave.checkIn, timeFormat) : ''}
                     format={timeFormat}
                     disabledHours={() => disabledTimeCheckin}
                     format="HH:mm"
@@ -218,6 +172,7 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                   />
                 </Form.Item>
               </Col>
+
               <Col span={4} className={style.form_item}>
                 Check-out:
               </Col>
@@ -227,14 +182,12 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your checkout time!",
+                      message: 'Please input your checkout time!',
                     },
                   ]}
                 >
                   <TimePicker
-                    defaultValue={
-                      leave ? moment(leave.checkOut, timeFormat) : ""
-                    }
+                    defaultValue={leave ? moment(leave.checkOut, timeFormat) : ''}
                     format={timeFormat}
                     disabledHours={() => disabledTimeCheckin}
                     format="HH:mm"
@@ -243,45 +196,31 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                   />
                 </Form.Item>
               </Col>
+
               <Col span={4} className={style.form_item}>
                 Work time:
               </Col>
               <Col span={8} className={style.form_item}>
                 <span>
-                  {checkout == ""
+                  {checkout == ''
                     ? 0
-                    : moment
-                        .utc(
-                          moment
-                            .duration(workTime, "seconds")
-                            .as("milliseconds")
-                        )
-                        .format("HH:mm")}
+                    : moment.utc(moment.duration(workTime, 'seconds').as('milliseconds')).format('HH:mm')}
                 </span>
               </Col>
+
               <Col span={4} className={style.form_item}>
                 <span className={style.label}>Lack time:</span>
               </Col>
               <Col span={8} className={style.form_item}>
                 <span>
-                  {checkout == ""
+                  {checkout == ''
                     ? 0
-                    : moment
-                        .utc(
-                          moment
-                            .duration(lackTime, "seconds")
-                            .as("milliseconds")
-                        )
-                        .format("HH:mm")}
+                    : moment.utc(moment.duration(lackTime, 'seconds').as('milliseconds')).format('HH:mm')}
                 </span>
               </Col>
+
               <Col span={24} className={style.leaveAll}>
-                <Form.Item
-                  className={style.wrapper_item_form}
-                  name="checkAll"
-                  valuePropName="checked"
-                  noStyle
-                >
+                <Form.Item className={style.wrapper_item_form} name="checkAll" valuePropName="checked" noStyle>
                   <Checkbox disabled={disabled}>Leave all day</Checkbox>
                 </Form.Item>
               </Col>
@@ -293,12 +232,7 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                 <Form.Item name="range-picker" {...rangeConfig}>
                   <RangePicker
                     defaultValue={
-                      leave
-                        ? [
-                            moment(leave.RangeStart, timeFormat),
-                            moment(leave.RangeEnd, timeFormat),
-                          ]
-                        : ""
+                      leave ? [moment(leave.RangeStart, timeFormat), moment(leave.RangeEnd, timeFormat)] : ''
                     }
                     className={style.timeBox}
                     disabledHours={() => disabledStartTime}
@@ -308,20 +242,14 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                   />
                 </Form.Item>
               </Col>
-              <Col
-                span={4}
-                className={style.form_item}
-                className={style.timeBox}
-              >
+
+              <Col span={4} className={style.form_item} className={style.timeBox}>
                 <Form.Item
                   className={style.item_form}
                   name="radio-group"
-                  rules={[{ required: true, message: "Please pick an item!" }]}
+                  rules={[{ required: true, message: 'Please pick an item!' }]}
                 >
-                  <Radio.Group
-                    className={style.wrapper_button_radio}
-                    disabled={disabled}
-                  >
+                  <Radio.Group className={style.wrapper_button_radio} disabled={disabled}>
                     <Radio value={1}>Paid</Radio>
                     <Radio value={2}>Unpaid</Radio>
                   </Radio.Group>
@@ -332,17 +260,10 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                 Time count:
                 <span
                   style={{
-                    color:
-                      timeCount < moment.duration(`1:00:00`).asSeconds()
-                        ? "red"
-                        : "unset",
+                    color: timeCount < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset',
                   }}
                 >
-                  {moment
-                    .utc(
-                      moment.duration(timeCount, "seconds").as("milliseconds")
-                    )
-                    .format("HH:mm")}
+                  {moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm')}
                 </span>
               </Col>
 
@@ -352,12 +273,12 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
               <Col span={18} className={style.form_item}>
                 <Form.Item
                   name="Reason"
-                  rules={[{ required: true, message: "Please input Intro" }]}
+                  rules={[{ required: true, message: 'Please input Intro' }]}
                   className={style.item_form}
                 >
                   <Input.TextArea
-                    defaultValue={leave ? leave.Reason : ""}
-                    value={leave ? leave.Reason : ""}
+                    defaultValue={leave ? leave.Reason : ''}
+                    value={leave ? leave.Reason : ''}
                     disabled={disabled}
                     showCount
                     maxLength={100}
@@ -402,7 +323,7 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default FormUpdateLeave;
+export default FormUpdateLeave
