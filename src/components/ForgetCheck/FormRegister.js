@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Checkbox, Form, DatePicker, TimePicker, Button, Row, Col } from 'antd'
-import './register.css'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { addForget } from '../redux/actions'
+import style from './forget.module.css'
+
 const FormRegister = ({ onCancel }) => {
   const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
   const disabledTimePM = [20, 21, 22, 23]
@@ -30,11 +31,8 @@ const FormRegister = ({ onCancel }) => {
       })
     )
   }
-
-  const onFinishFailed = (error) => {
-    console.log(error)
-  }
-
+  const onFinishFailed = (error) => {}
+  
   const onCheckin = (time) => {
     const disabledTimeCheckOut = []
     for (let i = moment(time).hour(); i > 0; i--) {
@@ -42,7 +40,6 @@ const FormRegister = ({ onCancel }) => {
     }
     setDisableTimeCheckIn([...disabledTimeCheckIn, ...disabledTimeCheckOut])
   }
-
   const onCheckout = (time) => {
     setCheckOut(time.format('HH:mm'))
   }
@@ -58,9 +55,9 @@ const FormRegister = ({ onCancel }) => {
         onFinishFailed={onFinishFailed}
         autoComplete='off'
       >
-        <Row className='mb-10 al-center'>
+        <Row className={style['mb_10 al_center']}>
           <Col span={18} push={6}>
-            <Form.Item name='RegistrationDate' className='m-0'>
+            <Form.Item name='RegistrationDate' className={style.m_0}>
               <span>{moment().format('DD/MM/YYYY HH:mm')}</span>
             </Form.Item>
           </Col>
@@ -69,10 +66,10 @@ const FormRegister = ({ onCancel }) => {
           </Col>
         </Row>
 
-        <Row className='mb-10 al-center'>
+        <Row className={style['mb_10 al_center']}>
           <Col span={18} push={6}>
-            <Form.Item name='RegisterForDate' className='m-0'>
-              <DatePicker className='w-40p' />
+            <Form.Item name='RegisterForDate' className={style.m_0}>
+              <DatePicker className={style.w_40p} />
             </Form.Item>
           </Col>
           <Col span={6} pull={18}>
@@ -80,7 +77,7 @@ const FormRegister = ({ onCancel }) => {
           </Col>
         </Row>
 
-        <Row className='mb-10 al-center'>
+        <Row className={style['mb_10 al_center']}>
           <Col span={18} push={6}>
             <Form.Item
               name='CheckIn'
@@ -94,7 +91,7 @@ const FormRegister = ({ onCancel }) => {
             >
               <TimePicker
                 disabledHours={() => disabledTimeCheckIn}
-                className='w-40p'
+                className={style.w_40p}
                 format='HH:mm'
                 onChange={onCheckin}
               />
@@ -107,11 +104,11 @@ const FormRegister = ({ onCancel }) => {
           </Col>
         </Row>
 
-        <Row className='mb-10 al-center'>
+        <Row className={style['mb_10 al_center']}>
           <Col span={18} push={6}>
             <Form.Item
               name='CheckOut'
-              className='m-0'
+              className={style.m_0}
               rules={[
                 {
                   required: true,
@@ -121,7 +118,7 @@ const FormRegister = ({ onCancel }) => {
             >
               <TimePicker
                 disabledHours={() => disabledTimeCheckIn}
-                className='w-40p'
+                className={style.w_40p}
                 format='HH:mm'
                 onChange={onCheckout}
               />
@@ -134,12 +131,11 @@ const FormRegister = ({ onCancel }) => {
           </Col>
         </Row>
 
-        <Row className='mb-10 al-center'>
+        <Row className={style['mb_10 al_center']}>
           <Col span={18} push={6}>
-            <Form.Item name='SpecialReason' className='m-0'>
+            <Form.Item name='SpecialReason' className={style.m_0}>
               <Checkbox.Group>
-                <Checkbox value={'Check-in not counted as error'}>Check-in not counted as error</Checkbox>
-                <Checkbox value={'Check-out not counted as error'}>Check-in not counted as error</Checkbox>
+                <Checkbox value={'Check not counted as error'}>Check not counted as error</Checkbox>
               </Checkbox.Group>
             </Form.Item>
           </Col>
@@ -148,9 +144,9 @@ const FormRegister = ({ onCancel }) => {
           </Col>
         </Row>
 
-        <Row className='mb-10 al-center'>
+        <Row className={style['mb_10 al_center']}>
           <Col span={18} push={6}>
-            <Form.Item name='Reason' className='m-0'>
+            <Form.Item name='Reason' className={style.m_0}>
               <textarea rows={6} cols={65} style={{ padding: '5px 10px', border: '1px solid #d9d9d9' }} />
             </Form.Item>
           </Col>
@@ -160,9 +156,9 @@ const FormRegister = ({ onCancel }) => {
         </Row>
 
         {isStatus && (
-          <Row className='mb-10 al-center'>
+          <Row className={style['mb_10 al_center']}>
             <Col span={18} push={6}>
-              <Form.Item className='m-0'>
+              <Form.Item className={style.m_0}>
                 <span>Sent</span>
               </Form.Item>
             </Col>
@@ -173,18 +169,18 @@ const FormRegister = ({ onCancel }) => {
         )}
 
         {isStatus ? (
-          <div className='wrapper-button-form'>
-            <Button className='button-form' type='primary'>
+          <div className={style.wrapper_button_form}>
+            <Button className={style.button_form} type='primary'>
               Update
             </Button>
-            <Button className='button-form' type='primary'>
+            <Button className={style.button_form} type='primary'>
               Delete
             </Button>
             <Button onClick={() => onCancel()}>Cancel</Button>
           </div>
         ) : (
-          <div className='wrapper-button-form'>
-            <Button loading={isLoading} type='primary' htmlType='submit' className='button-form'>
+          <div className={style.wrapper_button_form}>
+            <Button loading={isLoading} type='primary' htmlType='submit' className={style.button_form}>
               Register
             </Button>
             <Button onClick={() => onCancel()}>Cancel</Button>

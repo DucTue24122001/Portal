@@ -15,16 +15,19 @@ const RegisterLeave = () => {
 
   return (
     <>
-      <Button type='link' onClick={showModal}>Forget</Button>
-      <Modal title = 'Register Forget Check-in/Check-out'
-        visible = {isModalVisiable}
-        className = 'registerForget'
-        footer = {false}
-        onCancel = {handleCancel}
-        onOk = {() => setIsModalVisiable(false)}
-        width = {950}
+      <Button type='link' onClick={showModal}>
+        Forget
+      </Button>
+      <Modal
+        title='Register Forget Check-in/Check-out'
+        visible={isModalVisiable}
+        className='registerForget'
+        footer={false}
+        onCancel={handleCancel}
+        onOk={() => setIsModalVisiable(false)}
+        width={1000}
       >
-        <FormRegister onCancel = {handleCancel} />
+        <FormRegister onCancel={handleCancel} />
       </Modal>
     </>
   )
