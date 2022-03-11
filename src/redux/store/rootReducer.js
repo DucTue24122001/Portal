@@ -8,5 +8,5 @@ export default combineReducers({
   login: loginReducer,
   timesheet: timeSheetReducer,
   logout: logoutReducer,
-  lateEarly: lateEarlyReducer,
+  lateEarly: lateEarlyReducer
 })
