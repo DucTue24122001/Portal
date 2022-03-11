@@ -3,22 +3,22 @@ import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
 import style from './header.module.css'
-import { logout } from '../../../redux/logout'
 import { useDispatch, useSelector } from 'react-redux'
-import { getInfoUser } from '../../../redux/inforUser'
+import { infoUserActions } from '../../../redux/inforUser'
+import { authActions } from '../../../redux/auth'
 
 const { Title } = Typography
 const Header = () => {
   const dispatch = useDispatch()
-  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
+  const { infoUser } = useSelector((state) => state.infoUser)
 
   const handleLogout = async() => {
-    await dispatch(logout())
+    await dispatch(authActions.logout())
     window.location.reload()
   }
 
   useEffect(() => {
-    dispatch(getInfoUser())
+    dispatch(infoUserActions.getInfoUser())
   }, [])
 
   return (
@@ -33,7 +33,7 @@ const Header = () => {
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
-                Welcome <b>{successGetInfo ? infoUser.name : ''}</b>
+                Welcome <b>{infoUser?.name}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>

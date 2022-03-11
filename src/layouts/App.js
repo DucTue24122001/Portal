@@ -11,14 +11,13 @@ const App = (props) => {
   const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
   const { renderRouter } = props
   const [hiddenMenu, setHiddenMenu] = useState(false)
-  const { success } = useSelector((state) => state.login)
-  const { successLogout } = useSelector((state) => state.logout)
+  const { successLogin, successLogout } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if (success === true) {
+    if (successLogin === true) {
       setHiddenMenu(true)
     }
-  }, [success])
+  }, [successLogin])
 
   useEffect(() => {
     if (successLogout === true) {
@@ -34,7 +33,7 @@ const App = (props) => {
 
   return (
     <div className={style.wrapper}>
-      {hiddenMenu && <Header/>}
+      {hiddenMenu && <Header />}
       <div className={style.main}>{renderRouter()}</div>
     </div>
   )

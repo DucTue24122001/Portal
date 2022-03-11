@@ -14,7 +14,7 @@ import {
   Col
 } from 'antd'
 import { useDispatch } from 'react-redux'
-import { createLeave } from '../../redux/actions/leaveActions'
+// import { createLeave } from '../../redux/actions/leaveActions'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
@@ -82,7 +82,7 @@ const FormRegisterLeave = ({ onCancel }) => {
         .format('HH:mm'),
       status: 'Sent'
     }
-    dispatch(createLeave(dataForm))
+    // dispatch(createLeave(dataForm))
   }
 
   const onFinishFailed = (errorInfo) => {

@@ -44,15 +44,19 @@ export const infoUserReducer = (state = initialState, action) => {
 
 // Actions
 
-export const getInfoUser = () => async(dispatch) => {
-  try {
-    dispatch({ type: GET_INFO_USER_REQUEST })
+export const infoUserActions = {
+  getInfoUser() {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: GET_INFO_USER_REQUEST })
 
-    const config = await getToken()
-    const { data } = await axios.get(`http://14.232.214.101:8111/api/v1/user/info`, config)
+        const config = await getToken()
+        const { data } = await axios.get(`http://14.232.214.101:8111/api/v1/user/info`, config)
 
-    dispatch({ type: GET_INFO_USER_SUCCESS, payload: data })
-  } catch (error) {
-    dispatch({ type: GET_INFO_USER_FAIL, payload: 'Get info user fail' })
+        dispatch({ type: GET_INFO_USER_SUCCESS, payload: data })
+      } catch (error) {
+        dispatch({ type: GET_INFO_USER_FAIL, payload: 'Get info user fail' })
+      }
+    }
   }
 }
