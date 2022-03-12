@@ -1,12 +1,11 @@
-import 'antd/dist/antd.css'
-import React from 'react'
-import Layout, { Content } from 'antd/lib/layout/layout'
 import { Button, Col, DatePicker, Form, Radio, Row, Select, Typography } from 'antd'
+import 'antd/dist/antd.css'
+import Layout, { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
-import styles from './styles.module.css'
-import { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { btnLoadingSearch, loadingTableTrue } from '../../redux/timesheet'
+import styles from './styles.module.css'
 
 const SearchTimeSheetRedux = ({ onSearch }) => {
   const { Text } = Typography
@@ -18,7 +17,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
   const [valueTime, setValueTime] = useState({
     startValue: null,
     endValue: null,
-    endOpen: false
+    endOpen: false,
   })
   const dispatch = useDispatch()
   const [form] = Form.useForm()
@@ -30,17 +29,17 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
           rules: [
             {
               required: true,
-              message: 'Please input date!'
-            }
-          ]
+              message: 'Please input date!',
+            },
+          ],
         },
         rulesRadioSort: {
           rules: [
             {
-              required: false
-            }
-          ]
-        }
+              required: false,
+            },
+          ],
+        },
       })
     } else {
       setRolesTimeStart({
@@ -48,18 +47,18 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
           rules: [
             {
               required: false,
-              message: ''
-            }
-          ]
+              message: '',
+            },
+          ],
         },
         rulesRadioSort: {
           rules: [
             {
               required: true,
-              message: 'Please input select!'
-            }
-          ]
-        }
+              message: 'Please input select!',
+            },
+          ],
+        },
       })
     }
   }, [radioBtn])
@@ -103,7 +102,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
   const onChange = (field, value) => {
     setValueTime({
       ...valueTime,
-      [field]: value
+      [field]: value,
     })
   }
 
@@ -129,14 +128,14 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
             <Content className={styles.radioOption}>
               <Radio.Group defaultValue={1} onChange={onChangeRadio}>
                 <Form
-                  name='basic'
+                  name="basic"
                   className={styles.formSearch}
                   initialValues={{
-                    remember: true
+                    remember: true,
                   }}
                   onFinish={onFinish}
                   onFinishFailed={onFinishFailed}
-                  autoComplete='off'
+                  autoComplete="off"
                   form={form}
                 >
                   <Row gutter={24}>
@@ -149,15 +148,15 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                     </Col>
                     <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 6 }}>
                       <Form.Item
-                        label=''
-                        name='Date'
+                        label=""
+                        name="Date"
                         className={styles.selectOption}
                         {...rolesTimestart.rulesRadioSort}
                       >
-                        <Select placeholder='Select time'>
-                          <Option value='date'>this date</Option>
-                          <Option value='month'>this month</Option>
-                          <Option value='year'>this year</Option>
+                        <Select placeholder="Select time">
+                          <Option value="date">this date</Option>
+                          <Option value="month">this month</Option>
+                          <Option value="year">this year</Option>
                         </Select>
                       </Form.Item>
                     </Col>
@@ -168,10 +167,10 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                       lg={{ span: 8 }}
                       className={styles.toTheRight}
                     >
-                      <Form.Item label='Sort by work date' name='Sort' {...rolesTimestart.rulesRadioSort}>
-                        <Select placeholder='Select sort' style={{ width: '160px' }}>
-                          <Option value='asc'>Ascending</Option>
-                          <Option value='desc'>Decrease</Option>
+                      <Form.Item label="Sort by work date" name="Sort" {...rolesTimestart.rulesRadioSort}>
+                        <Select placeholder="Select sort" style={{ width: '160px' }}>
+                          <Option value="asc">Ascending</Option>
+                          <Option value="desc">Decrease</Option>
                         </Select>
                       </Form.Item>
                     </Col>
@@ -185,13 +184,13 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                       </Form.Item>
                     </Col>
                     <Col xs={{ span: 24 }} sm={{ span: 10 }} md={{ span: 12 }} lg={{ span: 6 }}>
-                      <Form.Item name='dateStart' {...rolesTimestart.rulesRadioTime}>
+                      <Form.Item name="dateStart" {...rolesTimestart.rulesRadioTime}>
                         <DatePicker
                           disabledDate={disabledStartDate}
                           format={dateFormat}
                           className={styles.selectOption}
                           value={valueTime.startValue}
-                          placeholder='Start'
+                          placeholder="Start"
                           onChange={onStartChange}
                         />
                       </Form.Item>
@@ -203,29 +202,29 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                       lg={{ span: 8 }}
                       className={styles.toTheRight}
                     >
-                      <Form.Item label='To' name='dateEnd' {...rolesTimestart.rulesRadioTime}>
+                      <Form.Item label="To" name="dateEnd" {...rolesTimestart.rulesRadioTime}>
                         <DatePicker
                           format={dateFormat}
                           className={styles.selectOption}
                           disabledDate={disabledEndDate}
                           value={valueTime.endValue}
-                          placeholder='End'
+                          placeholder="End"
                           onChange={onEndChange}
                         />
                       </Form.Item>
                     </Col>
                   </Row>
-                  <Row gutter={24} justify='center'>
+                  <Row gutter={24} justify="center">
                     <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                       <Form.Item>
-                        <Button type='primary' htmlType='submit' loading={btnLoadingRedux}>
+                        <Button type="primary" htmlType="submit" loading={btnLoadingRedux}>
                           Search
                         </Button>
                       </Form.Item>
                     </Col>
                     <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                       <Form.Item>
-                        <Button htmlType='button' onClick={onReset}>
+                        <Button htmlType="button" onClick={onReset}>
                           Reset
                         </Button>
                       </Form.Item>
