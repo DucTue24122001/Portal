@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux'
-import { loginReducer } from '../login'
-import { logoutReducer } from '../logout'
+import { authReducer } from '../auth'
 import { timeSheetReducer } from '../timesheet'
 import lateEarlyReducer from '../lateEarly'
+import { registerOTReducer } from '../registerOT'
+import { infoUserReducer } from '../inforUser'
 
 export default combineReducers({
-  login: loginReducer,
+  auth: authReducer,
   timesheet: timeSheetReducer,
   logout: logoutReducer,
-  lateEarly: lateEarlyReducer
+  lateEarly: lateEarlyReducer,
+  registerOT: registerOTReducer,
+  infoUser: infoUserReducer,
 })

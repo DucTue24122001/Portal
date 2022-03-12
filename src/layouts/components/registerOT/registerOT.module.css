@@ -1,0 +1,26 @@
+.registerOT {
+    width: 1000px;
+    margin: auto;
+  }
+  .rowCheckIn {
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+  .content__note {
+    font-size: 12.5px;
+  }
+  .content__note_example {
+    padding-left: 14px;
+    margin-top: -10px;
+  }
+  .reason {
+    line-height: 30px;
+    margin-bottom: 30px;
+  }
+  .row_lineHeight {
+    line-height: 30px;
+  }
+  .form_item_rule {
+    font-size: 11px;
+  }
+  
