@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import style from './FormLeave.module.css'
 import moment from 'moment'
 import { DatePicker, TimePicker, Checkbox, Radio, Input, Button, Form, Spin, Row, Col } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { leaveActions } from '../../redux/leave'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
@@ -14,7 +15,6 @@ const initialTotalWorkTime = moment.duration(`8:00:00`).asSeconds()
 
 const FormRegisterLeave = ({ onCancel }) => {
   const dispatch = useDispatch()
-
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const totalWorkTime = useRef(initialTotalWorkTime)
   const [checkin, setCheckin] = useState(0)
@@ -23,10 +23,9 @@ const FormRegisterLeave = ({ onCancel }) => {
   const [timeCount, setTimeCount] = useState(0)
   const [workTime, setWorkTime] = useState(0)
   const [lackTime, setLackTime] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [disabledTimeCheckin, setDisabledTimeCheckin] = useState([...disabledTimeAM, ...disabledTimePM])
   const [disabledStartTime, setDisabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
+  const { loadingRegisterLeave } = useSelector((state) => state.leave)
 
   useEffect(() => {
     if (checkout >= moment.duration(`13:00:00`).asSeconds()) {
@@ -54,7 +53,7 @@ const FormRegisterLeave = ({ onCancel }) => {
       RangeEnd: moment.utc(moment.duration(Range[1], 'seconds').as('milliseconds')).format('HH:mm'),
       status: 'Sent'
     }
-    dispatch()
+    dispatch(leaveActions.register(dataForm))
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -91,7 +90,7 @@ const FormRegisterLeave = ({ onCancel }) => {
 
   return (
     <>
-      {loading ? (
+      {loadingRegisterLeave ? (
         <Spin tip='Loading...' />
       ) : (
         <div className={style.wrapper_form}>
@@ -260,7 +259,7 @@ const FormRegisterLeave = ({ onCancel }) => {
                 className={style.button_form}
                 htmlType='submit'
                 type='primary'
-                loading={loadingSubmit}
+                loading={loadingRegisterLeave}
                 onClick={enterLoading}
               >
                 Register

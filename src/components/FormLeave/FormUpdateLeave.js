@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import style from './FormLeave.module.css'
 import moment from 'moment'
 import { DatePicker, TimePicker, Checkbox, Radio, Input, Button, Form, Spin, Col, Row } from 'antd'
-import { useDispatch} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { leaveActions } from '../../redux/leave'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
@@ -21,10 +22,10 @@ const initialFreeTime = moment.duration(`01:00:00`).asSeconds()
 const dateFormat = 'DD-MM-YYYY'
 const timeFormat = 'HH:mm'
 
-const FormUpdateLeave = ({ onCancel, idLeave }) => {
+const FormUpdateLeave = ({ onCancel }) => {
   const dispatch = useDispatch()
   const [leave] = useState({})
-  const [loading] = useState(false)
+  const [idLeave] = useState(1)
   const totalWorkTime = useRef(initialTotalWorkTime)
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const [status, setStatus] = useState(initialStatus[1])
@@ -35,9 +36,9 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
   const [workTime, setWorkTime] = useState(leave ? moment.duration(leave.workTime).asSeconds() : 0)
   const [lackTime, setLackTime] = useState(leave ? moment.duration(leave.lackTime).asSeconds() : 0)
   const [timeCount, setTimeCount] = useState(leave ? moment.duration(leave.Range).asSeconds() : 0)
-  const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [disabledTimeCheckin, setDisabledTimeCheckin] = useState([...disabledTimeAM, ...disabledTimePM])
   const [disabledStartTime, setDisabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
+  const { loadingUpdateLeave } = useSelector((state) => state.leave)
 
   useEffect(() => {
     dispatch()
@@ -58,7 +59,6 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
   }, [status, checkout, checkin])
 
   const onFinish = (values) => {
-    console.log('Success:', values)
     const { Reason, RegisterForDate, checkIn, checkOut } = values
     const dataForm = {
       Reason: Reason,
@@ -70,6 +70,7 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
       timeCount: moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm'),
       status: 'Confirmed',
     }
+    dispatch(leaveActions.update(dataForm, idLeave))
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -107,7 +108,7 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
 
   return (
     <>
-      {loading ? (
+      {loadingUpdateLeave ? (
         <Spin tip="Loading..." />
       ) : (
         <div className={style.wrapper_form}>
@@ -307,7 +308,7 @@ const FormUpdateLeave = ({ onCancel, idLeave }) => {
                 htmlType="submit"
                 disabled={disabled}
                 type="primary"
-                loading={loadingSubmit}
+                loading={loadingUpdateLeave}
                 onClick={enterLoading}
               >
                 Update
