@@ -1,0 +1,31 @@
+.al_center {
+  align-items: center;
+}
+
+.m_0 {
+  margin: 0;
+}
+
+.mb_0 {
+  margin-bottom: 0;
+}
+
+.row {
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.w_40p {
+  width: 40%;
+}
+
+.wrapper_button_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button_form {
+  margin-right: 20px;
+}

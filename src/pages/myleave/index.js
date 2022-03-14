@@ -17,7 +17,6 @@ const MyLeavePage = () => {
   const handleCancel = () => {
     setVisible(false)
   }
-
   const columns = [
     {
       title: 'No',
