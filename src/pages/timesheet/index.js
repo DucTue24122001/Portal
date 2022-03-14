@@ -360,30 +360,10 @@ const TimesheetPage = () => {
         bordered={true}
         loading={loading}
       />
-      <ModalForget
-        isModalVisible={isModalForget}
-        handleOk={cancelModalForget}
-        valueModal={valueModal}
-        handleCancel={cancelModalForget}
-      />
-      <ModalLateEarly
-        isModalVisible={isModalLate}
-        handleOk={cancelMadalLate}
-        valueModal={valueModal}
-        handleCancel={cancelMadalLate}
-      />
-      <ModalLeave
-        isModalVisible={isModalLeave}
-        handleOk={cancelModalLeave}
-        valueModal={valueModal}
-        handleCancel={cancelModalLeave}
-      />
-      <ModalOT
-        isModalVisible={isModalOT}
-        handleOk={cancelModalOT}
-        valueModal={valueModal}
-        handleCancel={cancelModalOT}
-      />
+      <ModalForget isModalVisible={isModalForget} handleOk={cancelModalForget} handleCancel={cancelModalForget} />
+      <ModalLateEarly isModalVisible={isModalLate} handleOk={cancelMadalLate} handleCancel={cancelMadalLate} />
+      <ModalLeave isModalVisible={isModalLeave} handleOk={cancelModalLeave} handleCancel={cancelModalLeave} />
+      <ModalOT isModalVisible={isModalOT} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
       <DialogTimeSheetRedux
         isModalVisible={isModalVisible}
         handleOk={handleOk}

@@ -5,6 +5,7 @@ import lateEarlyReducer from '../lateEarly'
 import { registerOTReducer } from '../registerOT'
 import { infoUserReducer } from '../inforUser'
 import { leaveReducer } from '../leave'
+import { noticeReducer } from '../notice'
 
 export default combineReducers({
   auth: authReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   lateEarly: lateEarlyReducer,
   registerOT: registerOTReducer,
   infoUser: infoUserReducer,
-  leave: leaveReducer
+  leave: leaveReducer,
+  notice: noticeReducer
 })
