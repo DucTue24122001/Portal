@@ -34,8 +34,8 @@ const TimesheetPage = () => {
   const dataComp = useSelector((state) => state.timesheet.listMemberComp)
 
   useEffect(() => {
-    dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
     dispatch(timeSheetRedux.lengthTableTimeSheetAPI())
+    dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
   }, [])
 
   useEffect(() => {

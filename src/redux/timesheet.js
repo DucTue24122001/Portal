@@ -115,15 +115,15 @@ export const timeSheetRedux = {
   lengthTableTimeSheetAPI: () => async(dispatch) => {
     try {
       const data = await getAllApiTable('timesheets')
-      const dataComp = []
-      data.map((item) => {
-        if (item.compensation !== null) {
-          dataComp.push(item)
-        }
-      })
+      const dataComp = () =>
+        data.map((item) => {
+          if (item.compensation !== null) {
+            return item
+          }
+        })
       dispatch({
         type: 'timeSheet/length',
-        payload: { dataComp: dataComp, length: data.length }
+        payload: { dataComp: dataComp, length: data.total }
       })
     } catch (error) {
       dispatch({
@@ -145,7 +145,7 @@ export const timeSheetRedux = {
       })
     }
   },
-  btnLoadingSearch: (value) => async(dispatch) => {
+  btnLoadingSearch: (value) => (dispatch) => {
     try {
       dispatch({
         type: 'timeSheet/btnLoading',
