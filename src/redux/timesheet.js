@@ -6,7 +6,8 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  listMemberComp: []
+  listMemberComp: [],
+  modalRowTable: {}
 }
 // Reducer
 export const timeSheetReducer = (state = initState, action) => {
@@ -42,6 +43,12 @@ export const timeSheetReducer = (state = initState, action) => {
       return {
         ...state,
         btnLoading: action.payload
+      }
+    }
+    case 'timeSheet/modalRowTable': {
+      return {
+        ...state,
+        modalRowTable: action.payload
       }
     }
     default:
@@ -122,6 +129,19 @@ export const timeSheetRedux = {
       dispatch({
         type: 'timeSheet/length',
         payload: []
+      })
+    }
+  },
+  modalRowTable: (record) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'timeSheet/modalRowTable',
+        payload: record
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timeSheet/modalRowTable',
+        payload: {}
       })
     }
   },

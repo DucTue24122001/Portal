@@ -1,10 +1,12 @@
 import { Modal } from 'antd'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import FormRegisterLeave from '../FormLeave/FormRegisterLeave'
 
 export default function ModalLeave({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
+  const dataModal = useSelector((state) => state.timesheet.modalRowTable)
 
   return (
     <>

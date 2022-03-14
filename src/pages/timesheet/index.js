@@ -83,20 +83,24 @@ const TimesheetPage = () => {
 
   const onActionForget = (e, record) => {
     e.stopPropagation()
+    dispatch(timeSheetRedux.modalRowTable(record))
     setIsModalForget(true)
   }
 
-  const onActionLate = (e) => {
+  const onActionLate = (e, record) => {
+    dispatch(timeSheetRedux.modalRowTable(record))
     e.stopPropagation()
     setIsModalLate(true)
   }
 
-  const onActionLeave = (e) => {
+  const onActionLeave = (e, record) => {
+    dispatch(timeSheetRedux.modalRowTable(record))
     e.stopPropagation()
     setIsModalLeave(true)
   }
 
-  const onActionOT = (e) => {
+  const onActionOT = (e, record) => {
+    dispatch(timeSheetRedux.modalRowTable(record))
     e.stopPropagation()
     setIsModalOT(true)
   }
@@ -150,7 +154,13 @@ const TimesheetPage = () => {
       render: (late, record) => {
         return (
           <>
-            <Text type={record.late === null || record.Note.includes('Approved', 'Late/Early') ? '' : 'danger'}>
+            <Text
+              type={
+                record.late === null || record.Note.includes('Approved', 'Late/Early') || record.late === '00:00'
+                  ? ''
+                  : 'danger'
+              }
+            >
               {late}
             </Text>
           </>
@@ -164,7 +174,13 @@ const TimesheetPage = () => {
       render: (early, record) => {
         return (
           <>
-            <Text type={record.early === null || record.Note.includes('Approved', 'Late/Early') ? '' : 'danger'}>
+            <Text
+              type={
+                record.early === null || record.late === '00:00' || record.Note.includes('Approved', 'Late/Early')
+                  ? ''
+                  : 'danger'
+              }
+            >
               {early}
             </Text>
           </>
@@ -185,7 +201,13 @@ const TimesheetPage = () => {
       render: (Ot, record) => {
         return (
           <>
-            <Text type={record.Ot === null || record.Note.includes('Approved', 'OT') ? '' : 'danger'}>{Ot}</Text>
+            <Text
+              type={
+                record.Ot === null || record.late === '00:00' || record.Note.includes('Approved', 'OT') ? '' : 'danger'
+              }
+            >
+              {Ot}
+            </Text>
           </>
         )
       }
@@ -228,7 +250,8 @@ const TimesheetPage = () => {
                 record.Note.includes('Approved', 'Late/Early') === true ||
                 record.Note.includes('Approved', 'Leave') === true ||
                 record.Note.includes('Approved', 'check-in/out') === true ||
-                record.Note.includes('Approved', 'Forget') === true
+                record.Note.includes('Approved', 'Forget') === true ||
+                record.late === '00:00'
                   ? ''
                   : 'danger'
               }

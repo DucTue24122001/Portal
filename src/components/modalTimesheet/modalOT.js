@@ -1,9 +1,11 @@
 import { Modal } from 'antd'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
+  const dataModal = useSelector((state) => state.timesheet.modalRowTable)
 
   return (
     <>
