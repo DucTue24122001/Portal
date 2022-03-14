@@ -3,12 +3,13 @@ import { Checkbox, Form, DatePicker, TimePicker, Button, Row, Col } from 'antd'
 import moment from 'moment'
 import style from '../modalCss/forget.module.css'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {
   const initialStatus = {
     1: 'Sent',
     2: 'Confirmed',
-    3: 'Approved',
+    3: 'Approved'
   }
   const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
   const disabledTimePM = [20, 21, 22, 23]
@@ -52,7 +53,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
   return (
     <>
       <Modal
-        title="Register Forget Check-in/Check-out"
+        title='Register Forget Check-in/Check-out'
         visible={isModalVisible}
         footer={false}
         onOk={onOk}
@@ -61,17 +62,17 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
       >
         <div>
           <Form
-            name="basic"
+            name='basic'
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            autoComplete="off"
+            autoComplete='off'
           >
             <Row className={style.row}>
               <Col span={18} push={6}>
-                <Form.Item name="RegistrationDate" className={style.m_0}>
+                <Form.Item name='RegistrationDate' className={style.m_0}>
                   <span>{moment().format('DD/MM/YYYY HH:mm')}</span>
                 </Form.Item>
               </Col>
@@ -82,7 +83,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
 
             <Row className={style.row}>
               <Col span={18} push={6}>
-                <Form.Item name="RegisterForDate" className={style.m_0}>
+                <Form.Item name='RegisterForDate' className={style.m_0}>
                   <DatePicker className={style.w_40p} />
                 </Form.Item>
               </Col>
@@ -94,19 +95,19 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
             <Row className={style.row}>
               <Col span={18} push={6}>
                 <Form.Item
-                  name="CheckIn"
-                  className="m-0"
+                  name='CheckIn'
+                  className='m-0'
                   rules={[
                     {
                       required: true,
-                      message: 'Please enter the time',
-                    },
+                      message: 'Please enter the time'
+                    }
                   ]}
                 >
                   <TimePicker
                     disabledHours={() => disabledTimeCheckIn}
                     className={style.w_40p}
-                    format="HH:mm"
+                    format='HH:mm'
                     onChange={onCheckin}
                   />
                 </Form.Item>
@@ -121,19 +122,19 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
             <Row className={style.row}>
               <Col span={18} push={6}>
                 <Form.Item
-                  name="CheckOut"
+                  name='CheckOut'
                   className={style.m_0}
                   rules={[
                     {
                       required: true,
-                      message: 'Please enter the time',
-                    },
+                      message: 'Please enter the time'
+                    }
                   ]}
                 >
                   <TimePicker
                     disabledHours={() => disabledTimeCheckIn}
                     className={style.w_40p}
-                    format="HH:mm"
+                    format='HH:mm'
                     onChange={onCheckout}
                   />
                 </Form.Item>
@@ -147,7 +148,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
 
             <Row className={style.row}>
               <Col span={18} push={6}>
-                <Form.Item name="SpecialReason" className={style.m_0}>
+                <Form.Item name='SpecialReason' className={style.m_0}>
                   <Checkbox.Group>
                     <Checkbox value={'Check not counted as error'}>Check not counted as error</Checkbox>
                   </Checkbox.Group>
@@ -160,7 +161,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
 
             <Row className={style.row}>
               <Col span={18} push={6}>
-                <Form.Item name="Reason" className={style.m_0}>
+                <Form.Item name='Reason' className={style.m_0}>
                   <textarea rows={6} cols={65} style={{ padding: '5px 10px', border: '1px solid #d9d9d9' }} />
                 </Form.Item>
               </Col>
@@ -184,17 +185,17 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
 
             {hidden ? (
               <div className={style.wrapper_button_form}>
-                <Button className={style.button_form} type="primary">
+                <Button className={style.button_form} type='primary'>
                   Update
                 </Button>
-                <Button className={style.button_form} type="primary">
+                <Button className={style.button_form} type='primary'>
                   Delete
                 </Button>
                 <Button onClick={() => onCancel()}>Cancel</Button>
               </div>
             ) : (
               <div className={style.wrapper_button_form}>
-                <Button loading={isLoading} type="primary" htmlType="submit" className={style.button_form}>
+                <Button loading={isLoading} type='primary' htmlType='submit' className={style.button_form}>
                   Register
                 </Button>
                 <Button onClick={() => onCancel()}>Cancel</Button>

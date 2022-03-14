@@ -12,5 +12,5 @@ export default combineReducers({
   lateEarly: lateEarlyReducer,
   registerOT: registerOTReducer,
   infoUser: infoUserReducer,
-  leave: leaveReducer,
+  leave: leaveReducer
 })
