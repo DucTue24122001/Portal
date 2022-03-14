@@ -9,7 +9,7 @@ export default function ModalLeave({ isModalVisible, handleOk, handleCancel }) {
   return (
     <>
       <Modal width={1000} footer={false} title='' visible={isModalVisible} onOk={onOk} onCancel={onCancel}>
-        <FormRegisterLeave onCancel={onCancel}/>
+        <FormRegisterLeave onCancel={onCancel} />
       </Modal>
     </>
   )

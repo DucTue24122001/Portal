@@ -4,7 +4,6 @@ import React from 'react'
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
-
   return (
     <>
       <Modal title='modal' visible={isModalVisible} onOk={onOk} onCancel={onCancel}>

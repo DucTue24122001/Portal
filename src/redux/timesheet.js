@@ -49,93 +49,93 @@ export const timeSheetReducer = (state = initState, action) => {
   }
 }
 // Actions
-export const selectTableTimeSheetApI = (params) => async(dispatch) => {
-  try {
-    const { page, pageSize } = params
-    const data = await getApiTable('timesheets', page, pageSize)
-    dispatch({
-      type: 'timeSheet/getdata',
-      payload: data.data
-    })
-    dispatch({
-      type: 'timeSheet/loading',
-      payload: false
-    })
-  } catch (error) {
-    dispatch({
-      type: 'timeSheet/getdata',
-      payload: []
-    })
-  }
-}
 
-export const searchTableTimeSheetApI = (value, params, btnLoading) => async(dispatch) => {
-  const { Date, Sort, radioBtn } = value
-  const { page, pageSize } = params
-  try {
-    if (radioBtn === 1) {
-      const data = await getSortTable('timesheets', Date, Sort, page, pageSize)
-      if (btnLoading === true) {
-        dispatch({
-          type: 'timeSheet/btnLoading',
-          payload: false
-        })
-      }
+export const timeSheetRedux = {
+  selectTableTimeSheetApI: (params) => async(dispatch) => {
+    try {
+      const { page, pageSize } = params
+      const data = await getApiTable('timesheets', page, pageSize)
       dispatch({
-        type: 'timeSheet/search',
+        type: 'timeSheet/getdata',
         payload: data.data
       })
       dispatch({
         type: 'timeSheet/loading',
         payload: false
       })
+    } catch (error) {
+      dispatch({
+        type: 'timeSheet/getdata',
+        payload: []
+      })
     }
-  } catch (err) {
-    dispatch({
-      type: 'timeSheet/search',
-      payload: []
-    })
-  }
-}
-
-export const loadingTableTrue = () => {
-  return {
-    type: 'timeSheet/loading',
-    payload: true
-  }
-}
-
-export const lengthTableTimeSheetAPI = () => async(dispatch) => {
-  try {
-    const data = await getAllApiTable('timesheets')
-    const dataComp = []
-    data.map((item) => {
-      if (item.compensation !== null) {
-        dataComp.push(item)
+  },
+  searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
+    const { Date, Sort, radioBtn } = value
+    const { page, pageSize } = params
+    try {
+      if (radioBtn === 1) {
+        const data = await getSortTable('timesheets', Date, Sort, page, pageSize)
+        if (btnLoading === true) {
+          dispatch({
+            type: 'timeSheet/btnLoading',
+            payload: false
+          })
+        }
+        dispatch({
+          type: 'timeSheet/search',
+          payload: data.data
+        })
+        dispatch({
+          type: 'timeSheet/loading',
+          payload: false
+        })
       }
-    })
-    dispatch({
-      type: 'timeSheet/length',
-      payload: { dataComp: dataComp, length: data.length }
-    })
-  } catch (error) {
-    dispatch({
-      type: 'timeSheet/length',
-      payload: []
-    })
-  }
-}
+    } catch (err) {
+      dispatch({
+        type: 'timeSheet/search',
+        payload: []
+      })
+    }
+  },
 
-export const btnLoadingSearch = (value) => async(dispatch) => {
-  try {
-    dispatch({
-      type: 'timeSheet/btnLoading',
-      payload: value
-    })
-  } catch (err) {
-    dispatch({
-      type: 'timeSheet/btnLoading',
-      payload: null
-    })
+  loadingTableTrue: () => {
+    return {
+      type: 'timeSheet/loading',
+      payload: true
+    }
+  },
+  lengthTableTimeSheetAPI: () => async(dispatch) => {
+    try {
+      const data = await getAllApiTable('timesheets')
+      const dataComp = []
+      data.map((item) => {
+        if (item.compensation !== null) {
+          dataComp.push(item)
+        }
+      })
+      dispatch({
+        type: 'timeSheet/length',
+        payload: { dataComp: dataComp, length: data.length }
+      })
+    } catch (error) {
+      dispatch({
+        type: 'timeSheet/length',
+        payload: []
+      })
+    }
+  },
+  btnLoadingSearch: (value) => async(dispatch) => {
+    try {
+      dispatch({
+        type: 'timeSheet/btnLoading',
+        payload: value
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timeSheet/btnLoading',
+        payload: null
+      })
+    }
   }
 }

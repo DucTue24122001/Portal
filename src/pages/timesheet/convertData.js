@@ -20,6 +20,7 @@ export const convertData = (data, dataComp) => {
       pleave: item.paid_leave,
       uleave: item.unpaid_leave,
       is_holiday: item.is_holiday,
+      member_id: item.member_id,
       colorWorkTime: ''
     }
     if (item.note === null) {
@@ -55,6 +56,16 @@ export const convertData = (data, dataComp) => {
           valueData.Worktime = '00:00'
         }
       }
+    }
+    if (item.checkin_original === null) {
+      valueData.checkin = ''
+    } else {
+      valueData.checkin = item.checkout_original.slice(10, 16)
+    }
+    if (item.checkout_original === null) {
+      valueData.checkout = ''
+    } else {
+      valueData.checkout = item.checkout_original.slice(10, 16)
     }
     return valueData
   })

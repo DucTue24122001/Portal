@@ -7,12 +7,7 @@ import DialogTimeSheetRedux from './dialogTimesheetRedux'
 import SearchTimeSheetRedux from './searchTimeSheetRedux'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  lengthTableTimeSheetAPI,
-  loadingTableTrue,
-  searchTableTimeSheetApI,
-  selectTableTimeSheetApI
-} from '../../redux/timesheet'
+import { timeSheetRedux } from '../../redux/timesheet'
 import { convertData } from './convertData'
 import ModalForget from '../../components/modalTimesheet/modalForget'
 import ModalLateEarly from '../../components/modalTimesheet/modalLateEarly'
@@ -27,7 +22,7 @@ const TimesheetPage = () => {
   const [isModalLate, setIsModalLate] = useState(false)
   const [isModalLeave, setIsModalLeave] = useState(false)
   const [isModalOT, setIsModalOT] = useState(false)
-  const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
+  const [valueModal, setValueModal] = useState(null)
   const [params, setParams] = useState({ page: 1, pageSize: 10 })
   const [valueSearch, setValueSearch] = useState(null)
 
@@ -39,15 +34,15 @@ const TimesheetPage = () => {
   const dataComp = useSelector((state) => state.timesheet.listMemberComp)
 
   useEffect(() => {
-    dispatch(selectTableTimeSheetApI(params))
-    dispatch(lengthTableTimeSheetAPI())
+    dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
+    dispatch(timeSheetRedux.lengthTableTimeSheetAPI())
   }, [])
 
   useEffect(() => {
     if (optionSearch === 1) {
-      dispatch(searchTableTimeSheetApI(valueSearch, params, false))
+      dispatch(timeSheetRedux.searchTableTimeSheetApI(valueSearch, params, false))
     } else {
-      dispatch(selectTableTimeSheetApI(params))
+      dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
     }
   }, [params])
 
@@ -73,20 +68,20 @@ const TimesheetPage = () => {
       ...params,
       page: e
     })
-    dispatch(loadingTableTrue())
+    dispatch(timeSheetRedux.loadingTableTrue())
   }
 
   const onSearch = (values) => {
-    dispatch(searchTableTimeSheetApI(values, params, true))
+    dispatch(timeSheetRedux.searchTableTimeSheetApI(values, params, true))
     setValueSearch(values)
     if (values.radioBtn === 3) {
       setParams({ page: 1, pageSize: 10 })
-      dispatch(selectTableTimeSheetApI({ page: 1, pageSize: 10 }))
-      dispatch(loadingTableTrue())
+      dispatch(timeSheetRedux.selectTableTimeSheetApI({ page: 1, pageSize: 10 }))
+      dispatch(timeSheetRedux.loadingTableTrue())
     }
   }
 
-  const onActionForget = (e) => {
+  const onActionForget = (e, record) => {
     e.stopPropagation()
     setIsModalForget(true)
   }
@@ -280,19 +275,19 @@ const TimesheetPage = () => {
       dataIndex: 'action',
       key: 'action',
       width: '12%',
-      render: () => {
+      render: (index, record) => {
         return (
           <Space>
-            <Text className={styles.buttonTable} underline onClick={onActionForget}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
               Forget
             </Text>
-            <Text className={styles.buttonTable} underline onClick={onActionLate}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionLate(e, record)}>
               Late/Early
             </Text>
-            <Text className={styles.buttonTable} underline onClick={onActionLeave}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionLeave(e, record)}>
               Leave
             </Text>
-            <Text className={styles.buttonTable} underline onClick={onActionOT}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
           </Space>
@@ -342,10 +337,30 @@ const TimesheetPage = () => {
         bordered={true}
         loading={loading}
       />
-      <ModalForget isModalVisible={isModalForget} handleOk={cancelModalForget} handleCancel={cancelModalForget} />
-      <ModalLateEarly isModalVisible={isModalLate} handleOk={cancelMadalLate} handleCancel={cancelMadalLate} />
-      <ModalLeave isModalVisible={isModalLeave} handleOk={cancelModalLeave} handleCancel={cancelModalLeave} />
-      <ModalOT isModalVisible={isModalOT} handleOk={cancelModalOT} handleCancel={cancelModalOT} />
+      <ModalForget
+        isModalVisible={isModalForget}
+        handleOk={cancelModalForget}
+        valueModal={valueModal}
+        handleCancel={cancelModalForget}
+      />
+      <ModalLateEarly
+        isModalVisible={isModalLate}
+        handleOk={cancelMadalLate}
+        valueModal={valueModal}
+        handleCancel={cancelMadalLate}
+      />
+      <ModalLeave
+        isModalVisible={isModalLeave}
+        handleOk={cancelModalLeave}
+        valueModal={valueModal}
+        handleCancel={cancelModalLeave}
+      />
+      <ModalOT
+        isModalVisible={isModalOT}
+        handleOk={cancelModalOT}
+        valueModal={valueModal}
+        handleCancel={cancelModalOT}
+      />
       <DialogTimeSheetRedux
         isModalVisible={isModalVisible}
         handleOk={handleOk}
