@@ -14,6 +14,7 @@ export const removeCookie = async(key) => await cookies.remove(key)
 
 export const getToken = async() =>{
   const token = await getCookie('access_token')
+  console.log()
   return {
     headers: {
       Authorization: `Bearer ${token}`
