@@ -23,7 +23,7 @@ const LoginPage = () => {
     if (errorLogin !== '') {
       toast(errorLogin)
     }
-  }, [errorLogin])
+  }, [errorLogin, successLogout])
 
   const onFinish = (values) => {
     dispatch(authActions.login(values))
