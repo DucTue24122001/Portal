@@ -6,7 +6,7 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  modalRowTable: {}
+  modalRowTable: {},
 }
 // Reducer
 export const noticeReducer = (state = initState, action) => {
@@ -15,38 +15,38 @@ export const noticeReducer = (state = initState, action) => {
       return {
         ...state,
         data: action.payload,
-        optionSearch: 1
+        optionSearch: 1,
       }
     }
     case 'notice/loading': {
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       }
     }
     case 'notice/length': {
       return {
         ...state,
-        length: action.payload
+        length: action.payload,
       }
     }
     case 'notice/getdata': {
       return {
         ...state,
         data: action.payload,
-        optionSearch: 0
+        optionSearch: 0,
       }
     }
     case 'notice/btnLoading': {
       return {
         ...state,
-        btnLoading: action.payload
+        btnLoading: action.payload,
       }
     }
     case 'notice/modalRowTable': {
       return {
         ...state,
-        modalRowTable: action.payload
+        modalRowTable: action.payload,
       }
     }
     default:
@@ -56,27 +56,27 @@ export const noticeReducer = (state = initState, action) => {
 // Actions
 
 export const noticeRedux = {
-  selectTableNotice: (params) => async(dispatch) => {
+  selectTableNotice: (params) => async (dispatch) => {
     try {
       const { page, pageSize } = params
       const data = await get('notifications', page, pageSize)
       console.log('selectTableNotice', data)
       dispatch({
         type: 'notice/getdata',
-        payload: data
+        payload: data,
       })
       dispatch({
         type: 'notice/loading',
-        payload: false
+        payload: false,
       })
     } catch (error) {
       dispatch({
         type: 'notice/getdata',
-        payload: []
+        payload: [],
       })
     }
   },
-  searchTableNotice: (value, params, btnLoading) => async(dispatch) => {
+  searchTableNotice: (value, params, btnLoading) => async (dispatch) => {
     const { Department, SortBy, Status, inputSearch } = value
     const { page, pageSize } = params
     try {
@@ -84,21 +84,21 @@ export const noticeRedux = {
       if (btnLoading === true) {
         dispatch({
           type: 'notice/btnLoading',
-          payload: false
+          payload: false,
         })
       }
       dispatch({
         type: 'notice/search',
-        payload: data
+        payload: data,
       })
       dispatch({
         type: 'notice/loading',
-        payload: false
+        payload: false,
       })
     } catch (err) {
       dispatch({
         type: 'notice/search',
-        payload: []
+        payload: [],
       })
     }
   },
@@ -106,20 +106,20 @@ export const noticeRedux = {
   loadingTableTrue: () => {
     return {
       type: 'notice/loading',
-      payload: true
+      payload: true,
     }
   },
-  lengthTableNotice: () => async(dispatch) => {
+  lengthTableNotice: () => async (dispatch) => {
     try {
       const data = await getAll('notifications')
       dispatch({
         type: 'notice/length',
-        payload: data.length
+        payload: data.length,
       })
     } catch (error) {
       dispatch({
         type: 'notice/length',
-        payload: []
+        payload: [],
       })
     }
   },
@@ -127,12 +127,12 @@ export const noticeRedux = {
     try {
       dispatch({
         type: 'notice/modalRowTable',
-        payload: record
+        payload: record,
       })
     } catch (err) {
       dispatch({
         type: 'notice/modalRowTable',
-        payload: {}
+        payload: {},
       })
     }
   },
@@ -140,13 +140,13 @@ export const noticeRedux = {
     try {
       dispatch({
         type: 'notice/btnLoading',
-        payload: value
+        payload: value,
       })
     } catch (err) {
       dispatch({
         type: 'notice/btnLoading',
-        payload: null
+        payload: null,
       })
     }
-  }
+  },
 }
