@@ -3,16 +3,13 @@ import { useState } from 'react'
 import { Row, Col, DatePicker, Table, Button, Modal } from 'antd'
 import styles from './myleave.module.css'
 import FormRequestAdd from './FormRequestAdd'
-
 const MyLeavePage = () => {
   const [dataTable] = useState([])
   const [visible, setVisible] = useState(false)
   const onChangeYear = (date, dateString) => {}
-
   const handleCancel = () => {
     setVisible(false)
   }
-
   const columns = [
     {
       title: 'No',
