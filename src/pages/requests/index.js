@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination } from 'antd'
+import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination, Modal } from 'antd'
 import { useState } from 'react'
 import styles from './request.module.css'
 
@@ -10,6 +10,7 @@ const RequestsPage = () => {
   const [selectDisabled, setSelectDisable] = useState(true)
   const [rangePickerDisabled, setRangePickerDisable] = useState(true)
   const [params, setParams] = useState({ page: 1, limit: 5 })
+  const [visible, setVisible] = useState(false)
   const valuecheckbox = [1, 2, 3]
   const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
   const datatable = [
@@ -95,7 +96,13 @@ const RequestsPage = () => {
 
   const onActionClick = () => {}
 
-  const onActionView = () => {}
+  const onActionView = () => {
+    setVisible(true)
+  }
+
+  const handleCancel = () => {
+    setVisible(false)
+  }
 
   const columns = [
     {
@@ -203,26 +210,23 @@ const RequestsPage = () => {
     },
     {
       title: 'Action',
+      key: 'action',
       align: 'center',
-      key: 'status, requests_type',
-      render: (record) => {
-        let status = ''
-        if (record.status === 0) status = 'Comfirmed'
-        else if (record.status === 1) status = 'Approved'
-        else status = ''
-        return (
-          <>
-            {status === '' ? (
-              ' '
-            ) : (
-              <Space>
-                <Button type='primary' onClick={onActionClick}>
-                  {status}
-                </Button>
-                <Button onClick={onActionView}>View</Button>
-              </Space>
-            )}
-          </>
+      render: (index, record) => {
+        return (<Space>
+          <Button type='primary' onClick={onActionClick}>
+            Click
+          </Button>
+          <Button onClick={onActionView}>View</Button>
+          <Modal
+            visible={visible}
+            footer={false}
+            width={1000}
+            title='title'
+            onCancel={handleCancel}
+            id = {record.index}
+          >id:{record.index}</Modal>
+        </Space>
         )
       }
     }
@@ -336,6 +340,7 @@ const RequestsPage = () => {
                           tableLayout='fixed'
                         />
                         <Pagination total={20} onChange={onChangePage} defaultCurrent={params.page}></Pagination>
+
                       </Space>
                     </Col>
                   </Row>
@@ -350,3 +355,4 @@ const RequestsPage = () => {
 }
 
 export default RequestsPage
+//

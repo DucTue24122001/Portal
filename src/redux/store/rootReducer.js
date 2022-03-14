@@ -6,6 +6,7 @@ import { registerOTReducer } from '../registerOT'
 import { infoUserReducer } from '../inforUser'
 import { leaveReducer } from '../leave'
 import { noticeReducer } from '../notice'
+import { leaveQuotaReducer } from '../myleave'
 
 export default combineReducers({
   auth: authReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   registerOT: registerOTReducer,
   infoUser: infoUserReducer,
   leave: leaveReducer,
-  notice: noticeReducer
+  notice: noticeReducer,
+  leaveQuota: leaveQuotaReducer,
 })
