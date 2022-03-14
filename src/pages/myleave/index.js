@@ -3,11 +3,16 @@ import { useState } from 'react'
 import { Row, Col, DatePicker, Table, Button, Modal } from 'antd'
 import styles from './myleave.module.css'
 import FormRequestAdd from './FormRequestAdd'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { leaveQuotaActions } from '../../redux/myleave'
 const MyLeavePage = () => {
-  const [dataTable] = useState([])
   const [visible, setVisible] = useState(false)
-  const onChangeYear = (date, dateString) => {}
+  const dispacth = useDispatch()
+  const { leaveQuota, loadingLeaveQuota } = useSelector((state) => state.leaveQuota)
+
+  const onChangeYear = (date, dateString) => {
+    dispacth(leaveQuotaActions.getLeaveQuota(dateString))
+  }
 
   const handleCancel = () => {
     setVisible(false)
@@ -34,8 +39,8 @@ const MyLeavePage = () => {
     },
     {
       title: 'Reason',
-      dataIndex: 'reason',
-      key: 'reason'
+      dataIndex: 'note',
+      key: 'note'
     },
     {
       title: 'Status',
@@ -113,9 +118,10 @@ const MyLeavePage = () => {
               <Col span={22}>
                 <Table
                   columns={columns}
-                  dataSource={dataTable}
+                  dataSource={leaveQuota?.requests}
                   pagination={false}
                   rowKey={(dataSource) => dataSource?.id}
+                  loading={loadingLeaveQuota}
                   bordered
                   className={styles['table']}
                   tableLayout='fixed'
