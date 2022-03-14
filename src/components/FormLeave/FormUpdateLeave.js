@@ -7,14 +7,14 @@ import { leaveActions } from '../../redux/leave'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
-  rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+  rules: [{ type: 'array', required: true, message: 'Please select time!' }]
 }
 const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
 const initialStatus = {
   1: 'Sent',
   2: 'Confirmed',
-  3: 'Approved',
+  3: 'Approved'
 }
 const initialStatusDisable = ['Confirmed', 'Approved']
 const initialTotalWorkTime = moment.duration(`08:00:00`).asSeconds()
@@ -68,7 +68,7 @@ const FormUpdateLeave = ({ onCancel }) => {
       workTime: moment.utc(moment.duration(workTime, 'seconds').as('milliseconds')).format('HH:mm'),
       lackTime: moment.utc(moment.duration(lackTime, 'seconds').as('milliseconds')).format('HH:mm'),
       timeCount: moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm'),
-      status: 'Confirmed',
+      status: 'Confirmed'
     }
     dispatch(leaveActions.update(dataForm, idLeave))
   }
@@ -109,17 +109,17 @@ const FormUpdateLeave = ({ onCancel }) => {
   return (
     <>
       {loadingUpdateLeave ? (
-        <Spin tip="Loading..." />
+        <Spin tip='Loading...' />
       ) : (
         <div className={style.wrapper_form}>
           <Form
-            name="basic"
+            name='basic'
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            autoComplete="off"
+            autoComplete='off'
           >
             <Row gutter={[10, 10]}>
               <Col className={style.form_item} span={4}>
@@ -134,12 +134,12 @@ const FormUpdateLeave = ({ onCancel }) => {
               </Col>
               <Col className={style.form_item} span={20}>
                 <Form.Item
-                  name="RegisterForDate"
+                  name='RegisterForDate'
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your register date!',
-                    },
+                      message: 'Please input your register date!'
+                    }
                   ]}
                 >
                   <DatePicker
@@ -155,19 +155,19 @@ const FormUpdateLeave = ({ onCancel }) => {
               </Col>
               <Col span={8} className={style.form_item}>
                 <Form.Item
-                  name="checkIn"
+                  name='checkIn'
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your checkin time!',
-                    },
+                      message: 'Please input your checkin time!'
+                    }
                   ]}
                 >
                   <TimePicker
                     defaultValue={leave ? moment(leave.checkIn, timeFormat) : ''}
                     format={timeFormat}
                     disabledHours={() => disabledTimeCheckin}
-                    format="HH:mm"
+                    format='HH:mm'
                     onChange={onCheckin}
                     className={style.timeBox}
                   />
@@ -179,19 +179,19 @@ const FormUpdateLeave = ({ onCancel }) => {
               </Col>
               <Col span={8} className={style.form_item}>
                 <Form.Item
-                  name="checkOut"
+                  name='checkOut'
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your checkout time!',
-                    },
+                      message: 'Please input your checkout time!'
+                    }
                   ]}
                 >
                   <TimePicker
                     defaultValue={leave ? moment(leave.checkOut, timeFormat) : ''}
                     format={timeFormat}
                     disabledHours={() => disabledTimeCheckin}
-                    format="HH:mm"
+                    format='HH:mm'
                     onChange={onCheckout}
                     className={style.timeBox}
                   />
@@ -221,7 +221,7 @@ const FormUpdateLeave = ({ onCancel }) => {
               </Col>
 
               <Col span={24} className={style.leaveAll}>
-                <Form.Item className={style.wrapper_item_form} name="checkAll" valuePropName="checked" noStyle>
+                <Form.Item className={style.wrapper_item_form} name='checkAll' valuePropName='checked' noStyle>
                   <Checkbox disabled={disabled}>Leave all day</Checkbox>
                 </Form.Item>
               </Col>
@@ -230,7 +230,7 @@ const FormUpdateLeave = ({ onCancel }) => {
                 Range:
               </Col>
               <Col span={8} className={style.form_item}>
-                <Form.Item name="range-picker" {...rangeConfig}>
+                <Form.Item name='range-picker' {...rangeConfig}>
                   <RangePicker
                     defaultValue={
                       leave ? [moment(leave.RangeStart, timeFormat), moment(leave.RangeEnd, timeFormat)] : ''
@@ -238,7 +238,7 @@ const FormUpdateLeave = ({ onCancel }) => {
                     className={style.timeBox}
                     disabledHours={() => disabledStartTime}
                     onChange={rangerTime}
-                    format="HH:mm"
+                    format='HH:mm'
                     disabled={disabled}
                   />
                 </Form.Item>
@@ -247,7 +247,7 @@ const FormUpdateLeave = ({ onCancel }) => {
               <Col span={4} className={style.form_item} className={style.timeBox}>
                 <Form.Item
                   className={style.item_form}
-                  name="radio-group"
+                  name='radio-group'
                   rules={[{ required: true, message: 'Please pick an item!' }]}
                 >
                   <Radio.Group className={style.wrapper_button_radio} disabled={disabled}>
@@ -261,7 +261,7 @@ const FormUpdateLeave = ({ onCancel }) => {
                 Time count:
                 <span
                   style={{
-                    color: timeCount < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset',
+                    color: timeCount < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset'
                   }}
                 >
                   {moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm')}
@@ -273,7 +273,7 @@ const FormUpdateLeave = ({ onCancel }) => {
               </Col>
               <Col span={18} className={style.form_item}>
                 <Form.Item
-                  name="Reason"
+                  name='Reason'
                   rules={[{ required: true, message: 'Please input Intro' }]}
                   className={style.item_form}
                 >
@@ -305,9 +305,9 @@ const FormUpdateLeave = ({ onCancel }) => {
 
             <div className={style.wrapper_item_button_form}>
               <Button
-                htmlType="submit"
+                htmlType='submit'
                 disabled={disabled}
-                type="primary"
+                type='primary'
                 loading={loadingUpdateLeave}
                 onClick={enterLoading}
               >

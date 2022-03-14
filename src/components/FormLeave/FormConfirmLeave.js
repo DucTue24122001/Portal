@@ -5,14 +5,14 @@ import { DatePicker, TimePicker, Checkbox, Radio, Input, Button, Form, Spin } fr
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
-  rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+  rules: [{ type: 'array', required: true, message: 'Please select time!' }]
 }
 const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
 const initialStatus = {
   1: 'Sent',
   2: 'Confirmed',
-  3: 'Approved',
+  3: 'Approved'
 }
 const initialStatusDisable = ['Confirmed', 'Approved']
 const initialTotalWorkTime = moment.duration(`08:00:00`).asSeconds()
@@ -84,17 +84,17 @@ const FormConfirmLeave = ({ onCancel }) => {
   return (
     <>
       {loadingData ? (
-        <Spin tip="Loading..." />
+        <Spin tip='Loading...' />
       ) : (
         <div className={style.wrapper_form}>
           <Form
-            name="Confirm Leave"
+            name='Confirm Leave'
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            autoComplete="off"
+            autoComplete='off'
           >
             <Row gutter={[10, 10]}>
               <Col className={style.form_item} span={4}>
@@ -109,12 +109,12 @@ const FormConfirmLeave = ({ onCancel }) => {
               </Col>
               <Col className={style.form_item} span={20}>
                 <Form.Item
-                  name="dateRegister"
+                  name='dateRegister'
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your register date!',
-                    },
+                      message: 'Please input your register date!'
+                    }
                   ]}
                 >
                   <DatePicker className={style.timeBox} />
@@ -126,17 +126,17 @@ const FormConfirmLeave = ({ onCancel }) => {
               </Col>
               <Col span={8} className={style.form_item}>
                 <Form.Item
-                  name="timeCheckin"
+                  name='timeCheckin'
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your checkin time!',
-                    },
+                      message: 'Please input your checkin time!'
+                    }
                   ]}
                 >
                   <TimePicker
                     disabledHours={() => disabledTimeCheckin}
-                    format="HH:mm"
+                    format='HH:mm'
                     onChange={onCheckin}
                     className={style.timeBox}
                   />
@@ -148,17 +148,17 @@ const FormConfirmLeave = ({ onCancel }) => {
               </Col>
               <Col span={8} className={style.form_item}>
                 <Form.Item
-                  name="timeCheckout"
+                  name='timeCheckout'
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your checkout time!',
-                    },
+                      message: 'Please input your checkout time!'
+                    }
                   ]}
                 >
                   <TimePicker
                     disabledHours={() => disabledTimeCheckin}
-                    format="HH:mm"
+                    format='HH:mm'
                     onChange={onCheckout}
                     className={style.timeBox}
                   />
@@ -173,8 +173,8 @@ const FormConfirmLeave = ({ onCancel }) => {
                   {checkout == ''
                     ? 0
                     : moment
-                        .utc(moment.duration(checkout - checkin - freeTime, 'seconds').as('milliseconds'))
-                        .format('HH:mm')}
+                      .utc(moment.duration(checkout - checkin - freeTime, 'seconds').as('milliseconds'))
+                      .format('HH:mm')}
                 </span>
               </Col>
 
@@ -186,17 +186,17 @@ const FormConfirmLeave = ({ onCancel }) => {
                   {checkout == ''
                     ? 0
                     : moment
-                        .utc(
-                          moment
-                            .duration(totalWorkTime.current - (checkout - checkin - freeTime), 'seconds')
-                            .as('milliseconds')
-                        )
-                        .format('HH:mm')}
+                      .utc(
+                        moment
+                          .duration(totalWorkTime.current - (checkout - checkin - freeTime), 'seconds')
+                          .as('milliseconds')
+                      )
+                      .format('HH:mm')}
                 </span>
               </Col>
 
               <Col span={24} className={style.leaveAll}>
-                <Form.Item className={style.wrapper_item_form} name="checkAll" valuePropName="checked" noStyle>
+                <Form.Item className={style.wrapper_item_form} name='checkAll' valuePropName='checked' noStyle>
                   <Checkbox disabled={disabled}>Leave all day</Checkbox>
                 </Form.Item>
               </Col>
@@ -205,12 +205,12 @@ const FormConfirmLeave = ({ onCancel }) => {
                 Range:
               </Col>
               <Col span={8} className={style.form_item}>
-                <Form.Item name="range-picker" {...rangeConfig}>
+                <Form.Item name='range-picker' {...rangeConfig}>
                   <RangePicker
                     className={style.timeBox}
                     disabledHours={() => disabledStartTime}
                     onChange={rangerTime}
-                    format="HH:mm"
+                    format='HH:mm'
                     disabled={disabled}
                   />
                 </Form.Item>
@@ -219,7 +219,7 @@ const FormConfirmLeave = ({ onCancel }) => {
               <Col span={4} className={style.form_item} className={style.timeBox}>
                 <Form.Item
                   className={style.item_form}
-                  name="radio-group"
+                  name='radio-group'
                   rules={[{ required: true, message: 'Please pick an item!' }]}
                 >
                   <Radio.Group className={s.wrapper_item_button_form} disabled={disabled}>
@@ -232,7 +232,7 @@ const FormConfirmLeave = ({ onCancel }) => {
                 <span className={s.label}>Time count:</span>
                 <span
                   style={{
-                    color: timeCount < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset',
+                    color: timeCount < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset'
                   }}
                 >
                   {moment.utc(moment.duration(timeCount, 'seconds').as('milliseconds')).format('HH:mm')}
@@ -243,7 +243,7 @@ const FormConfirmLeave = ({ onCancel }) => {
                 Reason:
               </Col>
               <Col span={18} className={style.form_item}>
-                <Form.Item name="reasonInfo" rules={[{ required: true, message: 'Please input Intro' }]}>
+                <Form.Item name='reasonInfo' rules={[{ required: true, message: 'Please input Intro' }]}>
                   <Input.TextArea disabled={disabled} showCount maxLength={100} rows={4} />
                 </Form.Item>
               </Col>
@@ -259,7 +259,7 @@ const FormConfirmLeave = ({ onCancel }) => {
                 Comment:
               </Col>
               <Col span={18} className={style.form_item}>
-                <Form.Item name="comment" rules={[{ required: true, message: 'Please input Intro' }]}>
+                <Form.Item name='comment' rules={[{ required: true, message: 'Please input Intro' }]}>
                   <Input.TextArea disabled={disabled} showCount maxLength={100} rows={4} />
                 </Form.Item>
               </Col>
@@ -267,9 +267,9 @@ const FormConfirmLeave = ({ onCancel }) => {
 
             <div className={style.wrapper_item_button_form}>
               <Button
-                htmlType="submit"
+                htmlType='submit'
                 disabled={disabled}
-                type="primary"
+                type='primary'
                 loading={loadingSubmit}
                 onClick={enterLoading}
                 className={s.button_form}
