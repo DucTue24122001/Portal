@@ -5,20 +5,28 @@ import style from '../modalCss/forget.module.css'
 import React, { useState } from 'react'
 
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {
-  const onOk = () => handleOk()
-  const onCancel = () => handleCancel()
+  const initialStatus = {
+    1: 'Sent',
+    2: 'Confirmed',
+    3: 'Approved'
+  }
   const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
   const disabledTimePM = [20, 21, 22, 23]
-  const [isStatus, setIsStatus] = useState(false)
+  const [status, setStatus] = useState(initialStatus[1])
+  const [hidden, setHidden] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [, setCheckOut] = useState(0)
   const [disabledTimeCheckIn, setDisableTimeCheckIn] = useState([...disabledTimeAM, ...disabledTimePM])
+
+  const onOk = () => handleOk()
+
+  const onCancel = () => handleCancel()
 
   const onFinish = (values) => {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-      setIsStatus(true)
+      setHidden(true)
     }, 2000)
   }
 
@@ -160,11 +168,11 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
               </Col>
             </Row>
 
-            {isStatus && (
+            {hidden && (
               <Row className={style.row}>
                 <Col span={18} push={6}>
                   <Form.Item className={style.m_0}>
-                    <span>Sent</span>
+                    <span>{status}</span>
                   </Form.Item>
                 </Col>
                 <Col span={6} pull={18}>
@@ -173,7 +181,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
               </Row>
             )}
 
-            {isStatus ? (
+            {hidden ? (
               <div className={style.wrapper_button_form}>
                 <Button className={style.button_form} type='primary'>
                   Update
