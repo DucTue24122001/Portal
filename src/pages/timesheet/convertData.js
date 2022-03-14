@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 export const convertData = (data, dataComp) => {
+  console.log(data)
   const value = data.map((item) => {
     const valueData = {
       key: item.id,

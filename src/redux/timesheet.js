@@ -52,10 +52,10 @@ export const timeSheetReducer = (state = initState, action) => {
 export const selectTableTimeSheetApI = (params) => async(dispatch) => {
   try {
     const { page, pageSize } = params
-    const data = await getApiTable('apiStaff', page, pageSize)
+    const data = await getApiTable('timesheets', page, pageSize)
     dispatch({
       type: 'timeSheet/getdata',
-      payload: data
+      payload: data.data
     })
     dispatch({
       type: 'timeSheet/loading',
@@ -74,7 +74,7 @@ export const searchTableTimeSheetApI = (value, params, btnLoading) => async(disp
   const { page, pageSize } = params
   try {
     if (radioBtn === 1) {
-      const data = await getSortTable('apiStaff', Date, Sort, page, pageSize)
+      const data = await getSortTable('timesheets', Date, Sort, page, pageSize)
       if (btnLoading === true) {
         dispatch({
           type: 'timeSheet/btnLoading',
@@ -83,7 +83,7 @@ export const searchTableTimeSheetApI = (value, params, btnLoading) => async(disp
       }
       dispatch({
         type: 'timeSheet/search',
-        payload: data
+        payload: data.data
       })
       dispatch({
         type: 'timeSheet/loading',
@@ -107,7 +107,7 @@ export const loadingTableTrue = () => {
 
 export const lengthTableTimeSheetAPI = () => async(dispatch) => {
   try {
-    const data = await getAllApiTable('apiStaff')
+    const data = await getAllApiTable('timesheets')
     const dataComp = []
     data.map((item) => {
       if (item.compensation !== null) {

@@ -1,10 +1,14 @@
 import axios from 'axios'
+import { getCookie, STORAGEKEY } from '@/utils/storage'
 
 const getUrlPrefix = () => '/'
 
 const instance = axios.create({
-  baseURL: `https://621514c8cdb9d09717acf712.mockapi.io`
+  baseURL: `http://14.232.214.101:8111/api/v1/`
 })
+
+const token = getCookie(STORAGEKEY.ACCESS_TOKEN)
+if (token) instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 export const getAllApiTable = async(url) => {
   try {
