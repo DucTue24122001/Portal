@@ -9,14 +9,13 @@ import MyLeavePage from './pages/myleave'
 import NoicePage from './pages/notice'
 import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
+import profileContentPage from './pages/profile/profileContent'
+import profileContentUpdate from './pages/profile/profileContentUpdate'
 import Home from './pages/home'
 import RegisterLateEarly from './layouts/components/registerLateEarly'
 import EditLateEarly from './layouts/components/updateLateEarly'
 import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
 import RegisterOT from './layouts/components/registerOT'
-// import { createBrowserHistory } from 'history'
-
-// const browserHistory = createBrowserHistory()
 
 const PrivateRoute = (props) => {
   const [cookies] = useCookies([STORAGEKEY.ACCESS_TOKEN])
@@ -66,6 +65,28 @@ export const appRouter = [
     name: 'Home',
     path: '/',
     component: Home,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Profile',
+    path: '/profile',
+    component: profileContentPage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'ProfileUpdate',
+    path: '/profileUpdate',
+    component: profileContentUpdate,
     meta: {
       role: '*',
       isPrivate: true,
