@@ -82,7 +82,7 @@ const Rpoint = () => {
         <div className={style.d_flex}>
           <h1 className={style.l_name}>R-Point</h1>
           <p className={style.mrl_10}>
-            Total points: <span className={style.l_name}>50.200</span>
+            Total points: <span className={style.l_name}>{data.length > 0 ? data[0].current_point : null}</span>
           </p>
           <p className={style.mrl_10}>
             This month: <span className={style.s_point}>{total}</span>
