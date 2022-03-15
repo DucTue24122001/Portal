@@ -5,6 +5,7 @@ import Title from 'antd/lib/typography/Title'
 import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
+import { noticeRedux } from '../../redux/notice'
 import styles from './styles.module.css'
 
 const SearchNotice = ({ onSearch }) => {
@@ -12,6 +13,9 @@ const SearchNotice = ({ onSearch }) => {
   const { Option } = Select
 
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
+
+  const btnLoadingRedux = useSelector((state) => state.notice.btnLoading)
 
   const onReset = () => {
     form.resetFields()
@@ -19,6 +23,8 @@ const SearchNotice = ({ onSearch }) => {
   }
 
   const onFinish = (value) => {
+    dispatch(noticeRedux.btnLoadingSearch(true))
+    dispatch(noticeRedux.loadingTableTrue())
     onSearch(value)
   }
 
@@ -142,7 +148,7 @@ const SearchNotice = ({ onSearch }) => {
                 <Row gutter={24} justify='center'>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button type='primary' htmlType='submit'>
+                      <Button type='primary' htmlType='submit' loading={btnLoadingRedux}>
                         Search
                       </Button>
                     </Form.Item>

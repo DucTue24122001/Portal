@@ -59,14 +59,14 @@ const TimesheetPage = () => {
   const onChangeElement = (e) => {
     setParams({
       ...params,
-      pageSize: e,
+      pageSize: e
     })
   }
 
   const handleChange = (e) => {
     setParams({
       ...params,
-      page: e,
+      page: e
     })
     dispatch(timeSheetRedux.loadingTableTrue())
   }
@@ -130,22 +130,22 @@ const TimesheetPage = () => {
     {
       title: 'No',
       dataIndex: 'id',
-      width: '4%',
+      width: '4%'
     },
     {
       title: 'Date',
       dataIndex: 'date',
-      width: '8%',
+      width: '8%'
     },
     {
       title: 'Check In',
       dataIndex: 'checkin',
-      width: '5%',
+      width: '5%'
     },
     {
       title: 'Check Out',
       dataIndex: 'checkout',
-      width: '5%',
+      width: '5%'
     },
     {
       title: 'Late',
@@ -167,7 +167,7 @@ const TimesheetPage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Early',
@@ -189,13 +189,13 @@ const TimesheetPage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'In Officle',
       dataIndex: 'inOfficle',
       width: '5%',
-      responsive: ['xxl', 'xl', 'lg', 'md'],
+      responsive: ['xxl', 'xl', 'lg', 'md']
     },
     {
       title: 'OT',
@@ -208,7 +208,7 @@ const TimesheetPage = () => {
             <Text
               type={
                 record.Ot === null ||
-                record.late === '00:00' ||
+                record.Ot === '00:00' ||
                 (record.Note.includes('Approved') && record.Note.includes('OT'))
                   ? ''
                   : 'danger'
@@ -218,7 +218,7 @@ const TimesheetPage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Work Time',
@@ -233,17 +233,17 @@ const TimesheetPage = () => {
                   ? ''
                   : moment(record.Worktime, 'hh:mm').isBefore(moment('08:00', 'hh:mm')) ||
                     record.colorWorkTime === 'default'
-                  ? record.Note.includes('Approved') && record.Note.includes('Late/Early')
-                    ? 'warning'
-                    : 'danger'
-                  : ''
+                    ? record.Note.includes('Approved') && record.Note.includes('Late/Early')
+                      ? 'warning'
+                      : 'danger'
+                    : ''
               }
             >
               {Worktime}
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Lack',
@@ -257,25 +257,25 @@ const TimesheetPage = () => {
             <Text type={Note.includes(record.Note) || record.late === '00:00' ? '' : 'danger'}>{lack}</Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Comp',
       dataIndex: 'comp',
       width: '4%',
-      responsive: ['xxl', 'xl', 'lg'],
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Pleave',
       dataIndex: 'pleave',
       width: '4%',
-      responsive: ['xxl', 'xl', 'lg'],
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Uleave',
       dataIndex: 'uleave',
       width: '4%',
-      responsive: ['xxl', 'xl', 'lg'],
+      responsive: ['xxl', 'xl', 'lg']
     },
     {
       title: 'Note',
@@ -288,7 +288,7 @@ const TimesheetPage = () => {
             <Text>{Note}</Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Action',
@@ -312,8 +312,8 @@ const TimesheetPage = () => {
             </Text>
           </Space>
         )
-      },
-    },
+      }
+    }
   ]
 
   return (
@@ -327,11 +327,11 @@ const TimesheetPage = () => {
           </Text>
         </Col>
         <Col span={12} className={styles.toTheRight}>
-          <Select defaultValue="10" onChange={onChangeElement}>
-            <Select.Option value="10">10 / page</Select.Option>
-            <Select.Option value="20">20 / page</Select.Option>
-            <Select.Option value="50">50 / page</Select.Option>
-            <Select.Option value="100">100 / page</Select.Option>
+          <Select defaultValue='10' onChange={onChangeElement}>
+            <Select.Option value='10'>10 / page</Select.Option>
+            <Select.Option value='20'>20 / page</Select.Option>
+            <Select.Option value='50'>50 / page</Select.Option>
+            <Select.Option value='100'>100 / page</Select.Option>
           </Select>
           <Text>Item per page &ensp;</Text>
         </Col>
@@ -345,11 +345,11 @@ const TimesheetPage = () => {
           total: length,
           current: params.page,
           onChange: handleChange,
-          showSizeChanger: false,
+          showSizeChanger: false
         }}
         onRow={(record, rowIndex) => {
           return {
-            onClick: () => onClickRow(record),
+            onClick: () => onClickRow(record)
           }
         }}
         rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : '')}
