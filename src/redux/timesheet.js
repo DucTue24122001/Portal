@@ -1,4 +1,5 @@
-import { getAllApiTable, getApiTable, getSortTable } from '../api/apiTimesheet'
+import { get } from '@/api/BaseRequest'
+
 // InitSate
 const initState = {
   data: [],
@@ -6,7 +7,8 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  listMemberComp: []
+  listMemberComp: [],
+  modalRowTable: {}
 }
 // Reducer
 export const timeSheetReducer = (state = initState, action) => {
@@ -44,98 +46,119 @@ export const timeSheetReducer = (state = initState, action) => {
         btnLoading: action.payload
       }
     }
+    case 'timeSheet/modalRowTable': {
+      return {
+        ...state,
+        modalRowTable: action.payload
+      }
+    }
     default:
       return state
   }
 }
 // Actions
-export const selectTableTimeSheetApI = (params) => async(dispatch) => {
-  try {
-    const { page, pageSize } = params
-    const data = await getApiTable('apiStaff', page, pageSize)
-    dispatch({
-      type: 'timeSheet/getdata',
-      payload: data
-    })
-    dispatch({
-      type: 'timeSheet/loading',
-      payload: false
-    })
-  } catch (error) {
-    dispatch({
-      type: 'timeSheet/getdata',
-      payload: []
-    })
-  }
-}
 
-export const searchTableTimeSheetApI = (value, params, btnLoading) => async(dispatch) => {
-  const { Date, Sort, radioBtn } = value
-  const { page, pageSize } = params
-  try {
-    if (radioBtn === 1) {
-      const data = await getSortTable('apiStaff', Date, Sort, page, pageSize)
-      if (btnLoading === true) {
-        dispatch({
-          type: 'timeSheet/btnLoading',
-          payload: false
-        })
-      }
+export const timeSheetRedux = {
+  selectTableTimeSheetApI: (params) => async(dispatch) => {
+    try {
+      const { page, pageSize } = params
+      const sizePage = { page: page, limit: pageSize }
+      const data = await get('timesheets', sizePage)
       dispatch({
-        type: 'timeSheet/search',
-        payload: data
+        type: 'timeSheet/getdata',
+        payload: data.data
       })
       dispatch({
         type: 'timeSheet/loading',
         payload: false
       })
+    } catch (error) {
+      dispatch({
+        type: 'timeSheet/getdata',
+        payload: []
+      })
     }
-  } catch (err) {
-    dispatch({
-      type: 'timeSheet/search',
-      payload: []
-    })
-  }
-}
-
-export const loadingTableTrue = () => {
-  return {
-    type: 'timeSheet/loading',
-    payload: true
-  }
-}
-
-export const lengthTableTimeSheetAPI = () => async(dispatch) => {
-  try {
-    const data = await getAllApiTable('apiStaff')
-    const dataComp = []
-    data.map((item) => {
-      if (item.compensation !== null) {
-        dataComp.push(item)
+  },
+  searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
+    const { Date, Sort, radioBtn } = value
+    const { page, pageSize } = params
+    try {
+      if (radioBtn === 1) {
+        const sortOption = { sortBy: 'id', order: Sort, page: page, limit: pageSize }
+        const data = await get('timesheets', sortOption)
+        if (btnLoading === true) {
+          dispatch({
+            type: 'timeSheet/btnLoading',
+            payload: false
+          })
+        }
+        dispatch({
+          type: 'timeSheet/search',
+          payload: data.data
+        })
+        dispatch({
+          type: 'timeSheet/loading',
+          payload: false
+        })
       }
-    })
-    dispatch({
-      type: 'timeSheet/length',
-      payload: { dataComp: dataComp, length: data.length }
-    })
-  } catch (error) {
-    dispatch({
-      type: 'timeSheet/length',
-      payload: []
-    })
-  }
-}
+    } catch (err) {
+      dispatch({
+        type: 'timeSheet/search',
+        payload: []
+      })
+    }
+  },
 
-export const btnLoadingSearch = (value) => async(dispatch) => {
-  try {
-    dispatch({
-      type: 'timeSheet/btnLoading',
-      payload: value
-    })
-  } catch (err) {
-    dispatch({
-      type: 'timeSheet/btnLoading',
-      payload: null
-    })
+  loadingTableTrue: () => {
+    return {
+      type: 'timeSheet/loading',
+      payload: true
+    }
+  },
+  lengthTableTimeSheetAPI: () => async(dispatch) => {
+    try {
+      const data = await get('timesheets')
+      const dataComp = () =>
+        data.map((item) => {
+          if (item.compensation !== null) {
+            return item
+          }
+        })
+      dispatch({
+        type: 'timeSheet/length',
+        payload: { dataComp: dataComp, length: data.total }
+      })
+    } catch (error) {
+      dispatch({
+        type: 'timeSheet/length',
+        payload: []
+      })
+    }
+  },
+  modalRowTable: (record) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'timeSheet/modalRowTable',
+        payload: record
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timeSheet/modalRowTable',
+        payload: {}
+      })
+    }
+  },
+  btnLoadingSearch: (value) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'timeSheet/btnLoading',
+        payload: value
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timeSheet/btnLoading',
+        payload: null
+      })
+    }
   }
 }
