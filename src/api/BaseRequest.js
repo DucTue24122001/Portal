@@ -3,15 +3,13 @@ import { getCookie, STORAGEKEY } from '@/utils/storage'
 
 const getUrlPrefix = () => '/'
 
-const instance = axios.create({
-  baseURL: `http://14.232.214.101:8111/api/v1/`
-})
-
 // const instance = axios.create({
-
-//   baseURL: process.env.API_URL
-
+//   baseURL: `http://14.232.214.101:8111/api/v1/`
 // })
+
+const instance = axios.create({
+  baseURL: process.env.API_URL
+})
 
 // instance.interceptors.request.use(function (config) {
 //   console.log(config);
