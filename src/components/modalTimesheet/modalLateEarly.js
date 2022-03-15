@@ -1,11 +1,12 @@
 import { Modal } from 'antd'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import RegisterLateEarly from '../../layouts/components/registerLateEarly/index'
 
 export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
-
+  const dataModal = useSelector((state) => state.timesheet.modalRowTable)
   return (
     <>
       <Modal

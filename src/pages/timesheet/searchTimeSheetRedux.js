@@ -1,12 +1,11 @@
-import 'antd/dist/antd.css'
-import React from 'react'
-import Layout, { Content } from 'antd/lib/layout/layout'
 import { Button, Col, DatePicker, Form, Radio, Row, Select, Typography } from 'antd'
+import 'antd/dist/antd.css'
+import Layout, { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
-import styles from './styles.module.css'
-import { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { btnLoadingSearch, loadingTableTrue } from '../../redux/timesheet'
+import { timeSheetRedux } from '../../redux/timesheet'
+import styles from './styles.module.css'
 
 const SearchTimeSheetRedux = ({ onSearch }) => {
   const { Text } = Typography
@@ -67,13 +66,13 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
 
   const onReset = () => {
     form.resetFields()
-    dispatch(btnLoadingSearch(false))
+    dispatch(timeSheetRedux.btnLoadingSearch(false))
     onSearch({ radioBtn: 3 })
   }
 
   const onFinish = (value) => {
-    dispatch(btnLoadingSearch(true))
-    dispatch(loadingTableTrue())
+    dispatch(timeSheetRedux.btnLoadingSearch(true))
+    dispatch(timeSheetRedux.loadingTableTrue())
     const values = { ...value, radioBtn }
     onSearch(values)
   }
@@ -86,7 +85,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
     } else if (e.target.value === 1) {
       setDisableRadio({ radioSort: false, radioTime: true })
     }
-    dispatch(btnLoadingSearch(false))
+    dispatch(timeSheetRedux.btnLoadingSearch(false))
   }
 
   const disabledStartDate = (startValue) => {
@@ -159,9 +158,8 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         {...rolesTimestart.rulesRadioSort}
                       >
                         <Select placeholder='Select time' disabled={disableRadio.radioSort}>
-                          <Option value='date'>This date</Option>
-                          <Option value='month'>This month</Option>
-                          <Option value='year'>This year</Option>
+                          <Option value='1'>This month</Option>
+                          <Option value='2'>Last month</Option>
                         </Select>
                       </Form.Item>
                     </Col>

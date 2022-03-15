@@ -19,16 +19,14 @@ export const convertData = (data, dataComp) => {
       pleave: item.paid_leave,
       uleave: item.unpaid_leave,
       is_holiday: item.is_holiday,
+      member_id: item.member_id,
       colorWorkTime: ''
     }
     if (item.note === null) {
       valueData.Note = ''
     } else {
-      if (
-        item.note.includes('Approved', 'Forget') === true ||
-        item.note.includes('Approved', 'Leave') === true ||
-        item.note.includes('Approved', 'check-in/out') === true
-      ) {
+      const NoteTable = ['Forget:Approved', 'Leave:Approved', 'Check-in/out:Approved']
+      if (NoteTable.includes(item.note)) {
         valueData.Worktime = '08:00'
       }
       if (item.lack !== null) {
@@ -55,6 +53,13 @@ export const convertData = (data, dataComp) => {
         }
       }
     }
+    item.checkin_original === null
+      ? (valueData.checkin = '')
+      : (valueData.checkin = item.checkout_original.slice(10, 16))
+    item.checkout_original === null
+      ? (valueData.checkout = '')
+      : (valueData.checkout = item.checkout_original.slice(10, 16))
+
     return valueData
   })
 

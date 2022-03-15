@@ -3,6 +3,7 @@ import { Checkbox, Form, DatePicker, TimePicker, Button, Row, Col } from 'antd'
 import moment from 'moment'
 import style from '../modalCss/forget.module.css'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {
   const initialStatus = {
@@ -21,6 +22,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
   const onOk = () => handleOk()
 
   const onCancel = () => handleCancel()
+  const dataModal = useSelector((state) => state.timesheet.modalRowTable)
 
   const onFinish = (values) => {
     setIsLoading(true)
