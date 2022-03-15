@@ -5,10 +5,11 @@ export const convertDataNotice = (data) => {
       id: item.id,
       attachment: item.attachment,
       author: item.author,
-      date: item.date,
-      published_to: item.published_to,
+      status: item.status,
+      published_date: item.published_date,
       subject: item.subject,
-      published_to: item.published_to,
+      created_by: item.created_by,
+      created_at: item.created_at,
       attachment_link: item.attachment
     }
 

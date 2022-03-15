@@ -1,4 +1,5 @@
-import { getAllApiTable, getApiTable, getSortTable } from '../api/apiTimesheet'
+import { get } from '@/api/BaseRequest'
+
 // InitSate
 const initState = {
   data: [],
@@ -61,7 +62,8 @@ export const timeSheetRedux = {
   selectTableTimeSheetApI: (params) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const data = await getApiTable('timesheets', page, pageSize)
+      const sizePage = { page: page, limit: pageSize }
+      const data = await get('timesheets', sizePage)
       dispatch({
         type: 'timeSheet/getdata',
         payload: data.data
@@ -82,7 +84,8 @@ export const timeSheetRedux = {
     const { page, pageSize } = params
     try {
       if (radioBtn === 1) {
-        const data = await getSortTable('timesheets', Date, Sort, page, pageSize)
+        const sortOption = { sortBy: 'id', order: Sort, page: page, limit: pageSize }
+        const data = await get('timesheets', sortOption)
         if (btnLoading === true) {
           dispatch({
             type: 'timeSheet/btnLoading',
@@ -114,7 +117,7 @@ export const timeSheetRedux = {
   },
   lengthTableTimeSheetAPI: () => async(dispatch) => {
     try {
-      const data = await getAllApiTable('timesheets')
+      const data = await get('timesheets')
       const dataComp = () =>
         data.map((item) => {
           if (item.compensation !== null) {

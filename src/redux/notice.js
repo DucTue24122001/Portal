@@ -1,4 +1,4 @@
-import { getAll, get, getSort } from '../api/apiNotice'
+import { get } from '@/api/BaseRequest'
 // InitSate
 const initState = {
   data: [],
@@ -59,10 +59,11 @@ export const noticeRedux = {
   selectTableNotice: (params) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const data = await get('notifications', page, pageSize)
+      const sizePage = { page: page, limit: pageSize }
+      const data = await get('notifications', sizePage)
       dispatch({
         type: 'notice/getdata',
-        payload: data
+        payload: data.data
       })
       dispatch({
         type: 'notice/loading',
@@ -76,10 +77,16 @@ export const noticeRedux = {
     }
   },
   searchTableNotice: (value, params, btnLoading) => async(dispatch) => {
-    const { Department, SortBy, Status, inputSearch } = value
-    const { page, pageSize } = params
     try {
-      const data = await getSort('notifications', Department, SortBy, Status, inputSearch, page, pageSize)
+      const { Department, SortBy, Status, inputSearch } = value
+      const { page, pageSize } = params
+      const pageSearch = {
+        sortBy: 'id',
+        order: SortBy,
+        page: page,
+        limit: pageSize
+      }
+      const data = await get('notifications', pageSearch)
       if (btnLoading === true) {
         dispatch({
           type: 'notice/btnLoading',
@@ -88,7 +95,7 @@ export const noticeRedux = {
       }
       dispatch({
         type: 'notice/search',
-        payload: data
+        payload: data.data
       })
       dispatch({
         type: 'notice/loading',
@@ -110,10 +117,10 @@ export const noticeRedux = {
   },
   lengthTableNotice: () => async(dispatch) => {
     try {
-      const data = await getAll('notifications')
+      const data = await get('notifications')
       dispatch({
         type: 'notice/length',
-        payload: data.length
+        payload: data.total
       })
     } catch (error) {
       dispatch({

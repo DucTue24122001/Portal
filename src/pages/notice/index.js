@@ -88,14 +88,12 @@ const NoticePage = () => {
     {
       title: 'No',
       dataIndex: 'id',
-      sorter: {
-        compare: (a, b) => a.id - b.id,
-        multiple: 1
-      }
+      sorter: (a, b) => a.id < b.id
     },
     {
       title: 'Subject',
       dataIndex: 'subject',
+      sorter: (a, b) => a.subject < b.subject,
       render: (subject, record) => {
         return (
           <>
@@ -112,15 +110,17 @@ const NoticePage = () => {
     },
     {
       title: 'To Department',
-      dataIndex: 'published_to'
+      dataIndex: 'created_by',
+      sorter: (a, b) => a.created_by < b.created_by
     },
     {
       title: 'Publish Date',
-      dataIndex: 'date'
+      dataIndex: 'published_date',
+      sorter: (a, b) => a.published_date < b.published_date
     },
     {
       title: 'Status',
-      dataIndex: 'published_to'
+      dataIndex: 'status'
     },
     {
       title: 'Atttachment',
