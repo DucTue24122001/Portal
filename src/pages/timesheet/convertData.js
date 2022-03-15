@@ -20,16 +20,13 @@ export const convertData = (data, dataComp) => {
       uleave: item.unpaid_leave,
       is_holiday: item.is_holiday,
       member_id: item.member_id,
-      colorWorkTime: ''
+      colorWorkTime: '',
     }
     if (item.note === null) {
       valueData.Note = ''
     } else {
-      if (
-        item.note.includes('Approved', 'Forget') === true ||
-        item.note.includes('Approved', 'Leave') === true ||
-        item.note.includes('Approved', 'check-in/out') === true
-      ) {
+      const NoteTable = ['Forget:Approved', 'Leave:Approved', 'Check-in/out:Approved']
+      if (NoteTable.includes(item.note)) {
         valueData.Worktime = '08:00'
       }
       if (item.lack !== null) {
