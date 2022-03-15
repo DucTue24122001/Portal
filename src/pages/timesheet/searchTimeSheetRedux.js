@@ -158,9 +158,8 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         {...rolesTimestart.rulesRadioSort}
                       >
                         <Select placeholder='Select time' disabled={disableRadio.radioSort}>
-                          <Option value='date'>This date</Option>
-                          <Option value='month'>This month</Option>
-                          <Option value='year'>This year</Option>
+                          <Option value='1'>This month</Option>
+                          <Option value='2'>Last month</Option>
                         </Select>
                       </Form.Item>
                     </Col>

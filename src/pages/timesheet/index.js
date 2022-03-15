@@ -330,7 +330,7 @@ const TimesheetPage = () => {
         <Col span={12} className={styles.toTheRight}>
           <Select defaultValue='10' onChange={onChangeElement}>
             <Select.Option value='10'>10 / page</Select.Option>
-            <Select.Option value='20'>20 / page</Select.Option>
+            <Select.Option value='30'>30 / page</Select.Option>
             <Select.Option value='50'>50 / page</Select.Option>
             <Select.Option value='100'>100 / page</Select.Option>
           </Select>

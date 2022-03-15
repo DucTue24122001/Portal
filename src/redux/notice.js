@@ -60,7 +60,6 @@ export const noticeRedux = {
     try {
       const { page, pageSize } = params
       const data = await get('notifications', page, pageSize)
-      console.log('selectTableNotice', data)
       dispatch({
         type: 'notice/getdata',
         payload: data

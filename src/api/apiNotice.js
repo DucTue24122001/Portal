@@ -17,7 +17,6 @@ export const getAll = async(url) => {
     addToken()
     const config = { params: {}}
     const response = await instance.get(getUrlPrefix() + url, config)
-    console.log('get all ', response)
     return _responseHandler(response)
   } catch (error) {
     return _errorHandler(error)
@@ -29,7 +28,6 @@ export const get = async(url, page, pageSize) => {
     addToken()
     const config = { params: { page: page, limit: pageSize }}
     const response = await instance.get(getUrlPrefix() + url, config)
-    console.log('get', response)
     return _responseHandler(response)
   } catch (error) {
     return _errorHandler(error)
@@ -43,7 +41,6 @@ export const getSort = async(url, department, sort, status, inputSearch, page, p
       params: { sortBy: 'id', order: sort, page: page, limit: pageSize }
     }
     const response = await instance.get(getUrlPrefix() + url, config)
-    console.log('get sort ', response)
     return _responseHandler(response)
   } catch (error) {
     return _errorHandler(error)
