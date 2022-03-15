@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination } from 'antd'
+import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination, Modal } from 'antd'
 import { useState } from 'react'
 import styles from './request.module.css'
 
@@ -10,6 +10,12 @@ const RequestsPage = () => {
   const [selectDisabled, setSelectDisable] = useState(true)
   const [rangePickerDisabled, setRangePickerDisable] = useState(true)
   const [params, setParams] = useState({ page: 1, limit: 5 })
+  const [visibleForgetCheck, setVisibleForgetCheck] = useState(false)
+  const [visiblePaiLeave, setVisiblePaiLeave] = useState(false)
+  const [visibleUnPaiLeave, setVisibleUnPaiLeave] = useState(false)
+  const [visibleLateEarly, setVisibleLateEarly] = useState(false)
+  const [visibleOT, setVisibleOT] = useState(false)
+
   const valuecheckbox = [1, 2, 3]
   const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
   const datatable = [
@@ -93,9 +99,24 @@ const RequestsPage = () => {
     })
   }
 
-  const onActionClick = () => {}
+  const onActionClick = (record) => {
+    console.log(record)
+  }
 
-  const onActionView = () => {}
+  const onActionView = (record) => {
+    switch (record.requests_type) {
+      case 1:
+        return setVisibleForgetCheck(true)
+      case 2:
+        return setVisiblePaiLeave(true)
+      case 3:
+        return setVisibleUnPaiLeave(true)
+      case 4:
+        return setVisibleLateEarly(true)
+      case 5:
+        return setVisibleOT(true)
+    }
+  }
 
   const columns = [
     {
@@ -203,23 +224,22 @@ const RequestsPage = () => {
     },
     {
       title: 'Action',
+      key: 'status',
       align: 'center',
-      key: 'status, requests_type',
-      render: (record) => {
+      render: (text, record, index) => {
         let status = ''
         if (record.status === 0) status = 'Comfirmed'
-        else if (record.status === 1) status = 'Approved'
-        else status = ''
+        if (record.status === 1) status = 'Approved'
         return (
           <>
             {status === '' ? (
-              ' '
+              ''
             ) : (
               <Space>
-                <Button type='primary' onClick={onActionClick}>
+                <Button type='primary' onClick={() => onActionClick(record)}>
                   {status}
                 </Button>
-                <Button onClick={onActionView}>View</Button>
+                <Button onClick={() => onActionView(record)}>View</Button>
               </Space>
             )}
           </>
@@ -336,6 +356,41 @@ const RequestsPage = () => {
                           tableLayout='fixed'
                         />
                         <Pagination total={20} onChange={onChangePage} defaultCurrent={params.page}></Pagination>
+                        <Modal
+                          visible={visibleForgetCheck}
+                          footer={false}
+                          width={1000}
+                          title='title1'
+                          onCancel={() => setVisibleForgetCheck(false)}
+                        ></Modal>
+                        <Modal
+                          visible={visiblePaiLeave}
+                          footer={false}
+                          width={1000}
+                          title='title2'
+                          onCancel={() => setVisiblePaiLeave(false)}
+                        ></Modal>
+                        <Modal
+                          visible={visibleUnPaiLeave}
+                          footer={false}
+                          width={1000}
+                          title='title3'
+                          onCancel={() => setVisibleUnPaiLeave(false)}
+                        ></Modal>
+                        <Modal
+                          visible={visibleLateEarly}
+                          footer={false}
+                          width={1000}
+                          title='title4'
+                          onCancel={() => setVisibleLateEarly(false)}
+                        ></Modal>
+                        <Modal
+                          visible={visibleOT}
+                          footer={false}
+                          width={1000}
+                          title='title5'
+                          onCancel={() => setVisibleOT(false)}
+                        ></Modal>
                       </Space>
                     </Col>
                   </Row>

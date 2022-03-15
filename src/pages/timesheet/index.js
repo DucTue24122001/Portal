@@ -7,12 +7,7 @@ import DialogTimeSheetRedux from './dialogTimesheetRedux'
 import SearchTimeSheetRedux from './searchTimeSheetRedux'
 import moment from 'moment'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  lengthTableTimeSheetAPI,
-  selectTableTimeSheetApI,
-  searchTableTimeSheetApI,
-  loadingTableTrue
-} from '../../redux/timesheet'
+import { timeSheetRedux } from '../../redux/timesheet'
 import { convertData } from './convertData'
 import ModalForget from '../../components/modalTimesheet/modalForget'
 import ModalLateEarly from '../../components/modalTimesheet/modalLateEarly'
@@ -27,7 +22,7 @@ const TimesheetPage = () => {
   const [isModalLate, setIsModalLate] = useState(false)
   const [isModalLeave, setIsModalLeave] = useState(false)
   const [isModalOT, setIsModalOT] = useState(false)
-  const [valueModal, setValueModal] = useState([{ date: '', checkin: '', checkout: '', late: '' }])
+  const [valueModal, setValueModal] = useState(null)
   const [params, setParams] = useState({ page: 1, pageSize: 10 })
   const [valueSearch, setValueSearch] = useState(null)
 
@@ -39,15 +34,15 @@ const TimesheetPage = () => {
   const dataComp = useSelector((state) => state.timesheet.listMemberComp)
 
   useEffect(() => {
-    dispatch(selectTableTimeSheetApI(params))
-    dispatch(lengthTableTimeSheetAPI())
+    dispatch(timeSheetRedux.lengthTableTimeSheetAPI())
+    dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
   }, [])
 
   useEffect(() => {
     if (optionSearch === 1) {
-      dispatch(searchTableTimeSheetApI(valueSearch, params, false))
+      dispatch(timeSheetRedux.searchTableTimeSheetApI(valueSearch, params, false))
     } else {
-      dispatch(selectTableTimeSheetApI(params))
+      dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
     }
   }, [params])
 
@@ -73,35 +68,39 @@ const TimesheetPage = () => {
       ...params,
       page: e
     })
-    dispatch(loadingTableTrue())
+    dispatch(timeSheetRedux.loadingTableTrue())
   }
 
   const onSearch = (values) => {
-    dispatch(searchTableTimeSheetApI(values, params, true))
+    dispatch(timeSheetRedux.searchTableTimeSheetApI(values, params, true))
     setValueSearch(values)
     if (values.radioBtn === 3) {
       setParams({ page: 1, pageSize: 10 })
-      dispatch(selectTableTimeSheetApI({ page: 1, pageSize: 10 }))
-      dispatch(loadingTableTrue())
+      dispatch(timeSheetRedux.selectTableTimeSheetApI({ page: 1, pageSize: 10 }))
+      dispatch(timeSheetRedux.loadingTableTrue())
     }
   }
 
-  const onActionForget = (e) => {
+  const onActionForget = (e, record) => {
     e.stopPropagation()
+    dispatch(timeSheetRedux.modalRowTable(record))
     setIsModalForget(true)
   }
 
-  const onActionLate = (e) => {
+  const onActionLate = (e, record) => {
     e.stopPropagation()
+    dispatch(timeSheetRedux.modalRowTable(record))
     setIsModalLate(true)
   }
 
-  const onActionLeave = (e) => {
+  const onActionLeave = (e, record) => {
+    dispatch(timeSheetRedux.modalRowTable(record))
     e.stopPropagation()
     setIsModalLeave(true)
   }
 
-  const onActionOT = (e) => {
+  const onActionOT = (e, record) => {
+    dispatch(timeSheetRedux.modalRowTable(record))
     e.stopPropagation()
     setIsModalOT(true)
   }
@@ -112,6 +111,7 @@ const TimesheetPage = () => {
 
   const cancelMadalLate = () => {
     setIsModalLate(false)
+    form.resetFields()
   }
 
   const cancelModalLeave = () => {
@@ -155,7 +155,15 @@ const TimesheetPage = () => {
       render: (late, record) => {
         return (
           <>
-            <Text type={record.late === null || record.Note.includes('Approved', 'Late/Early') ? '' : 'danger'}>
+            <Text
+              type={
+                record.late === null ||
+                (record.Note.includes('Approved') && record.Note.includes('Late/Early')) ||
+                record.late === '00:00'
+                  ? ''
+                  : 'danger'
+              }
+            >
               {late}
             </Text>
           </>
@@ -169,7 +177,15 @@ const TimesheetPage = () => {
       render: (early, record) => {
         return (
           <>
-            <Text type={record.early === null || record.Note.includes('Approved', 'Late/Early') ? '' : 'danger'}>
+            <Text
+              type={
+                record.early === null ||
+                record.late === '00:00' ||
+                (record.Note.includes('Approved') && record.Note.includes('Late/Early'))
+                  ? ''
+                  : 'danger'
+              }
+            >
               {early}
             </Text>
           </>
@@ -190,7 +206,17 @@ const TimesheetPage = () => {
       render: (Ot, record) => {
         return (
           <>
-            <Text type={record.Ot === null || record.Note.includes('Approved', 'OT') ? '' : 'danger'}>{Ot}</Text>
+            <Text
+              type={
+                record.Ot === null ||
+                record.Ot === '00:00' ||
+                (record.Note.includes('Approved') && record.Note.includes('OT'))
+                  ? ''
+                  : 'danger'
+              }
+            >
+              {Ot}
+            </Text>
           </>
         )
       }
@@ -208,7 +234,7 @@ const TimesheetPage = () => {
                   ? ''
                   : moment(record.Worktime, 'hh:mm').isBefore(moment('08:00', 'hh:mm')) ||
                     record.colorWorkTime === 'default'
-                    ? record.Note.includes('Approved', 'Late/Early') === true
+                    ? record.Note.includes('Approved') && record.Note.includes('Late/Early')
                       ? 'warning'
                       : 'danger'
                     : ''
@@ -226,20 +252,10 @@ const TimesheetPage = () => {
       width: '4%',
       responsive: ['xxl', 'xl', 'lg', 'md'],
       render: (lack, record) => {
+        const Note = ['Late/Early:Approved', 'Leave:Approved', 'Check-in/out:Approved', 'Forget:Approved']
         return (
           <>
-            <Text
-              type={
-                record.Note.includes('Approved', 'Late/Early') === true ||
-                record.Note.includes('Approved', 'Leave') === true ||
-                record.Note.includes('Approved', 'check-in/out') === true ||
-                record.Note.includes('Approved', 'Forget') === true
-                  ? ''
-                  : 'danger'
-              }
-            >
-              {lack}
-            </Text>
+            <Text type={Note.includes(record.Note) || record.late === '00:00' ? '' : 'danger'}>{lack}</Text>
           </>
         )
       }
@@ -280,19 +296,19 @@ const TimesheetPage = () => {
       dataIndex: 'action',
       key: 'action',
       width: '12%',
-      render: () => {
+      render: (index, record) => {
         return (
           <Space>
-            <Text className={styles.buttonTable} underline onClick={onActionForget}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
               Forget
             </Text>
-            <Text className={styles.buttonTable} underline onClick={onActionLate}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionLate(e, record)}>
               Late/Early
             </Text>
-            <Text className={styles.buttonTable} underline onClick={onActionLeave}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionLeave(e, record)}>
               Leave
             </Text>
-            <Text className={styles.buttonTable} underline onClick={onActionOT}>
+            <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
           </Space>
@@ -314,7 +330,7 @@ const TimesheetPage = () => {
         <Col span={12} className={styles.toTheRight}>
           <Select defaultValue='10' onChange={onChangeElement}>
             <Select.Option value='10'>10 / page</Select.Option>
-            <Select.Option value='20'>20 / page</Select.Option>
+            <Select.Option value='30'>30 / page</Select.Option>
             <Select.Option value='50'>50 / page</Select.Option>
             <Select.Option value='100'>100 / page</Select.Option>
           </Select>

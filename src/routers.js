@@ -9,12 +9,11 @@ import MyLeavePage from './pages/myleave'
 import NoicePage from './pages/notice'
 import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
-import profileContentPage from './pages/profiles/profileContent'
-import profileContentUpdate from './pages/profiles/profileContentUpdate'
 import Home from './pages/home'
 import RegisterLateEarly from './layouts/components/registerLateEarly'
 import EditLateEarly from './layouts/components/updateLateEarly'
 import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
+import RegisterOT from './layouts/components/registerOT'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
@@ -67,28 +66,6 @@ export const appRouter = [
     name: 'Home',
     path: '/',
     component: Home,
-    meta: {
-      role: '*',
-      isPrivate: true,
-      hidden: false,
-      child: false
-    }
-  },
-  {
-    name: 'Profile',
-    path: '/profile',
-    component: profileContentPage,
-    meta: {
-      role: '*',
-      isPrivate: true,
-      hidden: false,
-      child: false
-    }
-  },
-  {
-    name: 'ProfileUpdate',
-    path: '/profileUpdate',
-    component: profileContentUpdate,
     meta: {
       role: '*',
       isPrivate: true,
@@ -177,6 +154,17 @@ export const appRouter = [
     name: 'confirmLateEarly',
     path: '/confirmLateEarly',
     component: ConfirmRegisterLateEarly,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'registerOT',
+    path: '/registerOT',
+    component: RegisterOT,
     meta: {
       role: '*',
       isPrivate: true,

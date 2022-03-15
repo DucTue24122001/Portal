@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Pagination, Table } from 'antd'
-import { getNoticeData, showLoadingNotice } from '../../redux/notice'
+import { getNoticeData, showLoadingNotice } from '../../redux/officialNotice'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import 'antd/dist/antd.css'
@@ -9,7 +9,7 @@ import style from './home.module.css'
 const Notice = () => {
   const [param, setParam] = useState(1)
   const dispatch = useDispatch()
-  const { data, loading } = useSelector((state) => state.notice)
+  const { data, loading } = useSelector((state) => state.notices)
 
   useEffect(() => {
     dispatch(getNoticeData(param))

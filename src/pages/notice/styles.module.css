@@ -1,0 +1,61 @@
+.notice {
+    border: 1px solid rgb(182, 182, 182);
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.noticeTitle {
+    position: absolute;
+    left: 10px;
+    top: -15px;
+    background-color: #fff;
+}
+.formSearch {
+    padding: 5px 20px 0px 50px;
+    width: 80vw;
+}
+.title {
+    color: #818181;
+}
+.toTheRight {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.optionSearch {
+    margin-top: 20px;
+}
+
+.boderOption {
+    background-color: #fff;
+}
+
+.marginleft {
+    margin-left: 1px;
+}
+
+.buttonTable {
+    border: transparent;
+    background-color: transparent;
+    color: #3590ff;
+    cursor: pointer;
+}
+
+.marginBottom {
+    margin-bottom: 10px;
+}
+a {
+    color: black;
+}
+.formatTable {
+    display: flex;
+    justify-content: center;
+}
+
+.selectOption {
+    width: 160px;
+}
+
+.tableRowLight {
+    background-color: #e2e1b7;
+}

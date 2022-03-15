@@ -22,6 +22,9 @@ export default function DialogTimeSheetRedux({ isModalVisible, handleOk, handleC
       dataIndex: 'late'
     }
   ]
+  if (valueModal === null) {
+    valueModal = []
+  }
 
   return (
     <>

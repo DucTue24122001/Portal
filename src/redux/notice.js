@@ -1,53 +1,158 @@
-import {
-  NOTICE_GETDATA,
-  NOTICE_GETDATA_FAIL,
-  SHOW_LOADING_NOTICE
-} from './Constants/constants'
-import axios from 'axios'
-
+import { get } from '@/api/BaseRequest'
+// InitSate
 const initState = {
   data: [],
-  loading: true
+  length: 0,
+  loading: true,
+  btnLoading: false,
+  optionSearch: 0,
+  modalRowTable: {}
 }
-
-const NoticeReducer = (state = initState, action) => {
+// Reducer
+export const noticeReducer = (state = initState, action) => {
   switch (action.type) {
-    case NOTICE_GETDATA:
-      return {
-        data: action.payload,
-        loading: false
-      }
-    case NOTICE_GETDATA_FAIL:
+    case 'notice/search': {
       return {
         ...state,
-        error: action.payload
+        data: action.payload,
+        optionSearch: 1
       }
-    case SHOW_LOADING_NOTICE:
+    }
+    case 'notice/loading': {
       return {
         ...state,
         loading: action.payload
       }
-
+    }
+    case 'notice/length': {
+      return {
+        ...state,
+        length: action.payload
+      }
+    }
+    case 'notice/getdata': {
+      return {
+        ...state,
+        data: action.payload,
+        optionSearch: 0
+      }
+    }
+    case 'notice/btnLoading': {
+      return {
+        ...state,
+        btnLoading: action.payload
+      }
+    }
+    case 'notice/modalRowTable': {
+      return {
+        ...state,
+        modalRowTable: action.payload
+      }
+    }
     default:
       return state
   }
 }
-export default NoticeReducer
+// Actions
 
-export const getNoticeData = (page) => async(dispatch) => {
-  try {
-    const data = await axios.get(
-      `https://6215ef287428a1d2a354d464.mockapi.io/OfficialNotice?page=${page}&limit=10`
-    )
-    dispatch({ type: NOTICE_GETDATA, payload: data.data })
-  } catch (error) {
-    dispatch({ type: NOTICE_GETDATA_FAIL, payload: error })
+export const noticeRedux = {
+  selectTableNotice: (params) => async(dispatch) => {
+    try {
+      const { page, pageSize } = params
+      const sizePage = { page: page, limit: pageSize }
+      const data = await get('notifications', sizePage)
+      dispatch({
+        type: 'notice/getdata',
+        payload: data.data
+      })
+      dispatch({
+        type: 'notice/loading',
+        payload: false
+      })
+    } catch (error) {
+      dispatch({
+        type: 'notice/getdata',
+        payload: []
+      })
+    }
+  },
+  searchTableNotice: (value, params, btnLoading) => async(dispatch) => {
+    try {
+      const { Department, SortBy, Status, inputSearch } = value
+      const { page, pageSize } = params
+      const pageSearch = {
+        sortBy: 'id',
+        order: SortBy,
+        page: page,
+        limit: pageSize
+      }
+      const data = await get('notifications', pageSearch)
+      if (btnLoading === true) {
+        dispatch({
+          type: 'notice/btnLoading',
+          payload: false
+        })
+      }
+      dispatch({
+        type: 'notice/search',
+        payload: data.data
+      })
+      dispatch({
+        type: 'notice/loading',
+        payload: false
+      })
+    } catch (err) {
+      dispatch({
+        type: 'notice/search',
+        payload: []
+      })
+    }
+  },
+
+  loadingTableTrue: () => {
+    return {
+      type: 'notice/loading',
+      payload: true
+    }
+  },
+  lengthTableNotice: () => async(dispatch) => {
+    try {
+      const data = await get('notifications')
+      dispatch({
+        type: 'notice/length',
+        payload: data.total
+      })
+    } catch (error) {
+      dispatch({
+        type: 'notice/length',
+        payload: []
+      })
+    }
+  },
+  modalRowTable: (record) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'notice/modalRowTable',
+        payload: record
+      })
+    } catch (err) {
+      dispatch({
+        type: 'notice/modalRowTable',
+        payload: {}
+      })
+    }
+  },
+  btnLoadingSearch: (value) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'notice/btnLoading',
+        payload: value
+      })
+    } catch (err) {
+      dispatch({
+        type: 'notice/btnLoading',
+        payload: null
+      })
+    }
   }
-}
-
-export const showLoadingNotice = (data) => (dispatch) => {
-  dispatch({
-    type: SHOW_LOADING_NOTICE,
-    payload: data
-  })
 }

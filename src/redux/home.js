@@ -38,6 +38,7 @@ export const getRpointApi = (page) => async(dispatch) => {
     const { data } = await axios.get(
       `https://6215ef287428a1d2a354d464.mockapi.io/points?page=${page}&limit=10`
     )
+    console.log('aaaaaaa', data)
     dispatch({ type: R_POINT_GETDATA, payload: data })
   } catch (error) {
     dispatch({ type: R_POINT_GETDATA_FAIL, payload: error })

@@ -4,11 +4,13 @@ import { getRpointApi, showloading } from '../../redux/home'
 import { useDispatch, useSelector } from 'react-redux'
 import { Select } from 'antd'
 import style from './home.module.css'
+
 const Rpoint = () => {
   const { Option } = Select
   const [pages, setPages] = useState(1)
   const dispatch = useDispatch()
   const { data, loading } = useSelector((state) => state.rpoint)
+
   let listData = data
   if (data[0]) {
     listData = data[0].data
@@ -76,6 +78,7 @@ const Rpoint = () => {
   const handleChange = (value) => {
     console.log(`selected ${value}`)
   }
+
   return (
     <div className={style.container}>
       <div className={style.header_title}>
