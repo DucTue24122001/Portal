@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Row, Col, DatePicker, Button, Modal, Form, Input } from 'antd'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchLateEarly } from '../../../redux/lateEarly'
+import { LateEarlyActions } from '../../../redux/lateEarly'
 import 'antd/dist/antd.css'
 import style from './updateLateEarly.module.css'
 
@@ -27,7 +27,7 @@ const EditLateEarly = () => {
   const totalSecondsCheckOut = moment.duration(checkOut).asSeconds()
 
   useEffect(() => {
-    dispatch(fetchLateEarly())
+    dispatch(LateEarlyActions.fetchLateEarly())
   }, [])
 
   useEffect(() => {
