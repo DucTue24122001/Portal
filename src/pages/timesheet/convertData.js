@@ -56,16 +56,13 @@ export const convertData = (data, dataComp) => {
         }
       }
     }
-    if (item.checkin_original === null) {
-      valueData.checkin = ''
-    } else {
-      valueData.checkin = item.checkout_original.slice(10, 16)
-    }
-    if (item.checkout_original === null) {
-      valueData.checkout = ''
-    } else {
-      valueData.checkout = item.checkout_original.slice(10, 16)
-    }
+    item.checkin_original === null
+      ? (valueData.checkin = '')
+      : (valueData.checkin = item.checkout_original.slice(10, 16))
+    item.checkout_original === null
+      ? (valueData.checkout = '')
+      : (valueData.checkout = item.checkout_original.slice(10, 16))
+
     return valueData
   })
 

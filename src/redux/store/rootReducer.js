@@ -16,5 +16,5 @@ export default combineReducers({
   infoUser: infoUserReducer,
   leave: leaveReducer,
   notice: noticeReducer,
-  leaveQuota: leaveQuotaReducer,
+  leaveQuota: leaveQuotaReducer
 })

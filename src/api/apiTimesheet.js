@@ -8,10 +8,13 @@ const instance = axios.create({
 })
 
 const token = getCookie(STORAGEKEY.ACCESS_TOKEN)
-if (token) instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+const addToken = () => {
+  if (token) instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
 
 export const getAllApiTable = async(url) => {
   try {
+    addToken()
     const config = { params: {}}
     const response = await instance.get(getUrlPrefix() + url, config)
     return _responseHandler(response)
@@ -22,6 +25,7 @@ export const getAllApiTable = async(url) => {
 
 export const getApiTable = async(url, page, pageSize) => {
   try {
+    addToken()
     const config = { params: { page: page, limit: pageSize }}
     const response = await instance.get(getUrlPrefix() + url, config)
     return _responseHandler(response)
@@ -32,6 +36,7 @@ export const getApiTable = async(url, page, pageSize) => {
 
 export const getSortTable = async(url, search, sort, page, pageSize) => {
   try {
+    addToken()
     const config = {
       params: { sortBy: 'id', order: sort, page: page, limit: pageSize }
     }

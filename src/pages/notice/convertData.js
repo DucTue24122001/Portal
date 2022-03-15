@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 export const convertDataNotice = (data) => {
   const value = data.map((item) => {
     const valueData = {
@@ -13,12 +11,10 @@ export const convertDataNotice = (data) => {
       published_to: item.published_to,
       attachment_link: item.attachment
     }
-    if (item.attachment === null) {
-      (valueData.attachment = ''), (valueData.attachment_link = '')
-    } else {
-      const link = valueData.attachment.split('/')
-      valueData.attachment_link = link[link.length - 1]
-    }
+
+    item.attachment === null
+      ? ((valueData.attachment = ''), (valueData.attachment_link = ''))
+      : (valueData.attachment_link = valueData.attachment.split('/')[valueData.attachment.split('/').length - 1])
     return valueData
   })
 

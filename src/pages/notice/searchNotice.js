@@ -20,7 +20,6 @@ const SearchNotice = ({ onSearch }) => {
 
   const onFinish = (value) => {
     onSearch(value)
-    console.log({ value })
   }
 
   const onFinishFailed = () => {}

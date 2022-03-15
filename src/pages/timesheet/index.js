@@ -88,8 +88,8 @@ const TimesheetPage = () => {
   }
 
   const onActionLate = (e, record) => {
-    dispatch(timeSheetRedux.modalRowTable(record))
     e.stopPropagation()
+    dispatch(timeSheetRedux.modalRowTable(record))
     setIsModalLate(true)
   }
 
@@ -249,7 +249,7 @@ const TimesheetPage = () => {
               type={
                 record.Note.includes('Approved', 'Late/Early') === true ||
                 record.Note.includes('Approved', 'Leave') === true ||
-                record.Note.includes('Approved', 'check-in/out') === true ||
+                record.Note.includes('Approved', 'Check-in/out') === true ||
                 record.Note.includes('Approved', 'Forget') === true ||
                 record.late === '00:00'
                   ? ''

@@ -42,14 +42,14 @@ const NoticePage = () => {
   const onChangeElement = (e) => {
     setParams({
       ...params,
-      pageSize: e,
+      pageSize: e
     })
   }
 
   const handleChange = (e) => {
     setParams({
       ...params,
-      page: e,
+      page: e
     })
     dispatch(noticeRedux.loadingTableTrue())
   }
@@ -90,16 +90,12 @@ const NoticePage = () => {
       dataIndex: 'id',
       sorter: {
         compare: (a, b) => a.id - b.id,
-        multiple: 4,
-      },
+        multiple: 1
+      }
     },
     {
       title: 'Subject',
       dataIndex: 'subject',
-      sorter: {
-        compare: (a, b) => a.subject - b.subject,
-        multiple: 3,
-      },
       render: (subject, record) => {
         return (
           <>
@@ -108,31 +104,23 @@ const NoticePage = () => {
             </Text>
           </>
         )
-      },
+      }
     },
     {
       title: 'Author',
-      dataIndex: 'author',
+      dataIndex: 'author'
     },
     {
       title: 'To Department',
-      dataIndex: 'published_to',
-      sorter: {
-        compare: (a, b) => a.published_to - b.published_to,
-        multiple: 2,
-      },
+      dataIndex: 'published_to'
     },
     {
       title: 'Publish Date',
-      dataIndex: 'date',
-      sorter: {
-        compare: (a, b) => a.date - b.date,
-        multiple: 1,
-      },
+      dataIndex: 'date'
     },
     {
       title: 'Status',
-      dataIndex: 'published_to',
+      dataIndex: 'published_to'
     },
     {
       title: 'Atttachment',
@@ -140,12 +128,12 @@ const NoticePage = () => {
       render: (attachment, record) => {
         return (
           <>
-            <Link href={`${attachment}`} target="_blank">
+            <Link href={`${attachment}`} target='_blank'>
               {record.attachment_link}
             </Link>
           </>
         )
-      },
+      }
     },
     {
       title: 'Detail',
@@ -161,8 +149,8 @@ const NoticePage = () => {
             </Text>
           </Space>
         )
-      },
-    },
+      }
+    }
   ]
 
   return (
@@ -176,11 +164,11 @@ const NoticePage = () => {
           </Text>
         </Col>
         <Col span={12} className={styles.toTheRight}>
-          <Select defaultValue="10" onChange={onChangeElement}>
-            <Select.Option value="10">10 / page</Select.Option>
-            <Select.Option value="20">20 / page</Select.Option>
-            <Select.Option value="50">50 / page</Select.Option>
-            <Select.Option value="100">100 / page</Select.Option>
+          <Select defaultValue='10' onChange={onChangeElement}>
+            <Select.Option value='10'>10 / page</Select.Option>
+            <Select.Option value='20'>20 / page</Select.Option>
+            <Select.Option value='50'>50 / page</Select.Option>
+            <Select.Option value='100'>100 / page</Select.Option>
           </Select>
           <Text>Item per page &ensp;</Text>
         </Col>
@@ -194,7 +182,7 @@ const NoticePage = () => {
           total: length,
           current: params.page,
           onChange: handleChange,
-          showSizeChanger: false,
+          showSizeChanger: false
         }}
         className={styles.boderTable}
         bordered={true}
