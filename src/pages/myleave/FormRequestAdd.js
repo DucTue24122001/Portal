@@ -2,23 +2,19 @@ import React from 'react'
 import { Row, Col, Input, InputNumber, Button, Form } from 'antd'
 import styles from './myleave.module.css'
 
-const FormRequestAdd = ({ onCancel }) => {
+const FormRequestAdd = ({ onCancel, year }) => {
   const { TextArea } = Input
   const onFinish = (values) => {}
   const onFinishFailed = (errorInfo) => {}
 
   return (
     <div>
-      <Form
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete='off'
-      >
+      <Form onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete='off'>
         <Row className={styles['form-requests']}>
           <Col span={24}>
             <Row>
               <Col span={4}>Register for year:</Col>
-              <Col> </Col>
+              <Col> {year}</Col>
             </Row>
           </Col>
         </Row>
