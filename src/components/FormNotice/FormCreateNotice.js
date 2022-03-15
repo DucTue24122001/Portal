@@ -12,7 +12,7 @@ const CreateNotice = () => {
     name: 'file',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     headers: {
-      authorization: 'authorization-text'
+      authorization: 'authorization-text',
     },
     onChange(info) {
       if (info.file.status !== 'uploading') {
@@ -23,7 +23,7 @@ const CreateNotice = () => {
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`)
       }
-    }
+    },
   }
 
   const onFinish = (value) => {
@@ -41,30 +41,32 @@ const CreateNotice = () => {
   const onReset = () => {
     form.resetFields()
   }
+
   return (
     <>
       <h1>Create Notice</h1>
-      <Form name='CreateNotice'
+      <Form
+        name="CreateNotice"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
-        onFinish = {onFinish}
-        onFinishFailed = {onFinishFailed}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
         <Row className={style.row}>
           <Col span={5}>Subject: </Col>
           <Col span={19}>
             <Form.Item
-              name='Subject'
+              name="Subject"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your subject'
-                }
+                  message: 'Please input your subject',
+                },
               ]}
-              className = {style.m_0}
+              className={style.m_0}
             >
-              <Input placeholder='String for search' />
+              <Input placeholder="String for search" />
             </Form.Item>
           </Col>
         </Row>
@@ -72,13 +74,10 @@ const CreateNotice = () => {
         <Row className={style.row}>
           <Col span={5}>To Department: </Col>
           <Col span={19}>
-            <Form.Item
-              name='Departmemt'
-              className = {style.m_0}
-            >
-              <Select defaultValue='All'>
-                <Option value='All'>All</Option>
-                <Option value='HR'>HR</Option>
+            <Form.Item name="Departmemt" className={style.m_0}>
+              <Select defaultValue="All">
+                <Option value="All">All</Option>
+                <Option value="HR">HR</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -88,14 +87,14 @@ const CreateNotice = () => {
           <Col span={5}>Attachment: </Col>
           <Col span={19}>
             <Form.Item
-              name= 'acttachment'
+              name="acttachment"
               rules={[
                 {
                   required: true,
-                  message: 'Please input attachment your file'
-                }
+                  message: 'Please input attachment your file',
+                },
               ]}
-              className = {style.m_0}
+              className={style.m_0}
             >
               <Upload {...props}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
@@ -108,14 +107,16 @@ const CreateNotice = () => {
           <Col span={5}>Published date: </Col>
           <Col span={19}>
             <Form.Item
-              name= 'PublishedDate'
-              rules={[{
-                required: true,
-                message: 'Please choose date'
-              }]}
-              className = {style.m_0}
+              name="PublishedDate"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please choose date',
+                },
+              ]}
+              className={style.m_0}
             >
-              <DatePicker onChange={onDate}/>
+              <DatePicker onChange={onDate} />
             </Form.Item>
           </Col>
         </Row>
@@ -123,14 +124,11 @@ const CreateNotice = () => {
         <Row className={style.row}>
           <Col span={5}>Status: </Col>
           <Col span={19}>
-            <Form.Item
-              name='status'
-              className = {style.m_0}
-            >
-              <Select defaultValue='draft'>
-                <Option value='draft'>Draft</Option>
-                <Option value='public'>Public</Option>
-                <Option value='schedule'>Schedule</Option>
+            <Form.Item name="status" className={style.m_0}>
+              <Select defaultValue="draft">
+                <Option value="draft">Draft</Option>
+                <Option value="public">Public</Option>
+                <Option value="schedule">Schedule</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -140,14 +138,14 @@ const CreateNotice = () => {
           <Col span={5}>Message: </Col>
           <Col span={19}>
             <Form.Item
-              name= 'message'
+              name="message"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your message'
-                }
+                  message: 'Please input your message',
+                },
               ]}
-              className = {style.m_0}
+              className={style.m_0}
             >
               <TextArea rows={6} />
             </Form.Item>
@@ -155,11 +153,11 @@ const CreateNotice = () => {
         </Row>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type='primary' htmlType='submit' className={style.button}>
+          <Button type="primary" htmlType="submit" className={style.button}>
             Create
           </Button>
 
-          <Button htmlType='button' onClick={onReset}>
+          <Button htmlType="button" onClick={onReset}>
             Reset
           </Button>
         </Form.Item>
