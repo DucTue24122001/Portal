@@ -191,7 +191,6 @@ const NoticePage = () => {
       <ModalNoticeEdit isModalVisible={isModalEdit} handleOk={cancelModalEdit} handleCancel={cancelModalEdit} />
       <ModalNoticeView isModalVisible={isModalView} handleOk={cancelModalView} handleCancel={cancelModalView} />
     </>
->>>>>>> c6dcf629faed7577c660bda4bcf18cd17a593a94
   )
 }
 
