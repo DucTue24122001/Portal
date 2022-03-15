@@ -74,17 +74,6 @@ export const appRouter = [
     }
   },
   {
-    name: 'Login',
-    path: '/login',
-    component: LoginPage,
-    meta: {
-      role: '*',
-      isPrivate: false,
-      hidden: true,
-      child: false
-    }
-  },
-  {
     name: 'MyLeave',
     path: '/leave',
     component: MyLeavePage,

@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux'
+import RPointReducer from '../home'
+import NoticeReducers from '../officialNotice'
 import { authReducer } from '../auth'
 import { timeSheetReducer } from '../timesheet'
 import { lateEarlyReducer } from '../lateEarly'
@@ -13,6 +15,8 @@ export default combineReducers({
   auth: authReducer,
   forgetCheck: forgetCheckReducer,
   timesheet: timeSheetReducer,
+  rpoint: RPointReducer,
+  notices: NoticeReducers,
   lateEarly: lateEarlyReducer,
   registerOT: registerOTReducer,
   infoUser: infoUserReducer,
