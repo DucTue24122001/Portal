@@ -20,6 +20,12 @@ const App = (props) => {
   }, [successLogin])
 
   useEffect(() => {
+    if (successLogout === true) {
+      setHiddenMenu(false)
+    }
+  }, [successLogout])
+
+  useEffect(() => {
     if (cookies[STORAGEKEY.ACCESS_TOKEN]) {
       setHiddenMenu(true)
     }
