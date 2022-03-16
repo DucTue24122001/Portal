@@ -80,27 +80,31 @@ export const timeSheetRedux = {
     }
   },
   searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
-    const { Date, Sort, radioBtn } = value
+    const { Date, Sort, radioBtn, dateStart, dateEnd } = value
     const { page, pageSize } = params
     try {
+      const sortOption = { select_type: radioBtn, order: 'asc', sort: page, per_page: pageSize }
       if (radioBtn === 1) {
-        const sortOption = { sortBy: 'id', order: Sort, page: page, limit: pageSize }
-        const data = await get('timesheets', sortOption)
-        if (btnLoading === true) {
-          dispatch({
-            type: 'timeSheet/btnLoading',
-            payload: false
-          })
-        }
+        sortOption.list_selected = Date
+      } else if (radioBtn === 2) {
+        sortOption.start_date = dateStart.format('YYYY-MM-DD')
+        sortOption.end_date = dateEnd.format('YYYY-MM-DD')
+      }
+      const data = await get('timesheets', sortOption)
+      if (btnLoading === true) {
         dispatch({
-          type: 'timeSheet/search',
-          payload: data.data
-        })
-        dispatch({
-          type: 'timeSheet/loading',
+          type: 'timeSheet/btnLoading',
           payload: false
         })
       }
+      dispatch({
+        type: 'timeSheet/search',
+        payload: data.data
+      })
+      dispatch({
+        type: 'timeSheet/loading',
+        payload: false
+      })
     } catch (err) {
       dispatch({
         type: 'timeSheet/search',
