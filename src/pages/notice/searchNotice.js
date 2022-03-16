@@ -6,6 +6,7 @@ import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
 import { noticeRedux } from '../../redux/notice'
+import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import styles from './styles.module.css'
 
 const SearchNotice = ({ onSearch }) => {
@@ -32,9 +33,11 @@ const SearchNotice = ({ onSearch }) => {
 
   return (
     <>
-      <Row justify='end'>
-        <Col span={2}>
-          <Button>Create New</Button>
+      <Row className={styles.marginBottom}>
+        <Col span={24} className={styles.toTheRight}>
+          <Button type='primary' icon={<PlusOutlined />}>
+            Create New
+          </Button>
         </Col>
       </Row>
       <div className={styles.notice}>
@@ -148,14 +151,14 @@ const SearchNotice = ({ onSearch }) => {
                 <Row gutter={24} justify='center'>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button type='primary' htmlType='submit' loading={btnLoadingRedux}>
+                      <Button type='primary' htmlType='submit' icon={<SearchOutlined />} loading={btnLoadingRedux}>
                         Search
                       </Button>
                     </Form.Item>
                   </Col>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button htmlType='button' onClick={onReset}>
+                      <Button htmlType='button' onClick={onReset} icon={<ReloadOutlined />}>
                         Reset
                       </Button>
                     </Form.Item>

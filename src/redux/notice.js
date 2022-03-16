@@ -62,6 +62,10 @@ export const noticeRedux = {
       const sizePage = { page: page, limit: pageSize }
       const data = await get('notifications', sizePage)
       dispatch({
+        type: 'notice/length',
+        payload: data.total
+      })
+      dispatch({
         type: 'notice/getdata',
         payload: data.data
       })
@@ -87,6 +91,10 @@ export const noticeRedux = {
         limit: pageSize
       }
       const data = await get('notifications', pageSearch)
+      dispatch({
+        type: 'notice/length',
+        payload: data.total
+      })
       if (btnLoading === true) {
         dispatch({
           type: 'notice/btnLoading',
@@ -113,20 +121,6 @@ export const noticeRedux = {
     return {
       type: 'notice/loading',
       payload: true
-    }
-  },
-  lengthTableNotice: () => async(dispatch) => {
-    try {
-      const data = await get('notifications')
-      dispatch({
-        type: 'notice/length',
-        payload: data.total
-      })
-    } catch (error) {
-      dispatch({
-        type: 'notice/length',
-        payload: []
-      })
     }
   },
   modalRowTable: (record) => (dispatch) => {
