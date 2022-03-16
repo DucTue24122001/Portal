@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
@@ -56,7 +56,7 @@ const Header = () => {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col span={24}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>
                   <Menu.Item key='home'>
                     <Link to='/'>Home</Link>
