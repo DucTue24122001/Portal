@@ -15,21 +15,21 @@ const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
 
 const dataLeave = {
-  check_in: '8:00',
-  check_out: '16:00',
-  compensation_date: '',
-  compensation_time: '',
-  leave_all_day: 1,
-  leave_end: '08:07:00',
-  leave_start: '06:07:00',
-  leave_time: '01:00',
-  reason: 'xin nghi 1 ngay',
-  request_for_date: '2022-01-12',
-  request_ot_time: '',
-  request_type: 2,
-  status: 0,
-  manager_confirmed_comment: 'manager_confirmed_comment',
-  admin_approved_comment: 'admin_approved_comment'
+  // check_in: '8:00',
+  // check_out: '16:00',
+  // compensation_date: '',
+  // compensation_time: '',
+  // leave_all_day: 1,
+  // leave_end: '08:07:00',
+  // leave_start: '06:07:00',
+  // leave_time: '01:00',
+  // reason: 'xin nghi 1 ngay',
+  // request_for_date: '2022-01-12',
+  // request_ot_time: '',
+  // request_type: 2,
+  // status: 0,
+  // manager_confirmed_comment: 'manager_confirmed_comment',
+  // admin_approved_comment: 'admin_approved_comment',
 }
 
 const FormLeave = ({
@@ -48,6 +48,7 @@ const FormLeave = ({
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const [nameStatus, setNameStatus] = useState()
   const [nameUserConfirm] = useState('Vu Van Vinh')
+  const [nameUserApproved] = useState('Tran Xuan Duc')
   const [leaveTime, setLeaveTime] = useState((dataLeave && dataLeave.leave_time) || '')
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
   const {
@@ -325,6 +326,7 @@ const FormLeave = ({
               <Col span={4} className={style.form_item} className={style.timeBox}>
                 <Form.Item name='request_type' rules={[{ required: true, message: 'Please pick an item!' }]}>
                   <Radio.Group
+                    defaultValue={2}
                     disabled={
                       ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
                       (nameStatus !== undefined && (isManager || isAdmin) && true)
@@ -368,7 +370,7 @@ const FormLeave = ({
                   />
                 </Form.Item>
               </Col>
-              {nameStatus && (
+              {nameStatus && !isAdmin && (
                 <div style={{ display: 'flex', width: '100%' }}>
                   <Col className={style.form_item} span={4}>
                     Status:
@@ -385,6 +387,16 @@ const FormLeave = ({
                   </Col>
                   <Col className={style.form_item} span={20}>
                     <span>Confirm</span>
+                  </Col>
+                </div>
+              )}
+              {nameStatus == 'approved' && isAdmin && (
+                <div style={{ display: 'flex', width: '100%' }}>
+                  <Col className={style.form_item} span={4}>
+                    {nameUserApproved}:
+                  </Col>
+                  <Col className={style.form_item} span={20}>
+                    <span>Approved</span>
                   </Col>
                 </div>
               )}
