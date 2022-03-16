@@ -32,10 +32,18 @@ const dataLeave = {
   admin_approved_comment: 'admin_approved_comment'
 }
 
-const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = false, dataModal = {}}) => {
+const FormLeave = ({
+  status: statusRequest,
+  onCancel,
+  isUser = false,
+  isManager = false,
+  isAdmin = false,
+  dataModal = {}
+}) => {
   const { checkin, checkout, date, Worktime, lack } = dataModal
-  const [form] = Form.useForm(0)
-  const [status] = useState(0)
+  const [form] = Form.useForm()
+  const [status] = useState(statusRequest)
+  const [idLeave] = useState(1)
   const dispatch = useDispatch()
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const [nameStatus, setNameStatus] = useState()
@@ -82,33 +90,29 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
       request_ot_time: '',
       reason: reason
     }
+    const dataConfirm = {
+      ...dataForm,
+      manager_confirmed_status: 1,
+      manager_id: '',
+      manager_confirmed_at: moment().format('DD-MM-YY hh:mm')
+    }
+    const dataApprove = {
+      ...dataConfirm,
+      admin_approved_status: 2,
+      admin_id: '',
+      admin_approved_at: moment().format('DD-MM-YY hh:mm')
+    }
 
     if (nameStatus === undefined && isUser) {
-      console.log(1)
       dispatch(leaveActions.register(dataForm))
     }
     if (nameStatus === 'sent' && isUser) {
-      console.log('dataUpdate', dataForm)
       dispatch(leaveActions.update(dataForm, idLeave))
     }
     if (nameStatus === 'sent' && isManager) {
-      const dataConfirm = {
-        ...dataForm,
-        manager_confirmed_status: 1,
-        manager_id: '',
-        manager_confirmed_at: moment().format('DD-MM-YY hh:mm')
-      }
-      console.log('dataConfirm', dataConfirm)
       dispatch(leaveActions.confirm(dataConfirm, idLeave))
     }
     if (nameStatus === 'confirm' && isAdmin) {
-      const dataApprove = {
-        ...dataForm,
-        admin_approved_status: 2,
-        admin_id: '',
-        admin_approved_at: moment().format('DD-MM-YY hh:mm')
-      }
-      console.log('dataApprove', dataApprove)
       dispatch(leaveActions.appproved(dataApprove, idLeave))
     }
   }
@@ -496,7 +500,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
                   loading={loadingRejectLeaveRequest}
                   className={style.button_form}
                   htmlType='submit'
-                  ype='danger'
+                  type='danger'
                 >
                   Reject
                 </Button>

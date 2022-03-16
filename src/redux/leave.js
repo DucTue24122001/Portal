@@ -216,7 +216,7 @@ export const leaveActions = {
       try {
         dispatch({ type: REGISTER_LEAVE_REQUEST })
 
-        const data = await post(`request`, dataForm)
+        const data = await post(`requests`, dataForm)
 
         dispatch({ type: REGISTER_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -229,7 +229,7 @@ export const leaveActions = {
       try {
         dispatch({ type: UPDATE_LEAVE_REQUEST })
 
-        const data = put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: UPDATE_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -242,7 +242,7 @@ export const leaveActions = {
       try {
         dispatch({ type: CONFIRM_LEAVE_REQUEST })
 
-        const data = await put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: CONFIRM_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -255,7 +255,7 @@ export const leaveActions = {
       try {
         dispatch({ type: APPROVED_LEAVE_REQUEST })
 
-        const data = await put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: APPROVED_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -268,7 +268,7 @@ export const leaveActions = {
       try {
         dispatch({ type: DELETE_LEAVE_REQUEST })
 
-        const data = await del(`request/${idLeave}`)
+        const data = await del(`requests/${idLeave}`)
 
         dispatch({ type: DELETE_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -281,7 +281,7 @@ export const leaveActions = {
       try {
         dispatch({ type: REJECT_LEAVE_REQUEST })
 
-        const data = await put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: REJECT_LEAVE_SUCCESS, payload: data })
       } catch (error) {
