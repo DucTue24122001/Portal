@@ -34,11 +34,6 @@ const TimesheetPage = () => {
   const dataComp = useSelector((state) => state.timesheet.listMemberComp)
 
   useEffect(() => {
-    dispatch(timeSheetRedux.lengthTableTimeSheetAPI())
-    dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
-  }, [])
-
-  useEffect(() => {
     if (optionSearch === 1) {
       dispatch(timeSheetRedux.searchTableTimeSheetApI(valueSearch, params, false))
     } else {
@@ -180,7 +175,7 @@ const TimesheetPage = () => {
             <Text
               type={
                 record.early === null ||
-                record.late === '00:00' ||
+                record.early === '00:00' ||
                 (record.Note.includes('Approved') && record.Note.includes('Late/Early'))
                   ? ''
                   : 'danger'
@@ -255,7 +250,7 @@ const TimesheetPage = () => {
         const Note = ['Late/Early:Approved', 'Leave:Approved', 'Check-in/out:Approved', 'Forget:Approved']
         return (
           <>
-            <Text type={Note.includes(record.Note) || record.late === '00:00' ? '' : 'danger'}>{lack}</Text>
+            <Text type={Note.includes(record.Note) || record.lack === '00:00' ? '' : 'danger'}>{lack}</Text>
           </>
         )
       }
@@ -298,20 +293,26 @@ const TimesheetPage = () => {
       width: '12%',
       render: (index, record) => {
         return (
-          <Space>
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
-              Forget
-            </Text>
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionLate(e, record)}>
-              Late/Early
-            </Text>
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionLeave(e, record)}>
-              Leave
-            </Text>
+          <div>
+            {record.is_holiday === 0 ? (
+              <>
+                <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
+                  Forget
+                </Text>
+                <Text className={styles.buttonTable} underline onClick={(e) => onActionLate(e, record)}>
+                  Late/Early
+                </Text>
+                <Text className={styles.buttonTable} underline onClick={(e) => onActionLeave(e, record)}>
+                  Leave
+                </Text>
+              </>
+            ) : (
+              <></>
+            )}
             <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
-          </Space>
+          </div>
         )
       }
     }
