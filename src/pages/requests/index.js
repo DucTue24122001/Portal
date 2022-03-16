@@ -9,7 +9,6 @@ import { useHistory } from 'react-router-dom'
 
 const RequestsPage = () => {
   const history = useHistory()
-  const [user] = useState(false)
   const { Option } = Select
   const { RangePicker } = DatePicker
   const [selectDisabled, setSelectDisable] = useState(true)
@@ -24,11 +23,9 @@ const RequestsPage = () => {
   const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
   const dispacth = useDispatch()
   const { requests, loadingRequests } = useSelector((state) => state.requests)
-
+  const { infoUser } = useSelector((state) => state.infoUser)
   useEffect(() => {
-    if (user === true) {
-      history.push('/')
-    }
+    if (infoUser?.roles !== undefined) { console.log }
   }, [])
 
   useEffect(() => {
