@@ -11,7 +11,7 @@ export default function ModalLeave({ isModalVisible, handleOk, handleCancel }) {
   return (
     <>
       <Modal width={1000} footer={false} title='' visible={isModalVisible} onOk={onOk} onCancel={onCancel}>
-        <FormLeave dataModal={dataModal} isMember={true} onCancel={onCancel} />
+        <FormLeave dataModal={dataModal} isUser={true} onCancel={onCancel} />
       </Modal>
     </>
   )

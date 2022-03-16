@@ -15,27 +15,27 @@ const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
 
 const dataLeave = {
-  // check_in: '8:00',
-  // check_out: '16:00',
-  // compensation_date: '',
-  // compensation_time: '',
-  // leave_all_day: 1,
-  // leave_end: '08:07:00',
-  // leave_start: '06:07:00',
-  // leave_time: '01:00',
-  // reason: 'xin nghi 1 ngay',
-  // request_for_date: '2022-01-12',
-  // request_ot_time: '',
-  // request_type: 2,
-  // status: 0,
-  // manager_confirmed_comment: 'manager_confirmed_comment',
-  // admin_approved_comment: 'admin_approved_comment'
+  check_in: '8:00',
+  check_out: '16:00',
+  compensation_date: '',
+  compensation_time: '',
+  leave_all_day: 1,
+  leave_end: '08:07:00',
+  leave_start: '06:07:00',
+  leave_time: '01:00',
+  reason: 'xin nghi 1 ngay',
+  request_for_date: '2022-01-12',
+  request_ot_time: '',
+  request_type: 2,
+  status: 0,
+  manager_confirmed_comment: 'manager_confirmed_comment',
+  admin_approved_comment: 'admin_approved_comment'
 }
 
-const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = false, dataModal = {}}) => {
+const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = false, dataModal = {}}) => {
   const { checkin, checkout, date, Worktime, lack } = dataModal
-  const [form] = Form.useForm()
-  const [status] = useState()
+  const [form] = Form.useForm(0)
+  const [status] = useState(0)
   const dispatch = useDispatch()
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const [nameStatus, setNameStatus] = useState()
@@ -83,11 +83,12 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
       reason: reason
     }
 
-    if (nameStatus === undefined && isMember) {
+    if (nameStatus === undefined && isUser) {
       console.log(1)
       dispatch(leaveActions.register(dataForm))
     }
-    if (nameStatus === 'sent' && isMember) {
+    if (nameStatus === 'sent' && isUser) {
+      console.log('dataUpdate', dataForm)
       dispatch(leaveActions.update(dataForm, idLeave))
     }
     if (nameStatus === 'sent' && isManager) {
@@ -107,6 +108,7 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
         admin_id: '',
         admin_approved_at: moment().format('DD-MM-YY hh:mm')
       }
+      console.log('dataApprove', dataApprove)
       dispatch(leaveActions.appproved(dataApprove, idLeave))
     }
   }
@@ -194,14 +196,12 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
   }, [status])
 
   const rangerTime = (time) => {
-    console.log(time)
     const totalSecondsStart = moment.duration(time[0].format('HH:mm')).asSeconds()
     const totalSecondsEnd = moment.duration(time[1].format('HH:mm')).asSeconds()
     setLeaveTime(totalSecondsEnd - totalSecondsStart)
   }
 
   const handleDelete = () => {
-    console.log('delete')
     dispatch(leaveActions.delete())
   }
 
@@ -234,7 +234,7 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
             }}
           >
             <Row gutter={[10, 10]}>
-              {nameStatus !== undefined && !isMember && (
+              {nameStatus !== undefined && !isUser && (
                 <div style={{ display: 'flex', width: '100%' }}>
                   <Col className={style.form_item} span={4}>
                     Member:
@@ -374,7 +374,7 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
                   </Col>
                 </div>
               )}
-              {(nameStatus == 'confirm' || nameStatus == 'approved') && isMember && (
+              {(nameStatus == 'confirm' || nameStatus == 'approved') && isUser && (
                 <div style={{ display: 'flex', width: '100%' }}>
                   <Col className={style.form_item} span={4}>
                     {nameUserConfirm}:
@@ -439,7 +439,7 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
                 </Button>
               )}
 
-              {nameStatus && isMember && (
+              {nameStatus && isUser && (
                 <Button
                   loading={loadingUpdateLeave}
                   disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
@@ -451,7 +451,7 @@ const FormLeave = ({ onCancel, isMember = false, isManager = false, isAdmin = fa
                 </Button>
               )}
 
-              {nameStatus && isMember && (
+              {nameStatus && isUser && (
                 <Button
                   loading={loadingDeleteLeaveRequest}
                   onClick={handleDelete}
