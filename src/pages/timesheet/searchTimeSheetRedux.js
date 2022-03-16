@@ -1,3 +1,4 @@
+import { ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import { Button, Col, DatePicker, Form, Radio, Row, Select, Typography } from 'antd'
 import 'antd/dist/antd.css'
 import Layout, { Content } from 'antd/lib/layout/layout'
@@ -143,14 +144,14 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                   form={form}
                 >
                   <Row gutter={24}>
-                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 10 }} lg={{ span: 6 }}>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6 }} lg={{ span: 6 }}>
                       <Form.Item>
                         <Form.Item noStyle>
                           <Radio value={1}>Choose from list</Radio>
                         </Form.Item>
                       </Form.Item>
                     </Col>
-                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 6 }}>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6 }} lg={{ span: 6 }}>
                       <Form.Item
                         label=''
                         name='Date'
@@ -158,19 +159,18 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         {...rolesTimestart.rulesRadioSort}
                       >
                         <Select placeholder='Select time' disabled={disableRadio.radioSort}>
-                          <Option value='1'>This month</Option>
-                          <Option value='2'>Last month</Option>
+                          <Option value={1}>This month</Option>
+                          <Option value={2}>Last month</Option>
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col
-                      xs={{ span: 24 }}
-                      sm={{ span: 23 }}
-                      md={{ span: 16 }}
-                      lg={{ span: 8 }}
-                      className={styles.toTheRight}
-                    >
-                      <Form.Item label='Sort by work date' name='Sort' {...rolesTimestart.rulesRadioSort}>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 4 }} lg={{ span: 4 }}>
+                      <Form.Item>
+                        <Text>Sort by work date</Text>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 4 }} lg={{ span: 4 }}>
+                      <Form.Item name='Sort' {...rolesTimestart.rulesRadioSort}>
                         <Select placeholder='Select sort' style={{ width: '160px' }} disabled={disableRadio.radioSort}>
                           <Option value='asc'>Ascending</Option>
                           <Option value='desc'>Decrease</Option>
@@ -179,14 +179,14 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                     </Col>
                   </Row>
                   <Row gutter={24}>
-                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 10 }} lg={{ span: 6 }}>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6 }} lg={{ span: 6 }}>
                       <Form.Item>
                         <Form.Item noStyle>
                           <Radio value={2}>Choose start, end</Radio>
                         </Form.Item>
                       </Form.Item>
                     </Col>
-                    <Col xs={{ span: 24 }} sm={{ span: 10 }} md={{ span: 12 }} lg={{ span: 6 }}>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6 }} lg={{ span: 6 }}>
                       <Form.Item name='dateStart' {...rolesTimestart.rulesRadioTime}>
                         <DatePicker
                           disabledDate={disabledStartDate}
@@ -199,14 +199,13 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         />
                       </Form.Item>
                     </Col>
-                    <Col
-                      xs={{ span: 16 }}
-                      sm={{ span: 23 }}
-                      md={{ span: 18 }}
-                      lg={{ span: 8 }}
-                      className={styles.toTheRight}
-                    >
-                      <Form.Item label='To' name='dateEnd' {...rolesTimestart.rulesRadioTime}>
+                    <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 4 }} lg={{ span: 4 }}>
+                      <Form.Item>
+                        <Text>To</Text>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={{ span: 16 }} sm={{ span: 12 }} md={{ span: 4 }} lg={{ span: 4 }}>
+                      <Form.Item name='dateEnd' {...rolesTimestart.rulesRadioTime}>
                         <DatePicker
                           format={dateFormat}
                           className={styles.selectOption}
@@ -222,14 +221,19 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                   <Row gutter={24} justify='center'>
                     <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                       <Form.Item>
-                        <Button type='primary' htmlType='submit' loading={btnLoadingRedux}>
+                        <Button type='primary' htmlType='submit' icon={<SearchOutlined />} loading={btnLoadingRedux}>
                           Search
                         </Button>
                       </Form.Item>
                     </Col>
-                    <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
+                    <Col
+                      xs={{ span: 11, offset: 1 }}
+                      sm={{ span: 6, offset: 1 }}
+                      md={{ span: 4, offset: 1 }}
+                      lg={{ span: 2 }}
+                    >
                       <Form.Item>
-                        <Button htmlType='button' onClick={onReset}>
+                        <Button htmlType='button' onClick={onReset} icon={<ReloadOutlined />}>
                           Reset
                         </Button>
                       </Form.Item>
