@@ -64,6 +64,16 @@ export const timeSheetRedux = {
       const { page, pageSize } = params
       const sizePage = { page: page, limit: pageSize }
       const data = await get('timesheets', sizePage)
+      const dataComp = () =>
+        data.map((item) => {
+          if (item.compensation !== null) {
+            return item
+          }
+        })
+      dispatch({
+        type: 'timeSheet/length',
+        payload: { dataComp: dataComp, length: data.total }
+      })
       dispatch({
         type: 'timeSheet/getdata',
         payload: data.data
@@ -80,27 +90,41 @@ export const timeSheetRedux = {
     }
   },
   searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
-    const { Date, Sort, radioBtn } = value
+    const { Date, radioBtn, dateStart, dateEnd } = value
     const { page, pageSize } = params
     try {
+      const sortOption = { select_type: radioBtn, order: 'asc', sort: page, per_page: pageSize }
       if (radioBtn === 1) {
-        const sortOption = { sortBy: 'id', order: Sort, page: page, limit: pageSize }
-        const data = await get('timesheets', sortOption)
-        if (btnLoading === true) {
-          dispatch({
-            type: 'timeSheet/btnLoading',
-            payload: false
-          })
-        }
-        dispatch({
-          type: 'timeSheet/search',
-          payload: data.data
+        sortOption.list_selected = Date
+      } else if (radioBtn === 2) {
+        sortOption.start_date = dateStart.format('YYYY-MM-DD')
+        sortOption.end_date = dateEnd.format('YYYY-MM-DD')
+      }
+      const data = await get('timesheets', sortOption)
+      const dataComp = () =>
+        data.map((item) => {
+          if (item.compensation !== null) {
+            return item
+          }
         })
+      dispatch({
+        type: 'timeSheet/length',
+        payload: { dataComp: dataComp, length: data.total }
+      })
+      if (btnLoading === true) {
         dispatch({
-          type: 'timeSheet/loading',
+          type: 'timeSheet/btnLoading',
           payload: false
         })
       }
+      dispatch({
+        type: 'timeSheet/search',
+        payload: data.data
+      })
+      dispatch({
+        type: 'timeSheet/loading',
+        payload: false
+      })
     } catch (err) {
       dispatch({
         type: 'timeSheet/search',
@@ -113,26 +137,6 @@ export const timeSheetRedux = {
     return {
       type: 'timeSheet/loading',
       payload: true
-    }
-  },
-  lengthTableTimeSheetAPI: () => async(dispatch) => {
-    try {
-      const data = await get('timesheets')
-      const dataComp = () =>
-        data.map((item) => {
-          if (item.compensation !== null) {
-            return item
-          }
-        })
-      dispatch({
-        type: 'timeSheet/length',
-        payload: { dataComp: dataComp, length: data.total }
-      })
-    } catch (error) {
-      dispatch({
-        type: 'timeSheet/length',
-        payload: []
-      })
     }
   },
   modalRowTable: (record) => (dispatch) => {

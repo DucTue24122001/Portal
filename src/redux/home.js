@@ -1,8 +1,4 @@
-import {
-  R_POINT_GETDATA,
-  R_POINT_GETDATA_FAIL,
-  SHOW_LOADING_RPOINT
-} from './Constants/constants'
+import { R_POINT_GETDATA, R_POINT_GETDATA_FAIL, SHOW_LOADING_RPOINT } from './Constants/constants'
 import axios from 'axios'
 
 const initState = {
@@ -50,4 +46,3 @@ export const showloading = (data) => (dispatch) => {
     payload: data
   })
 }
-
