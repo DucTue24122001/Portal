@@ -10,8 +10,8 @@ const dataModal = {
   checkin: '8:30',
   checkout: '16:00',
   date: '2022-01-12',
-  late: '00:30',
-  early: '1:00'
+  late: '00:10',
+  early: '00:20'
 }
 
 const { checkin, checkout, date, late, early } = dataModal
@@ -29,6 +29,11 @@ const RegisterLateEarly = ({
   const dispatch = useDispatch()
 
   const in_office_seconds = moment.duration(in_office).asSeconds()
+  const timeLateSeconds = moment.duration(late).asSeconds()
+  const timeEarlySeconds = moment.duration(early).asSeconds()
+  const timeRequestSeconds = timeLateSeconds + timeEarlySeconds
+  const timeRequest = moment.utc(timeRequestSeconds * 1000).format('HH:mm')
+  const overtimeSeconds = in_office_seconds - initial_in_office
 
   const [dateCoverUp, setDateCoverUp] = useState('')
   const [reason, setReason] = useState('')
@@ -39,12 +44,13 @@ const RegisterLateEarly = ({
   const [status] = useState()
   const [nameStatus, setNameStatus] = useState()
 
+  console.log('timeRequestSeconds', timeRequestSeconds, timeRequest)
   useEffect(() => {
     setOverTime(
       moment
         .utc(
           moment
-            .duration(in_office_seconds - initial_in_office, 'seconds')
+            .duration(overtimeSeconds, 'seconds')
             .as('milliseconds')
         )
         .format('HH:mm')
@@ -101,7 +107,7 @@ const RegisterLateEarly = ({
             <Col xs={10} sm={5}>
               Member:
             </Col>
-            <Col sm={7}>Vu Van Vinh</Col>
+            <Col sm={7}>Vu Van Vịnh</Col>
           </Row>
         )}
         <Row className={style.row_lineHeight}>
@@ -138,8 +144,10 @@ const RegisterLateEarly = ({
           <Col xs={14} sm={8}>
             <span style={{ color: 'red' }}>{late}</span>
           </Col>
-          <Col sm={2}>Early time:</Col>
-          <Col sm={7}></Col>
+          <Col xs={10} sm={2}>Early time:</Col>
+          <Col xs={14} sm={7}>
+            <span style={{ color: 'red' }}>{early}</span>
+          </Col>
         </Row>
 
         <Row className={style.date_corer_up}>
@@ -176,7 +184,12 @@ const RegisterLateEarly = ({
           </Col>
           <Col sm={3}>Time request:</Col>
           <Col sm={2}>
-            <span style={{ color: 'red' }}>{late}</span>
+            <span
+              style={{
+                color: (overtimeSeconds < timeLateSeconds) ? 'red' : 'unset'
+              }}>
+              {timeRequest}
+            </span>
           </Col>
         </Row>
 
@@ -353,7 +366,7 @@ const RegisterLateEarly = ({
             </Col>
           )}
           <Col>
-            <Button className={style.button_form} onClick={(e) => onCancel()}>
+            <Button className={style.button_form} onClick={handleCancel}>
               Cancel
             </Button>
           </Col>
