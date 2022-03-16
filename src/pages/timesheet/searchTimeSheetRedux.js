@@ -1,3 +1,4 @@
+import { ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import { Button, Col, DatePicker, Form, Radio, Row, Select, Typography } from 'antd'
 import 'antd/dist/antd.css'
 import Layout, { Content } from 'antd/lib/layout/layout'
@@ -158,8 +159,8 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         {...rolesTimestart.rulesRadioSort}
                       >
                         <Select placeholder='Select time' disabled={disableRadio.radioSort}>
-                          <Option value='1'>This month</Option>
-                          <Option value='2'>Last month</Option>
+                          <Option value={1}>This month</Option>
+                          <Option value={2}>Last month</Option>
                         </Select>
                       </Form.Item>
                     </Col>
@@ -222,14 +223,14 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                   <Row gutter={24} justify='center'>
                     <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                       <Form.Item>
-                        <Button type='primary' htmlType='submit' loading={btnLoadingRedux}>
+                        <Button type='primary' htmlType='submit' icon={<SearchOutlined />} loading={btnLoadingRedux}>
                           Search
                         </Button>
                       </Form.Item>
                     </Col>
                     <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                       <Form.Item>
-                        <Button htmlType='button' onClick={onReset}>
+                        <Button htmlType='button' onClick={onReset} icon={<ReloadOutlined />}>
                           Reset
                         </Button>
                       </Form.Item>
