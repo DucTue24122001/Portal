@@ -25,11 +25,6 @@ const NoticePage = () => {
   const optionSearch = useSelector((state) => state.notice.optionSearch)
 
   useEffect(() => {
-    dispatch(noticeRedux.lengthTableNotice())
-    dispatch(noticeRedux.selectTableNotice(params))
-  }, [])
-
-  useEffect(() => {
     if (optionSearch === 1) {
       dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
     } else {
@@ -110,8 +105,8 @@ const NoticePage = () => {
     },
     {
       title: 'To Department',
-      dataIndex: 'created_by',
-      sorter: (a, b) => a.created_by < b.created_by
+      dataIndex: 'published_to',
+      sorter: (a, b) => a.published_to < b.published_to
     },
     {
       title: 'Publish Date',
@@ -119,17 +114,13 @@ const NoticePage = () => {
       sorter: (a, b) => a.published_date < b.published_date
     },
     {
-      title: 'Status',
-      dataIndex: 'status'
-    },
-    {
       title: 'Atttachment',
       dataIndex: 'attachment',
-      render: (attachment, record) => {
+      render: (attachment) => {
         return (
           <>
-            <Link href={`${attachment}`} target='_blank'>
-              {record.attachment_link}
+            <Link href='#' target='_blank'>
+              {attachment}
             </Link>
           </>
         )

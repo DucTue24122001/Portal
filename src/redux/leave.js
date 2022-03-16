@@ -1,27 +1,56 @@
 import axios from 'axios'
+import { get, post, put, del } from '@/api/BaseRequest'
 
 // Constants
 export const REGISTER_LEAVE_REQUEST = 'REGISTER_LEAVE_REQUEST'
 export const REGISTER_LEAVE_SUCCESS = 'REGISTER_LEAVE_SUCCESS'
 export const REGISTER_LEAVE_FAIL = 'REGISTER_LEAVE_FAIL'
+
 export const UPDATE_LEAVE_REQUEST = 'UPDATE_LEAVE_REQUEST'
 export const UPDATE_LEAVE_SUCCESS = 'UPDATE_LEAVE_SUCCESS'
 export const UPDATE_LEAVE_FAIL = 'UPDATE_LEAVE_FAIL'
+
 export const CONFIRM_LEAVE_REQUEST = 'CONFIRM_LEAVE_REQUEST'
 export const CONFIRM_LEAVE_SUCCESS = 'CONFIRM_LEAVE_SUCCESS'
 export const CONFIRM_LEAVE_FAIL = 'CONFIRM_LEAVE_FAIL'
+
+export const APPROVED_LEAVE_REQUEST = 'APPROVED_LEAVE_REQUEST'
+export const APPROVED_LEAVE_SUCCESS = 'APPROVED_LEAVE_SUCCESS'
+export const APPROVED_LEAVE_FAIL = 'APPROVED_LEAVE_FAIL'
+
+export const GET_LEAVE_REQUEST_LEAVE_REQUEST = 'GET_LEAVE_REQUEST_LEAVE_REQUEST'
+export const GET_LEAVE_REQUEST_LEAVE_SUCCESS = 'GET_LEAVE_REQUEST_LEAVE_SUCCESS'
+export const GET_LEAVE_REQUEST_LEAVE_FAIL = 'GET_LEAVE_REQUEST_LEAVE_FAIL'
+
+export const DELETE_LEAVE_REQUEST_LEAVE_REQUEST = 'DELETE_LEAVE_REQUEST_LEAVE_REQUEST'
+export const DELETE_LEAVE_REQUEST_LEAVE_SUCCESS = 'DELETE_LEAVE_REQUEST_LEAVE_SUCCESS'
+export const DELETE_LEAVE_REQUEST_LEAVE_FAIL = 'DELETE_LEAVE_REQUEST_LEAVE_FAIL'
 
 // initialState
 const initialState = {
   successRegisterLeave: false,
   errorRegisterLeave: '',
   loadingRegisterLeave: false,
+
   successUpdateLeave: false,
   errorUpdateLeave: '',
   loadingUpdateLeave: false,
+
   successConfirmLeave: false,
   errorConfirmLeave: '',
-  loadingConfirmLeave: false
+  loadingConfirmLeave: false,
+
+  successApprovedLeave: false,
+  errorApprovedLeave: '',
+  loadingApprovedLeave: false,
+
+  successGetLeaveRequest: false,
+  errorGetLeaveRequest: '',
+  loadingGetLeaveRequest: false,
+
+  successDeleteLeaveRequest: false,
+  errorDeleteLeaveRequest: '',
+  loadingDeleteLeaveRequest: false
 }
 
 // Reducer
@@ -39,6 +68,19 @@ export const leaveReducer = (state = initialState, action) => {
       return {
         loadingConfirmLeave: true
       }
+    case APPROVED_LEAVE_REQUEST:
+      return {
+        loadingApprovedLeave: true
+      }
+    case GET_LEAVE_REQUEST_LEAVE_REQUEST:
+      return {
+        loadingGetLeaveRequest: true
+      }
+    case DELETE_LEAVE_REQUEST_LEAVE_REQUEST:
+      return {
+        loadingDeleteLeaveRequest: true
+      }
+
     case REGISTER_LEAVE_SUCCESS:
       return {
         loadingRegisterLeave: false,
@@ -53,6 +95,21 @@ export const leaveReducer = (state = initialState, action) => {
       return {
         loadingConfirmLeave: false,
         successConfirmLeave: true
+      }
+    case APPROVED_LEAVE_SUCCESS:
+      return {
+        loadingApprovedLeave: false,
+        successApprovedLeave: true
+      }
+    case GET_LEAVE_REQUEST_LEAVE_SUCCESS:
+      return {
+        loadingGetLeaveRequest: false,
+        successGetLeaveRequest: true
+      }
+    case DELETE_LEAVE_REQUEST_LEAVE_SUCCESS:
+      return {
+        loadingDeleteLeaveRequest: false,
+        successDeleteLeaveRequest: true
       }
 
     case REGISTER_LEAVE_FAIL:
@@ -73,6 +130,24 @@ export const leaveReducer = (state = initialState, action) => {
         successConfirmLeave: false,
         errorConfirmLeave: action.payload
       }
+    case APPROVED_LEAVE_FAIL:
+      return {
+        loadingApprovedLeave: false,
+        successApprovedLeave: false,
+        errorApprovedLeave: action.payload
+      }
+    case GET_LEAVE_REQUEST_LEAVE_FAIL:
+      return {
+        successGetLeaveRequest: false,
+        errorGetLeaveRequest: false,
+        loadingGetLeaveRequest: action.payload
+      }
+    case DELETE_LEAVE_REQUEST_LEAVE_FAIL:
+      return {
+        successDeletetLeaveRequest: false,
+        errorDeletetLeaveRequest: false,
+        loadingDeletetLeaveRequest: action.payload
+      }
 
     default:
       return state
@@ -81,12 +156,25 @@ export const leaveReducer = (state = initialState, action) => {
 
 // Actions
 export const leaveActions = {
+  getRequest(idLeave) {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: REGISTER_LEAVE_REQUEST })
+
+        const data = await get(`request/${idLeave}`)
+
+        dispatch({ type: REGISTER_LEAVE_SUCCESS, payload: data })
+      } catch (error) {
+        dispatch({ type: REGISTER_LEAVE_FAIL, payload: 'Register leave failed' })
+      }
+    }
+  },
   register(dataForm) {
     return async(dispatch) => {
       try {
         dispatch({ type: REGISTER_LEAVE_REQUEST })
 
-        const { data } = await axios.post(`REGISTER LEAVE API`, dataForm)
+        const data = await post(`request`, dataForm)
 
         dispatch({ type: REGISTER_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -99,7 +187,7 @@ export const leaveActions = {
       try {
         dispatch({ type: UPDATE_LEAVE_REQUEST })
 
-        const { data } = await axios.patch(`UPDATE LEAVE API ${idLeave}`, dataForm)
+        const data = put(`request/${idLeave}`, dataForm)
 
         dispatch({ type: UPDATE_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -112,11 +200,37 @@ export const leaveActions = {
       try {
         dispatch({ type: CONFIRM_LEAVE_REQUEST })
 
-        const { data } = await axios.patch(`CONFIRM LEAVE API ${idLeave}`, dataForm)
+        const data = await put(`request/${idLeave}`, dataForm)
 
         dispatch({ type: CONFIRM_LEAVE_SUCCESS, payload: data })
       } catch (error) {
         dispatch({ type: CONFIRM_LEAVE_FAIL, payload: 'Confirm leave failed' })
+      }
+    }
+  },
+  approved(dataForm, idLeave) {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: APPROVED_LEAVE_REQUEST })
+
+        const data = await put(`request/${idLeave}`, dataForm)
+
+        dispatch({ type: APPROVED_LEAVE_SUCCESS, payload: data })
+      } catch (error) {
+        dispatch({ type: APPROVED_LEAVE_FAIL, payload: 'Approved leave failed' })
+      }
+    }
+  },
+  delete(idLeave) {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: DELETE_LEAVE_REQUEST })
+
+        const data = await del(`request/${idLeave}`, dataForm)
+
+        dispatch({ type: DELETE_LEAVE_SUCCESS, payload: data })
+      } catch (error) {
+        dispatch({ type: DELETE_LEAVE_FAIL, payload: 'Delete leave failed' })
       }
     }
   }
