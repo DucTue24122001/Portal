@@ -6,25 +6,36 @@ import style from './registerLateEarly.module.css'
 import moment from 'moment'
 import { LateEarlyActions } from '../../../redux/lateEarly'
 
-const dataModal = {
-  checkin: '8:30',
-  checkout: '16:00',
-  date: '2022-01-12',
-  late: '00:10',
-  early: '00:20'
-}
-
-const { checkin, checkout, date, late, early } = dataModal
 const in_office = '09:50'
 const initial_in_office = moment.duration(`09:00:00`).asSeconds()
 
 const RegisterLateEarly = ({
+  dataLateEarly = {},
   onCancel,
   onOk,
   isUser = true,
   isManager = false,
   isAdmin = false
 }) => {
+  const { date, checkin, checkout, late, early, request } = dataLateEarly
+
+  const dataRequest = {
+    request_type: 0,
+    request_for_date: date,
+    check_in: checkin,
+    check_out: checkout,
+    compensation_time: '',
+    compensation_date: '',
+    leave_all_day: '',
+    leave_start: '',
+    leave_end: '',
+    leave_time: '',
+    request_ot_time: '',
+    reason: reason,
+    error_count: 0,
+    created_at: moment().format('YYYY-MM-DD')
+  }
+
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 
@@ -44,7 +55,6 @@ const RegisterLateEarly = ({
   const [status] = useState()
   const [nameStatus, setNameStatus] = useState()
 
-  console.log('timeRequestSeconds', timeRequestSeconds, timeRequest)
   useEffect(() => {
     setOverTime(
       moment
@@ -84,6 +94,7 @@ const RegisterLateEarly = ({
     //   setDateCoverUp('')
     //   onOk()
     // }
+    console.log('data', reason, dateCoverUp)
   }
 
   const handleCancel = () => {
@@ -273,20 +284,9 @@ const RegisterLateEarly = ({
         )}
 
         <Row gutter={30} justify='center' className={style.row_button}>
-          {/* <Col>
-            <Button type="primary" htmlType="submit" onClick={handleRegister}>
-              Register
-            </Button>
-          </Col>
-          <Col>
-            <Button type="dash" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </Col> */}
-
           {!nameStatus && (
             <Col>
-              <Button htmlType='submit' type='primary'>
+              <Button htmlType='submit' type='primary' onClick={handleRegister}>
                 Register
               </Button>
             </Col>

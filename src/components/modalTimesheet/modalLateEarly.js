@@ -7,6 +7,7 @@ export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel 
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
   const dataModal = useSelector((state) => state.timesheet.modalRowTable)
+  console.log('dataModal', dataModal)
   return (
     <>
       <Modal
@@ -18,7 +19,7 @@ export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel 
         width={1000}
         footer={null}
       >
-        <RegisterLateEarly onCancel={onCancel} onOk={onOk} />
+        <RegisterLateEarly onCancel={onCancel} onOk={onOk} dataLateEarly={dataModal}/>
       </Modal>
     </>
   )
