@@ -4,7 +4,11 @@ import styles from './myleave.module.css'
 
 const FormRequestAdd = ({ onCancel, year }) => {
   const { TextArea } = Input
-  const onFinish = (values) => {}
+  const onFinish = (values) => {
+    const { quota, reason } = values
+    const dataForm = { year: year, type: 1, quota: quota, note: reason }
+    console.log(dataForm)
+  }
   const onFinishFailed = (errorInfo) => {}
 
   return (
@@ -22,7 +26,7 @@ const FormRequestAdd = ({ onCancel, year }) => {
           <Col span={4}>Quota:</Col>
           <Col>
             <Form.Item
-              name={'Quota'}
+              name={'quota'}
               rules={[
                 {
                   required: true,
@@ -39,7 +43,7 @@ const FormRequestAdd = ({ onCancel, year }) => {
           <Col span={4}>Reason:</Col>
           <Col span={18}>
             <Form.Item
-              name={'Reason'}
+              name={'reason'}
               rules={[
                 {
                   required: true,

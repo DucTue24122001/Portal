@@ -1,8 +1,10 @@
 import React from 'react'
 import moment from 'moment'
 import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination, Modal } from 'antd'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './request.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { requestsActions } from './../../redux/requests'
 
 const RequestsPage = () => {
   const { Option } = Select
@@ -15,56 +17,15 @@ const RequestsPage = () => {
   const [visibleUnPaiLeave, setVisibleUnPaiLeave] = useState(false)
   const [visibleLateEarly, setVisibleLateEarly] = useState(false)
   const [visibleOT, setVisibleOT] = useState(false)
-
   const valuecheckbox = [1, 2, 3]
   const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
-  const datatable = [
-    {
-      name: 'Ms. Emmett Douglas',
-      requests_type: 4,
-      requests_date: '2042-03-22T09:17:35.811Z',
-      status: 0,
-      comp_time: '3:00',
-      compensation_date: '2091-09-12T20:22:26.242Z',
-      id: '1'
-    },
-    {
-      name: 'Tonya Medhurst',
-      requests_type: 5,
-      requests_date: '2045-12-17T05:44:29.036Z',
-      status: 1,
-      comp_time: '3:30',
-      compensation_date: '2034-12-27T16:15:12.878Z',
-      id: '2'
-    },
-    {
-      name: 'Mercedes Robel',
-      requests_type: 1,
-      requests_date: '2029-02-11T16:55:19.499Z',
-      status: 0,
-      comp_time: '1:30',
-      compensation_date: '2074-02-12T14:59:55.743Z',
-      id: '3'
-    },
-    {
-      name: 'Natalie Crooks',
-      requests_type: 2,
-      requests_date: '2049-07-02T03:46:57.877Z',
-      status: 0,
-      comp_time: '1:00',
-      compensation_date: '2081-08-30T03:34:10.578Z',
-      id: '4'
-    },
-    {
-      name: 'Lillian Quitzon Sr.',
-      requests_type: 3,
-      requests_date: '2069-03-13T06:09:45.904Z',
-      status: 2,
-      comp_time: '4:00',
-      compensation_date: '2070-03-18T17:12:03.345Z',
-      id: '5'
-    }
-  ]
+  const dispacth = useDispatch()
+  const { requests, loadingRequests } = useSelector((state) => state.requests)
+
+  useEffect(() => {
+    dispacth(requestsActions.getRequests(params))
+  }, [params])
+
   const onCheckboxChange = (e) => {
     if (e.target.value === 0) {
       setSelectDisable(!selectDisabled)
@@ -348,10 +309,11 @@ const RequestsPage = () => {
                       <Space direction='vertical' size={30} align='center'>
                         <Table
                           columns={columns}
-                          dataSource={datatable}
+                          dataSource={requests?.data}
                           pagination={false}
                           rowKey={(dataSource) => dataSource?.id}
                           bordered
+                          loading={loadingRequests}
                           className={styles['table']}
                           tableLayout='fixed'
                         />
