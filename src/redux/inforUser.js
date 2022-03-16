@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { getToken } from '../utils/storage/index'
+import { get } from '@/api/BaseRequest'
 
 // Contants
 export const GET_INFO_USER_REQUEST = 'GET_INFO_USER_REQUEST'
@@ -50,8 +49,7 @@ export const infoUserActions = {
       try {
         dispatch({ type: GET_INFO_USER_REQUEST })
 
-        const config = await getToken()
-        const { data } = await axios.get(`http://14.232.214.101:8111/api/v1/user/info`, config)
+        const data = await get(`user/info`)
 
         dispatch({ type: GET_INFO_USER_SUCCESS, payload: data })
       } catch (error) {
