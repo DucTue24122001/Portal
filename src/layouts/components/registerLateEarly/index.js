@@ -13,28 +13,11 @@ const RegisterLateEarly = ({
   dataLateEarly = {},
   onCancel,
   onOk,
-  isUser = true,
+  isUser = false,
   isManager = false,
-  isAdmin = false
+  isAdmin = true
 }) => {
-  const { date, checkin, checkout, late, early, request } = dataLateEarly
-
-  const dataRequest = {
-    request_type: 0,
-    request_for_date: date,
-    check_in: checkin,
-    check_out: checkout,
-    compensation_time: '',
-    compensation_date: '',
-    leave_all_day: '',
-    leave_start: '',
-    leave_end: '',
-    leave_time: '',
-    request_ot_time: '',
-    reason: reason,
-    error_count: 0,
-    created_at: moment().format('YYYY-MM-DD')
-  }
+  const { date, checkin, checkout, late, early, request, member_id } = dataLateEarly
 
   const [form] = Form.useForm()
   const dispatch = useDispatch()
@@ -48,12 +31,49 @@ const RegisterLateEarly = ({
 
   const [dateCoverUp, setDateCoverUp] = useState('')
   const [reason, setReason] = useState('')
+  const [comment, setComment] = useState('')
   const [overTime, setOverTime] = useState('')
   const [nameUserConfirm] = useState('Vu Van Vinh')
   const [nameUserApproved] = useState('Trần Xuân Đức')
   const [dateConfirm] = useState('2022-02-20 12:04')
-  const [status] = useState()
+  const [status] = useState(1)
   const [nameStatus, setNameStatus] = useState()
+
+  const dataDefaultLateEarly = {
+    request_type: 4,
+    request_for_date: date,
+    check_in: checkin,
+    check_out: checkout,
+    compensation_time: timeRequest,
+    compensation_date: '2022-02-19',
+    leave_all_day: '',
+    leave_start: '',
+    leave_end: '',
+    leave_time: '',
+    request_ot_time: '',
+    reason: 'Em xin làm bù ngày 20/2 cho thời gian thiếu ngày 19/02.',
+    error_count: '',
+    created_at: moment().format('YYYY-MM-DD'),
+    manager_confirmed_comment: 'Confirm',
+    admin_approved_comment: 'Approved'
+  }
+
+  const dataRequest = {
+    request_type: 4,
+    request_for_date: date,
+    check_in: checkin,
+    check_out: checkout,
+    compensation_time: timeRequest,
+    compensation_date: dateCoverUp,
+    leave_all_day: '',
+    leave_start: '',
+    leave_end: '',
+    leave_time: '',
+    request_ot_time: '',
+    reason: reason,
+    error_count: '',
+    created_at: moment().format('DD-MM-YY hh:mm')
+  }
 
   useEffect(() => {
     setOverTime(
@@ -83,18 +103,44 @@ const RegisterLateEarly = ({
   }, [])
 
   const handleRegister = () => {
-    // const value = {
-    //   compensation_date: dateCoverUp,
-    //   reason: reason,
-    //   status: 'sent'
-    // }
-    // if (reason !== '' && dateCoverUp !== 0) {
-    //   dispatch(LateEarlyActions.registerLateEarly(value))
-    //   setReason('')
-    //   setDateCoverUp('')
-    //   onOk()
-    // }
-    console.log('data', reason, dateCoverUp)
+    if (reason !== '' && dateCoverUp !== 0) {
+      dispatch(LateEarlyActions.registerLateEarly(dataRequest))
+      setReason('')
+      setDateCoverUp('')
+      onOk()
+    }
+  }
+
+  const handleUpdateLateEarly = () => {
+    dispatch(LateEarlyActions.updateLateEarly(dataRequest, member_id))
+    onOk()
+  }
+
+  const hanleDeleteLateEarly = () => {
+    dispatch(LateEarlyActions.deleteLateEarly(member_id))
+    onOk()
+  }
+
+  const handleConfirmLateEarly = () => {
+    const dataConfirm = {
+      ...dataRequest,
+      manager_confirmed_status: 1,
+      manager_id: 1,
+      manager_confirmed_comment: comment,
+      manager_confirmed_at: moment().format('DD-MM-YY hh:mm')
+    }
+    dispatch(LateEarlyActions.confirm(dataConfirm, dataConfirm.manager_id))
+  }
+
+  const handleApprovedLateEarly = () => {
+    const dataApproved = {
+      ...dataRequest,
+      admin_confirmed_status: 1,
+      admin_id: 68,
+      admin_confirmed_comment: comment,
+      admin_confirmed_at: moment().format('DD-MM-YY hh:mm')
+    }
+    dispatch(LateEarlyActions.approved(dataApproved, dataApproved.admin_id))
   }
 
   const handleCancel = () => {
@@ -112,7 +158,16 @@ const RegisterLateEarly = ({
 
   return (
     <div className={style.registerLateEarly}>
-      <Form form={form}>
+      <Form
+        form={form}
+        initialValues={{
+          dateCoverUp: moment(dataDefaultLateEarly.compensation_date),
+          reason: dataDefaultLateEarly.reason,
+          comment: isManager
+            ? dataDefaultLateEarly.manager_confirmed_comment
+            : dataDefaultLateEarly.admin_approved_comment
+        }}
+      >
         {nameStatus !== undefined && !isUser && (
           <Row className={style.row_lineHeight}>
             <Col xs={10} sm={5}>
@@ -232,13 +287,23 @@ const RegisterLateEarly = ({
             </Form.Item>
           </Col>
         </Row>
-        {nameStatus && (
+        {nameStatus && !isAdmin && (
           <Row className={style.status}>
             <Col xs={10} sm={5}>
               Status:
             </Col>
             <Col xs={10} sm={5}>
               <span> {nameStatus}</span>
+            </Col>
+          </Row>
+        )}
+        {nameStatus && isAdmin && (
+          <Row className={style.status}>
+            <Col xs={10} sm={5}>
+              {nameUserApproved}
+            </Col>
+            <Col xs={10} sm={5}>
+              <span> Confirm | {dateConfirm}</span>
             </Col>
           </Row>
         )}
@@ -256,11 +321,11 @@ const RegisterLateEarly = ({
         {nameStatus !== undefined && !isUser && (
           <Row className={style.comment}>
             <Col xs={10} sm={5}>
-              Comment: <span style={{ color: 'red' }}>(*)</span>
+              Comment:
             </Col>
             <Col xs={24} sm={19}>
               <Form.Item
-                name='reason'
+                name='comment'
                 rules={[
                   {
                     required: true,
@@ -274,7 +339,7 @@ const RegisterLateEarly = ({
                     (nameStatus === 'approved' && isAdmin)
                   }
                   style={{ height: '120px' }}
-                  onChange={(e) => setReason(e.target.value)}
+                  onChange={(e) => setComment(e.target.value)}
                   showCount
                   maxLength={100}
                 />
@@ -301,6 +366,7 @@ const RegisterLateEarly = ({
                 }
                 htmlType='submit'
                 type='primary'
+                onClick={handleUpdateLateEarly}
               >
                 Update
               </Button>
@@ -316,6 +382,7 @@ const RegisterLateEarly = ({
                 }
                 htmlType='submit'
                 type='primary'
+                onClick={hanleDeleteLateEarly}
               >
                 Delete
               </Button>
@@ -331,6 +398,7 @@ const RegisterLateEarly = ({
                 }
                 htmlType='submit'
                 type='primary'
+                onClick={handleConfirmLateEarly}
               >
                 Confirmed
               </Button>
@@ -339,7 +407,11 @@ const RegisterLateEarly = ({
 
           {nameStatus === 'confirm' && isAdmin && (
             <Col>
-              <Button htmlType='submit' type='primary'>
+              <Button
+                htmlType='submit'
+                type='primary'
+                onClick={handleApprovedLateEarly}
+              >
                 Approved
               </Button>
             </Col>

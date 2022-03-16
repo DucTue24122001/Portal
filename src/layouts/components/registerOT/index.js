@@ -64,28 +64,10 @@ const RegisterOT = ({
     }
   }, [])
 
-  const handleRegisterOT = () => {
-    // const value = {
-    //   compensation_date: moment().format('YYYY-MM-DD HH:mm'),
-    //   request_for_date: 1646971964,
-    //   check_in: 1646971964,
-    //   check_out: 1646971964,
-    //   request_ot: requestOT,
-    //   actual_overtime: actualOverTime,
-    //   reason: reason
-    // }
-    // if (reason !== '' && requestOT !== 0) {
-    //   setTimeout(dispatch(OtAction.registerOt(value)), 6000)
-    //   setReason('')
-    //   setRequestOT(0)
-    //   onOk()
-    // }
-  }
+  const handleRegisterOT = () => {}
 
   const handleCancel = () => {
     form.resetFields()
-    // setReason('')
-    // setRequestOT(0)
     onCancel()
   }
 
@@ -259,19 +241,13 @@ const RegisterOT = ({
         )}
 
         <Row gutter={30} justify='center'>
-          {/* <Col>
-            <Button type="primary" htmlType="submit" loading={registerOtLoading} onClick={handleRegisterOT}>
-              Register
-            </Button>
-          </Col>
-          <Col>
-            <Button type="dash" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </Col> */}
           {!nameStatus && (
             <Col>
-              <Button htmlType='submit' type='primary'>
+              <Button
+                htmlType='submit'
+                type='primary'
+                onClick={handleRegisterOT}
+              >
                 Register
               </Button>
             </Col>
@@ -339,7 +315,7 @@ const RegisterOT = ({
             </Col>
           )}
           <Col>
-            <Button className={style.button_form} onClick={(e) => onCancel()}>
+            <Button className={style.button_form} onClick={handleCancel}>
               Cancel
             </Button>
           </Col>
