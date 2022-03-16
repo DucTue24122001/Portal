@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { setCookie, removeCookie, STORAGEKEY, getToken } from '@/utils/storage'
+import { setCookie, removeCookie, STORAGEKEY } from '@/utils/storage'
+import { post, get } from '@/api/BaseRequest'
 
 // Contants
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
@@ -71,7 +71,7 @@ export const authActions = {
       try {
         dispatch({ type: LOGIN_REQUEST })
 
-        const { data } = await axios.post(`http://14.232.214.101:8111/api/v1/user/login`, dataForm)
+        const data = await post(`user/login`, dataForm)
         if (data) {
           setCookie(STORAGEKEY.ACCESS_TOKEN, data.access_token)
         }
@@ -87,8 +87,7 @@ export const authActions = {
       try {
         dispatch({ type: LOGOUT_REQUEST })
 
-        const config = await getToken()
-        const { data } = await axios.get(`http://14.232.214.101:8111/api/v1/user/logout`, config)
+        const data = await get(`user/logout`)
         if (data) {
           removeCookie(STORAGEKEY.ACCESS_TOKEN)
         }

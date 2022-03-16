@@ -1,7 +1,7 @@
 import { Modal } from 'antd'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import FormRegisterLeave from '../FormLeave/FormRegisterLeave'
+import FormLeave from '../FormLeave/FormLeave'
 
 export default function ModalLeave({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
@@ -11,7 +11,7 @@ export default function ModalLeave({ isModalVisible, handleOk, handleCancel }) {
   return (
     <>
       <Modal width={1000} footer={false} title='' visible={isModalVisible} onOk={onOk} onCancel={onCancel}>
-        <FormRegisterLeave onCancel={onCancel} />
+        <FormLeave dataModal={dataModal} isUser={true} onCancel={onCancel} />
       </Modal>
     </>
   )

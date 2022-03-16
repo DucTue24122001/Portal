@@ -29,7 +29,7 @@ const Header = () => {
             <Row className={style.header_row}>
               <Col span={12} className={style.header_title}>
                 <Title>
-                  <Link to='/'>Relipa Protal</Link>
+                  <Link to='/'>Relipa Portal</Link>
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>

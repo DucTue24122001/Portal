@@ -328,7 +328,6 @@ const TimesheetPage = () => {
   return (
     <>
       <SearchTimeSheetRedux onSearch={onSearch} />
-
       <Row className={styles.marginBottom}>
         <Col span={12}>
           <Text>
