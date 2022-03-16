@@ -6,7 +6,6 @@ import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
 import { noticeRedux } from '../../redux/notice'
-import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import styles from './styles.module.css'
 
 const SearchNotice = ({ onSearch }) => {
@@ -33,11 +32,9 @@ const SearchNotice = ({ onSearch }) => {
 
   return (
     <>
-      <Row className={styles.marginBottom}>
-        <Col span={24} className={styles.toTheRight}>
-          <Button type='primary' icon={<PlusOutlined />}>
-            Create New
-          </Button>
+      <Row justify='end'>
+        <Col span={2}>
+          <Button>Create New</Button>
         </Col>
       </Row>
       <div className={styles.notice}>
@@ -103,7 +100,7 @@ const SearchNotice = ({ onSearch }) => {
                 </Row>
                 <Row gutter={24}>
                   <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6, offset: 4 }} lg={{ span: 4, offset: 2 }}>
-                    <Form.Item name='Department'>
+                    <Form.Item>
                       <Text>To Department</Text>
                     </Form.Item>
                   </Col>
@@ -124,20 +121,12 @@ const SearchNotice = ({ onSearch }) => {
                     </Form.Item>
                   </Col>
                   <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6, offset: 4 }} lg={{ span: 4, offset: 2 }}>
-                    <Form.Item name='Department'>
+                    <Form.Item>
                       <Text>Status</Text>
                     </Form.Item>
                   </Col>
                   <Col xs={{ span: 24 }} sm={{ span: 23 }} md={{ span: 12 }} lg={{ span: 4 }}>
-                    <Form.Item
-                      name='Status'
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your status!'
-                        }
-                      ]}
-                    >
+                    <Form.Item name='Status'>
                       <Select placeholder='Select sort'>
                         <Option value='all'>All</Option>
                         <Option value='published'>Published</Option>
@@ -151,14 +140,14 @@ const SearchNotice = ({ onSearch }) => {
                 <Row gutter={24} justify='center'>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button type='primary' htmlType='submit' icon={<SearchOutlined />} loading={btnLoadingRedux}>
+                      <Button type='primary' htmlType='submit' loading={btnLoadingRedux}>
                         Search
                       </Button>
                     </Form.Item>
                   </Col>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button htmlType='button' onClick={onReset} icon={<ReloadOutlined />}>
+                      <Button htmlType='button' onClick={onReset}>
                         Reset
                       </Button>
                     </Form.Item>

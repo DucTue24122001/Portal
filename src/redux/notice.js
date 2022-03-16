@@ -84,13 +84,8 @@ export const noticeRedux = {
     try {
       const { Department, SortBy, Status, inputSearch } = value
       const { page, pageSize } = params
-      const pageSearch = {
-        sortBy: 'id',
-        order: SortBy,
-        page: page,
-        limit: pageSize
-      }
-      const data = await get('notifications', pageSearch)
+      console.log(value, params)
+      const data = await get('notifications')
       dispatch({
         type: 'notice/length',
         payload: data.total
