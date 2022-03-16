@@ -4,6 +4,8 @@ import moment from 'moment'
 import { TimePicker, Checkbox, Radio, Input, Button, Form, Spin, Row, Col } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { leaveActions } from '../../redux/leave'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
@@ -13,21 +15,21 @@ const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
 
 const dataLeave = {
-  check_in: '8:00',
-  check_out: '16:00',
-  compensation_date: '',
-  compensation_time: '',
-  leave_all_day: 1,
-  leave_end: moment('08:07'),
-  leave_start: moment('06:07'),
-  leave_time: '01:00',
-  reason: 'xin nghi 1 ngay',
-  request_for_date: '2022-01-12',
-  request_ot_time: '',
-  request_type: 2,
-  status: 0,
-  manager_confirmed_comment: 'manager_confirmed_comment',
-  admin_approved_comment: 'admin_approved_comment'
+  // check_in: '8:00',
+  // check_out: '16:00',
+  // compensation_date: '',
+  // compensation_time: '',
+  // leave_all_day: 1,
+  // leave_end: '08:07:00',
+  // leave_start: '06:07:00',
+  // leave_time: '01:00',
+  // reason: 'xin nghi 1 ngay',
+  // request_for_date: '2022-01-12',
+  // request_ot_time: '',
+  // request_type: 2,
+  // status: 0,
+  // manager_confirmed_comment: 'manager_confirmed_comment',
+  // admin_approved_comment: 'admin_approved_comment'
 }
 
 const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = false, dataModal = {}}) => {
@@ -38,18 +40,30 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const [nameStatus, setNameStatus] = useState()
   const [nameUserConfirm] = useState('Vu Van Vinh')
-  const [leaveTime, setLeaveTime] = useState('')
+  const [leaveTime, setLeaveTime] = useState((dataLeave && dataLeave.leave_time) || '')
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
   const {
-    successRegisterLeave,
     loadingRegisterLeave,
-    successUpdateLeave,
     loadingUpdateLeave,
-    successConfirmLeave,
     loadingConfirmLeave,
     loadingGetLeaveRequest,
+    loadingDeleteLeaveRequest,
+    loadingApprovedLeave,
+    loadingRejectLeaveRequest,
+
+    successRegisterLeave,
+    successUpdateLeave,
+    successConfirmLeave,
     successDeleteLeaveRequest,
-    loadingDeleteLeaveRequest
+    successApprovedLeave,
+    successRejectLeaveRequest,
+
+    errorRegisterLeave,
+    errorUpdateLeave,
+    errorConfirmLeave,
+    errorDeletetLeaveRequest,
+    errorApprovedLeave,
+    errorRejectLeaveRequest
   } = useSelector((state) => state.leave)
 
   const onFinish = (values) => {
@@ -101,7 +115,68 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
     if ((successRegisterLeave || successUpdateLeave || successConfirmLeave) === true) {
       dispatch(leaveActions.getRequest(idLeave))
     }
-  }, [successRegisterLeave, successUpdateLeave, successConfirmLeave])
+    if (successRegisterLeave === true) {
+      toast('successRegisterLeave')
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (successUpdateLeave === true) {
+      toast('successUpdateLeave')
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (successConfirmLeave === true) {
+      toast('Success Confirm Leave')
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (successDeleteLeaveRequest === true) {
+      toast('Success DeleteLeave Request')
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (successApprovedLeave === true) {
+      toast('Success Approved Request')
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (successRejectLeaveRequest === true) {
+      toast('Success Reject Request')
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (errorRegisterLeave !== '') {
+      toast(errorRegisterLeave)
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (errorUpdateLeave !== '') {
+      toast(errorUpdateLeave)
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (errorConfirmLeave !== '') {
+      toast(errorConfirmLeave)
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (errorDeletetLeaveRequest !== '') {
+      toast(errorDeletetLeaveRequest)
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (errorApprovedLeave !== '') {
+      toast(errorApprovedLeave)
+      dispatch(leaveActions.clearSuccess())
+    }
+    if (errorRejectLeaveRequest !== '') {
+      toast(errorRejectLeaveRequest)
+      dispatch(leaveActions.clearSuccess())
+    }
+  }, [
+    successRegisterLeave,
+    successUpdateLeave,
+    successConfirmLeave,
+    successDeleteLeaveRequest,
+    successRejectLeaveRequest,
+
+    errorRegisterLeave,
+    errorUpdateLeave,
+    errorConfirmLeave,
+    errorApprovedLeave,
+    errorDeletetLeaveRequest,
+    errorRejectLeaveRequest
+  ])
 
   useEffect(() => {
     if (status === 0) {
@@ -119,6 +194,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
   }, [status])
 
   const rangerTime = (time) => {
+    console.log(time)
     const totalSecondsStart = moment.duration(time[0].format('HH:mm')).asSeconds()
     const totalSecondsEnd = moment.duration(time[1].format('HH:mm')).asSeconds()
     setLeaveTime(totalSecondsEnd - totalSecondsStart)
@@ -131,7 +207,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
 
   return (
     <>
-      {false ? (
+      {loadingGetLeaveRequest ? (
         <Spin tip='Loading...' />
       ) : (
         <div className={style.wrapper_form}>
@@ -145,7 +221,12 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
             autoComplete='off'
             initialValues={{
               leave_all_day: dataLeave?.leave_all_day !== 0,
-              Range: dataLeave ? [dataLeave.leave_start, dataLeave.leave_end] : [],
+              Range: dataLeave
+                ? [
+                  moment(moment.duration(dataLeave.leave_start).asMilliseconds()),
+                  moment(moment.duration(dataLeave.leave_end).asMilliseconds())
+                ]
+                : [],
               reason: dataLeave ? dataLeave.reason : '',
               manager_confirmed_comment: dataLeave ? dataLeave.manager_confirmed_comment : '',
               admin_approved_comment: dataLeave ? dataLeave.admin_approved_comment : '',
@@ -174,7 +255,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
                 Register for date:
               </Col>
               <Col className={style.form_item} span={20}>
-                <span> {date}</span>
+                <span>{date}</span>
               </Col>
 
               <Col span={4} className={style.form_item}>
@@ -353,13 +434,14 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
 
             <div className={style.wrapper_item_button_form}>
               {!nameStatus && (
-                <Button className={style.button_form} htmlType='submit' type='primary'>
+                <Button loading={loadingRegisterLeave} className={style.button_form} htmlType='submit' type='primary'>
                   Register
                 </Button>
               )}
 
               {nameStatus && isUser && (
                 <Button
+                  loading={loadingUpdateLeave}
                   disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
                   className={style.button_form}
                   htmlType='submit'
@@ -371,6 +453,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
 
               {nameStatus && isUser && (
                 <Button
+                  loading={loadingDeleteLeaveRequest}
                   onClick={handleDelete}
                   disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
                   className={style.button_form}
@@ -382,6 +465,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
 
               {nameStatus !== undefined && isManager && (
                 <Button
+                  loading={loadingConfirmLeave}
                   disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && true}
                   className={style.button_form}
                   htmlType='submit'
@@ -392,12 +476,13 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
               )}
 
               {nameStatus === 'confirm' && isAdmin && (
-                <Button className={style.button_form} htmlType='submit' type='primary'>
+                <Button loading={loadingApprovedLeave} className={style.button_form} htmlType='submit' type='primary'>
                   Approved
                 </Button>
               )}
               {nameStatus !== undefined && isManager && (
                 <Button
+                  loading={loadingRejectLeaveRequest}
                   disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && true}
                   className={style.button_form}
                   htmlType='submit'
@@ -407,7 +492,12 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
                 </Button>
               )}
               {nameStatus === 'confirm' && isAdmin && (
-                <Button className={style.button_form} htmlType='submit' ype='danger'>
+                <Button
+                  loading={loadingRejectLeaveRequest}
+                  className={style.button_form}
+                  htmlType='submit'
+                  ype='danger'
+                >
                   Reject
                 </Button>
               )}
@@ -417,6 +507,7 @@ const FormLeave = ({ onCancel, isUser = false, isManager = false, isAdmin = fals
               </Button>
             </div>
           </Form>
+          <ToastContainer />
         </div>
       )}
     </>
