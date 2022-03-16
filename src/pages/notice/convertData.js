@@ -8,14 +8,10 @@ export const convertDataNotice = (data) => {
       status: item.status,
       published_date: item.published_date,
       subject: item.subject,
-      created_by: item.created_by,
+      published_to: item.published_to,
       created_at: item.created_at,
       attachment_link: item.attachment
     }
-
-    item.attachment === null
-      ? ((valueData.attachment = ''), (valueData.attachment_link = ''))
-      : (valueData.attachment_link = valueData.attachment.split('/')[valueData.attachment.split('/').length - 1])
     return valueData
   })
 
