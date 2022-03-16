@@ -64,6 +64,16 @@ export const timeSheetRedux = {
       const { page, pageSize } = params
       const sizePage = { page: page, limit: pageSize }
       const data = await get('timesheets', sizePage)
+      const dataComp = () =>
+        data.map((item) => {
+          if (item.compensation !== null) {
+            return item
+          }
+        })
+      dispatch({
+        type: 'timeSheet/length',
+        payload: { dataComp: dataComp, length: data.total }
+      })
       dispatch({
         type: 'timeSheet/getdata',
         payload: data.data
@@ -80,7 +90,7 @@ export const timeSheetRedux = {
     }
   },
   searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
-    const { Date, Sort, radioBtn, dateStart, dateEnd } = value
+    const { Date, radioBtn, dateStart, dateEnd } = value
     const { page, pageSize } = params
     try {
       const sortOption = { select_type: radioBtn, order: 'asc', sort: page, per_page: pageSize }
@@ -91,6 +101,16 @@ export const timeSheetRedux = {
         sortOption.end_date = dateEnd.format('YYYY-MM-DD')
       }
       const data = await get('timesheets', sortOption)
+      const dataComp = () =>
+        data.map((item) => {
+          if (item.compensation !== null) {
+            return item
+          }
+        })
+      dispatch({
+        type: 'timeSheet/length',
+        payload: { dataComp: dataComp, length: data.total }
+      })
       if (btnLoading === true) {
         dispatch({
           type: 'timeSheet/btnLoading',
@@ -117,26 +137,6 @@ export const timeSheetRedux = {
     return {
       type: 'timeSheet/loading',
       payload: true
-    }
-  },
-  lengthTableTimeSheetAPI: () => async(dispatch) => {
-    try {
-      const data = await get('timesheets')
-      const dataComp = () =>
-        data.map((item) => {
-          if (item.compensation !== null) {
-            return item
-          }
-        })
-      dispatch({
-        type: 'timeSheet/length',
-        payload: { dataComp: dataComp, length: data.total }
-      })
-    } catch (error) {
-      dispatch({
-        type: 'timeSheet/length',
-        payload: []
-      })
     }
   },
   modalRowTable: (record) => (dispatch) => {

@@ -1,7 +1,6 @@
 import moment from 'moment'
 
 export const convertData = (data, dataComp) => {
-  console.log(data)
   const value = data.map((item) => {
     const valueData = {
       key: item.id,
@@ -21,7 +20,7 @@ export const convertData = (data, dataComp) => {
       uleave: item.unpaid_leave,
       is_holiday: item.is_holiday,
       member_id: item.member_id,
-      requests: [],
+      requests: item.requests,
       colorWorkTime: ''
     }
     if (item.note === null) {

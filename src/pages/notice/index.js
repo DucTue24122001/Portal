@@ -25,11 +25,6 @@ const NoticePage = () => {
   const optionSearch = useSelector((state) => state.notice.optionSearch)
 
   useEffect(() => {
-    dispatch(noticeRedux.lengthTableNotice())
-    dispatch(noticeRedux.selectTableNotice(params))
-  }, [])
-
-  useEffect(() => {
     if (optionSearch === 1) {
       dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
     } else {
