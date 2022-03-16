@@ -34,11 +34,6 @@ const TimesheetPage = () => {
   const dataComp = useSelector((state) => state.timesheet.listMemberComp)
 
   useEffect(() => {
-    dispatch(timeSheetRedux.lengthTableTimeSheetAPI())
-    dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
-  }, [])
-
-  useEffect(() => {
     if (optionSearch === 1) {
       dispatch(timeSheetRedux.searchTableTimeSheetApI(valueSearch, params, false))
     } else {
@@ -297,7 +292,7 @@ const TimesheetPage = () => {
       width: '12%',
       render: (index, record) => {
         return (
-          <Space>
+          <div>
             {record.is_holiday === 0 ? (
               <>
                 <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
@@ -316,7 +311,7 @@ const TimesheetPage = () => {
             <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
-          </Space>
+          </div>
         )
       }
     }
@@ -325,7 +320,6 @@ const TimesheetPage = () => {
   return (
     <>
       <SearchTimeSheetRedux onSearch={onSearch} />
-
       <Row className={styles.marginBottom}>
         <Col span={12}>
           <Text>
