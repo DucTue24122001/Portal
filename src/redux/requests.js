@@ -43,11 +43,10 @@ export const requestsReducer = (state = initialState, action) => {
 
 // Actions
 export const requestsActions = {
-  getRequests(year) {
+  getRequests(params) {
     return async(dispatch) => {
       try {
         dispatch({ type: GET_REQUESTS_REQUEST })
-        const params = { year: year }
         const data = await get('requests', params)
 
         dispatch({ type: GET_REQUESTS_SUCCESS, payload: data })

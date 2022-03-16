@@ -5,8 +5,11 @@ import { useState, useEffect } from 'react'
 import styles from './request.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { requestsActions } from './../../redux/requests'
+import { useHistory } from 'react-router-dom'
 
 const RequestsPage = () => {
+  const history = useHistory()
+  const [user] = useState(false)
   const { Option } = Select
   const { RangePicker } = DatePicker
   const [selectDisabled, setSelectDisable] = useState(true)
@@ -17,10 +20,16 @@ const RequestsPage = () => {
   const [visibleUnPaiLeave, setVisibleUnPaiLeave] = useState(false)
   const [visibleLateEarly, setVisibleLateEarly] = useState(false)
   const [visibleOT, setVisibleOT] = useState(false)
-  const valuecheckbox = [1, 2, 3]
+  const valuecheckbox = ['this month', 'last month']
   const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
   const dispacth = useDispatch()
   const { requests, loadingRequests } = useSelector((state) => state.requests)
+
+  useEffect(() => {
+    if (user === true) {
+      history.push('/')
+    }
+  }, [])
 
   useEffect(() => {
     dispacth(requestsActions.getRequests(params))
@@ -36,7 +45,9 @@ const RequestsPage = () => {
     }
   }
 
-  const handleChange = (value) => {}
+  const handleChange = (value) => {
+    console.log(value)
+  }
 
   const handleChangeSearchStatus = (value) => {}
 
@@ -228,8 +239,8 @@ const RequestsPage = () => {
                                 Choose from list
                               </Radio>
                               <Select style={{ width: 150 }} disabled={selectDisabled} onChange={handleChange}>
-                                {valuecheckbox.map((item) => (
-                                  <Option key={item} value={item}>
+                                {valuecheckbox.map((item, index) => (
+                                  <Option key={item} value={index + 1}>
                                     {item}
                                   </Option>
                                 ))}

@@ -1,13 +1,16 @@
 import React from 'react'
 import { Row, Col, Input, InputNumber, Button, Form } from 'antd'
 import styles from './myleave.module.css'
+import { useDispatch } from 'react-redux'
+import { leaveQuotaActions } from '../../redux/myleave'
 
 const FormRequestAdd = ({ onCancel, year }) => {
+  const dispacth = useDispatch()
   const { TextArea } = Input
   const onFinish = (values) => {
     const { quota, reason } = values
     const dataForm = { year: year, type: 1, quota: quota, note: reason }
-    console.log(dataForm)
+    dispacth(leaveQuotaActions.postLeaveQuota(dataForm))
   }
   const onFinishFailed = (errorInfo) => {}
 
