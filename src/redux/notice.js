@@ -86,6 +86,16 @@ export const noticeRedux = {
       const { page, pageSize } = params
       console.log(value, params)
       const data = await get('notifications')
+      console.log(data)
+      // const dataSort = data.sort()
+
+      // console.log(dataBase)
+      // const   dataBase = (dataSort).map((item)=>{
+      //     if(item.subject.inludes(inputSearch)===true && (item.published_to.inludes(Department)===true)){
+      //       return item
+      //     }
+      //   })
+
       dispatch({
         type: 'notice/length',
         payload: data.total
