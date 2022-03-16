@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Row, Col, Input, InputNumber, Button, Form } from 'antd'
 import styles from './myleave.module.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { leaveQuotaActions } from '../../redux/myleave'
 
 const FormRequestAdd = ({ onCancel, year }) => {
   const dispacth = useDispatch()
+  const { leaveQuota, successPostLeaveQuota } = useSelector((state) => state.leaveQuota)
   const { TextArea } = Input
   const onFinish = (values) => {
     const { quota, reason } = values
@@ -13,6 +14,10 @@ const FormRequestAdd = ({ onCancel, year }) => {
     dispacth(leaveQuotaActions.postLeaveQuota(dataForm))
   }
   const onFinishFailed = (errorInfo) => {}
+
+  useEffect(() => {
+    if (successPostLeaveQuota === true) onCancel()
+  }, [leaveQuota?.length])
 
   return (
     <div>

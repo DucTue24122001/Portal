@@ -99,15 +99,15 @@ const RequestsPage = () => {
     },
     {
       title: 'Member',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'member_full_name',
+      key: 'member_full_name',
       align: 'left',
       width: '10%'
     },
     {
       title: 'Date',
-      dataIndex: 'requests_date',
-      key: 'requests_date',
+      dataIndex: 'requests_for_date',
+      key: 'requests_for_date',
       align: 'center',
       width: '12%',
       render: (record) => {
@@ -132,41 +132,41 @@ const RequestsPage = () => {
     },
     {
       title: 'OT',
-      key: 'comp_time, requests_type',
+      key: 'request_ot_time, requests_type',
       align: 'center',
       width: '6%',
       render: (record) => {
-        return <Space>{record.requests_type === 5 ? `${record.comp_time}` : ''}</Space>
+        return <Space>{record.requests_type === 5 ? `${record.request_ot_time}` : ''}</Space>
       }
     },
     {
       title: 'Lack',
-      key: 'comp_time',
+      key: 'compensation_time',
       align: 'center',
       width: '6%'
     },
     {
       title: 'Comp',
-      key: 'comp_time',
+      key: 'compensation_time',
       align: 'center',
       width: '6%'
     },
     {
       title: 'Pleave',
-      key: 'comp_time, requests_type',
+      key: 'compensation_time, requests_type',
       align: 'center',
       width: '7%',
       render: (record) => {
-        return <Space>{record.requests_type === 2 ? `${record.comp_time}` : ''}</Space>
+        return <Space>{record.requests_type === 2 ? `${record.compensation_time}` : ''}</Space>
       }
     },
     {
       title: 'Uleave',
-      key: 'comp_time ,requests_type',
+      key: 'compensation_time ,requests_type',
       align: 'center',
       width: '7%',
       render: (record) => {
-        return <Space>{record.requests_type === 3 ? `${record.comp_time}` : ''}</Space>
+        return <Space>{record.requests_type === 3 ? `${record.compensation_time}` : ''}</Space>
       }
     },
     {
@@ -309,7 +309,7 @@ const RequestsPage = () => {
                 <div className={styles['content1-body']}>
                   <Row style={{ paddingTop: 10 }}>
                     <Col span={4}>
-                      Total number of records: <b></b>
+                      Total number of records: <b>{requests?.total}</b>
                     </Col>
                     <Col span={2} offset={17}>
                       Items per page

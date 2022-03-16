@@ -45,23 +45,23 @@ export const leaveQuotaReducer = (state = initialState, action) => {
 
     case POST_LEAVE_QUOTA_REQUEST:
       return {
-        loadingLeaveQuota: true
+        loadingPostLeaveQuota: true
       }
 
     case POST_LEAVE_QUOTA_SUCCESS:
       return {
         ...state,
-        loadingLeaveQuota: false,
-        successLeaveQuota: true,
+        loadingPostLeaveQuota: false,
+        successPostLeaveQuota: true,
         leaveQuota: action.payload
       }
 
     case POST_LEAVE_QUOTA_FAIL:
       return {
         ...state,
-        successLeaveQuota: false,
-        loadingLeaveQuota: false,
-        errorLeaveQuota: action.payload
+        successPostLeaveQuota: false,
+        loadingPostLeaveQuota: false,
+        errorPostLeaveQuota: action.payload
       }
 
     default:
