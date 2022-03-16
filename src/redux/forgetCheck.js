@@ -62,15 +62,15 @@ export const ForgetCheckAction = {
   },
   RegisterForgetCheck(dataRegisterForgetCheck) {
     return async(dispatch) => {
-      try{
-        dispatch({type: REGISTER_FORGET_CHECK_REQUEST})
+      try {
+        dispatch({ type: REGISTER_FORGET_CHECK_REQUEST })
 
         const response = await post('editForgetCheck', dataRegisterForgetCheck)
         dispatch({
           type: REGISTER_FORGET_CHECK_SUCCESS,
           payload: response
         })
-      } catch(err) {
+      } catch (err) {
         dispatch({
           type: REGISTER_FORGET_CHECK_FAIL,
           payload: 'Register Forget Check Fail!'

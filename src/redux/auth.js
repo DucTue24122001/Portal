@@ -73,7 +73,7 @@ export const authActions = {
 
         const { data } = await axios.post(`http://14.232.214.101:8111/api/v1/user/login`, dataForm)
         if (data) {
-          setCookie(STORAGEKEY.ACCESS_TOKEN, data.token)
+          setCookie(STORAGEKEY.ACCESS_TOKEN, data.access_token)
         }
         dispatch({ type: LOGIN_SUCCESS, payload: data.message })
       } catch (error) {
