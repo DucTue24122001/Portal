@@ -49,9 +49,9 @@ export const infoUserActions = {
       try {
         dispatch({ type: GET_INFO_USER_REQUEST })
 
-        const data = await get(`user/info`)
-
-        dispatch({ type: GET_INFO_USER_SUCCESS, payload: data })
+        const data = await get(`user`)
+        console
+          .dispatch({ type: GET_INFO_USER_SUCCESS, payload: data })
       } catch (error) {
         dispatch({ type: GET_INFO_USER_FAIL, payload: 'Get info user fail' })
       }
