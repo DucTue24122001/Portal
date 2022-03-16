@@ -23,7 +23,6 @@ const profileContentUpdate = () => {
     dispatch(showLoadingProfile(true))
     dispatch(getProfileApi(data))
   }, [])
-  console.log(data)
   let datalist = data
   if (data[0]) {
     datalist = data[0].data
@@ -39,11 +38,6 @@ const profileContentUpdate = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
-  form.setFieldsValue({
-    genders: datalist.gender
-    // birthDate: datalist.birth_date,
-    // Identity: datalist.Identity
-  })
 
   return (
     <div>
@@ -57,12 +51,33 @@ const profileContentUpdate = () => {
           <Loading />
         ) : (
           <Form
-            form={form}
             initialValues={{
-              gender: datalist ? datalist.gender : null,
+              genders: datalist ? datalist.gender : null,
               birthDate: datalist ? moment(datalist.birth_date, dateFormat) : null,
-              Identity: datalist ? datalist.identity_card_date : null
-
+              Identity: datalist ? datalist.identity_number : null,
+              DateOfIssue: datalist ? moment(datalist.identity_card_date, dateFormat) : null,
+              PlaceOfIssue: datalist ? datalist.identity_card_place : null,
+              PassportNumber: datalist ? datalist.passport_number : null,
+              PassportExpiration: datalist ? moment(datalist.passport_expiration, fomatDate) : null,
+              Nationality: datalist ? datalist.nationality : null,
+              Permanent: datalist ? datalist.permanent_address : null,
+              Temporary: datalist ? datalist.temporary_address : null,
+              NickName: datalist ? datalist.nick_name : null,
+              Other_email: datalist ? datalist.other_email : null,
+              Skype: datalist ? datalist.skype : null,
+              Facebook: datalist ? datalist.facebook : null,
+              Bank_name: datalist ? datalist.bank_name : null,
+              Bank_account: datalist ? datalist.bank_account : null,
+              Marital_status: datalist ? statusMarriage[datalist.marital_status] : null,
+              Academic_level: datalist ? datalist.academic_level : null,
+              Tax_Identification: datalist ? datalist.tax_identification : null,
+              Tax_Department: datalist ? datalist.tax_place : null,
+              Insuarance: datalist ? datalist.insurance_number : null,
+              Healthcare_Provider: datalist ? datalist.healthcare_provider : null,
+              Contact_name: datalist ? datalist.emergency_contact_name : null,
+              Contact_relationship: datalist ? datalist.emergency_contact_relationship : null,
+              Contact_number: datalist ? datalist.emergency_contact_number : null,
+              Start_date: datalist ? moment(datalist.start_date_official, dateFormat) : null
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -166,11 +181,7 @@ const profileContentUpdate = () => {
                     }
                   ]}
                 >
-                  <DatePicker
-                    // defaultValue={moment(datalist.birth_date, dateFormat)}
-                    // format={dateFormat}
-                    className={style.l_width}
-                  />
+                  <DatePicker className={style.l_width} />
                 </Form.Item>
 
                 <Form.Item
@@ -194,7 +205,7 @@ const profileContentUpdate = () => {
                 <Form.Item
                   wrapperCol={{ span: 8, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='date_of_issue'
+                  name='DateOfIssue'
                   label='Date of issue Identity'
                   rules={[
                     {
@@ -203,17 +214,13 @@ const profileContentUpdate = () => {
                     }
                   ]}
                 >
-                  <DatePicker
-                    defaultValue={moment(datalist.identity_card_date, dateFormat)}
-                    format={dateFormat}
-                    className={style.l_width}
-                  />
+                  <DatePicker className={style.l_width} />
                 </Form.Item>
 
                 <Form.Item
                   wrapperCol={{ span: 8, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='place_of_issue'
+                  name='PlaceOfIssue'
                   label='Place of issue Identity'
                   rules={[
                     {
@@ -224,17 +231,13 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.identity_card_place}
-                    className={style.l_width}
-                    placeholder='Input your place of issue...'
-                  />
+                  <Input className={style.l_width} placeholder='Input your place of issue...' />
                 </Form.Item>
 
                 <Form.Item
                   wrapperCol={{ span: 8, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='passport_number'
+                  name='PassportNumber'
                   label='Passposs Number'
                   rules={[
                     {
@@ -246,13 +249,13 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.passport_number} placeholder='Input your passposs...' />
+                  <Input placeholder='Input your passposs...' />
                 </Form.Item>
 
                 <Form.Item
                   wrapperCol={{ span: 8, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='passport_expiration'
+                  name='PassportExpiration'
                   label='Passposs Expiration'
                   rules={[
                     {
@@ -261,17 +264,13 @@ const profileContentUpdate = () => {
                     }
                   ]}
                 >
-                  <DatePicker
-                    defaultValue={moment(datalist.passport_expiration, fomatDate)}
-                    format={fomatDate}
-                    className={style.l_width}
-                  />
+                  <DatePicker className={style.l_width} />
                 </Form.Item>
 
                 <Form.Item
                   wrapperCol={{ span: 8, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='nationality'
+                  name='Nationality'
                   label='Nationality'
                   rules={[
                     {
@@ -282,17 +281,13 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.nationality}
-                    className={style.l_width}
-                    placeholder='Input your nationality...'
-                  />
+                  <Input className={style.l_width} placeholder='Input your nationality...' />
                 </Form.Item>
 
                 <Form.Item
                   wrapperCol={{ span: 24, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='permanent'
+                  name='Permanent'
                   label='Permanent Address'
                   rules={[
                     {
@@ -303,17 +298,13 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.permanent_address}
-                    className={style.r_width}
-                    placeholder='Input your permanent...'
-                  />
+                  <Input className={style.r_width} placeholder='Input your permanent...' />
                 </Form.Item>
 
                 <Form.Item
                   wrapperCol={{ span: 24, pull: 1 }}
                   labelCol={{ span: 10, pull: 3 }}
-                  name='temporary'
+                  name='Temporary'
                   label='Temporary Address'
                   rules={[
                     {
@@ -324,17 +315,13 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.temporary_address}
-                    className={style.r_width}
-                    placeholder='Input your temporary...'
-                  />
+                  <Input className={style.r_width} placeholder='Input your temporary...' />
                 </Form.Item>
               </div>
 
               <div className={style.mr_right}>
                 <Form.Item
-                  name='nick_name'
+                  name='NickName'
                   label='Nick Name'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -347,11 +334,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.nick_name} placeholder='Input your name' />
+                  <Input placeholder='Input your name' />
                 </Form.Item>
 
                 <Form.Item
-                  name='other_email'
+                  name='Other_email'
                   label='Other Email'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -364,11 +351,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.other_email} placeholder='Input your email' />
+                  <Input placeholder='Input your email' />
                 </Form.Item>
 
                 <Form.Item
-                  name='skype'
+                  name='Skype'
                   label='Skype'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -381,11 +368,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.skype} placeholder='Input your skype' />
+                  <Input placeholder='Input your skype' />
                 </Form.Item>
 
                 <Form.Item
-                  name='facebook'
+                  name='Facebook'
                   label='Facebook'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -398,11 +385,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.facebook} placeholder='Input your link facebook' />
+                  <Input placeholder='Input your link facebook' />
                 </Form.Item>
 
                 <Form.Item
-                  name='bank_name'
+                  name='Bank_name'
                   label='Bank Name'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -415,11 +402,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.bank_name} placeholder='Input your bank name' />
+                  <Input placeholder='Input your bank name' />
                 </Form.Item>
 
                 <Form.Item
-                  name='bank_account'
+                  name='Bank_account'
                   label='Bank Account'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -433,11 +420,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.bank_account} placeholder='Input your bank account' />
+                  <Input placeholder='Input your bank account' />
                 </Form.Item>
 
                 <Form.Item
-                  name='marital_status'
+                  name='Marital_status'
                   label='Marital Status'
                   wrapperCol={{ span: 24, push: 4 }}
                   labelCol={{ span: 8 }}
@@ -448,7 +435,7 @@ const profileContentUpdate = () => {
                     }
                   ]}
                 >
-                  <Select defaultValue={statusMarriage[datalist.marital_status]} className={style.l_width}>
+                  <Select className={style.l_width}>
                     {statusMarriage.map((item, index) => (
                       <Option key={index}>{item}</Option>
                     ))}
@@ -456,7 +443,7 @@ const profileContentUpdate = () => {
                 </Form.Item>
 
                 <Form.Item
-                  name='academic_level'
+                  name='Academic_level'
                   label='Academic Level'
                   wrapperCol={{ span: 18, push: 3 }}
                   labelCol={{ span: 9, pull: 1 }}
@@ -469,11 +456,7 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.academic_level}
-                    className={style.rr_width}
-                    placeholder='Input your academic level'
-                  />
+                  <Input className={style.rr_width} placeholder='Input your academic level' />
                 </Form.Item>
               </div>
             </div>
@@ -483,7 +466,7 @@ const profileContentUpdate = () => {
             <div className={style.d_flex}>
               <div>
                 <Form.Item
-                  name='tax_identification'
+                  name='Tax_Identification'
                   label='Tax Identification'
                   wrapperCol={{ span: 14, push: 6 }}
                   labelCol={{ span: 10, push: 2 }}
@@ -497,11 +480,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.tax_identification} placeholder='Input your tax identification' />
+                  <Input placeholder='Input your tax identification' />
                 </Form.Item>
 
                 <Form.Item
-                  name='tax_department'
+                  name='Tax_Department'
                   label='Tax Department In Change'
                   wrapperCol={{ span: 14, push: 4 }}
                   labelCol={{ span: 12 }}
@@ -514,15 +497,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.tax_place}
-                    className={style.w_width}
-                    placeholder='Input your tax department in change'
-                  />
+                  <Input className={style.w_width} placeholder='Input your tax department in change' />
                 </Form.Item>
 
                 <Form.Item
-                  name='insuarance'
+                  name='Insuarance'
                   label='Insuarance Number'
                   wrapperCol={{ span: 14, push: 6 }}
                   labelCol={{ span: 10, push: 2 }}
@@ -536,11 +515,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.insurance_number} placeholder='Input your insuarance number' />
+                  <Input placeholder='Input your insuarance number' />
                 </Form.Item>
 
                 <Form.Item
-                  name='healthcare_provider'
+                  name='Healthcare_Provider'
                   label='Healthcare Provider'
                   wrapperCol={{ span: 14, push: 6 }}
                   labelCol={{ span: 10, push: 2 }}
@@ -554,13 +533,13 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input defaultValue={datalist.healthcare_provider} placeholder='Input your healthcare provider' />
+                  <Input placeholder='Input your healthcare provider' />
                 </Form.Item>
               </div>
 
               <div className={style.mrr_right}>
                 <Form.Item
-                  name='contact_name'
+                  name='Contact_name'
                   label='Emergency Contact Name'
                   wrapperCol={{ span: 12, pull: 12 }}
                   labelCol={{ span: 12, pull: 15 }}
@@ -573,14 +552,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.emergency_contact_name}
-                    placeholder='Input your emergency contact name'
-                  />
+                  <Input placeholder='Input your emergency contact name' />
                 </Form.Item>
 
                 <Form.Item
-                  name='contact_relationship'
+                  name='Contact_relationship'
                   label='Emergency Contact Relationship'
                   wrapperCol={{ span: 14, pull: 13 }}
                   labelCol={{ span: 13, pull: 16 }}
@@ -594,15 +570,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.emergency_contact_relationship}
-                    className={style.l_width}
-                    placeholder='Input your emergency contact relationship'
-                  />
+                  <Input className={style.l_width} placeholder='Input your emergency contact relationship' />
                 </Form.Item>
 
                 <Form.Item
-                  name='contact_number'
+                  name='Contact_number'
                   label='Emergency Contact Number'
                   wrapperCol={{ span: 12, pull: 12 }}
                   labelCol={{ span: 12, pull: 15 }}
@@ -616,14 +588,11 @@ const profileContentUpdate = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input
-                    defaultValue={datalist.emergency_contact_number}
-                    placeholder='Input your emergency contact number'
-                  />
+                  <Input placeholder='Input your emergency contact number' />
                 </Form.Item>
 
                 <Form.Item
-                  name='start_date'
+                  name='Start_date'
                   label='Start Date'
                   wrapperCol={{ span: 12, pull: 10 }}
                   labelCol={{ span: 10, pull: 13 }}
@@ -634,11 +603,7 @@ const profileContentUpdate = () => {
                     }
                   ]}
                 >
-                  <DatePicker
-                    defaultValue={moment(datalist.start_date_official, dateFormat)}
-                    format={dateFormat}
-                    className={style.l_width}
-                  />
+                  <DatePicker className={style.l_width} />
                 </Form.Item>
               </div>
             </div>
