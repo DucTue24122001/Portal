@@ -55,17 +55,17 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
     <>
       <div>
         <Form
-          name="basic"
+          name='basic'
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="off"
+          autoComplete='off'
         >
           <Row className={style.row}>
             <Col span={18} push={6}>
-              <Form.Item name="RegistrationDate" className={style.m_0}>
+              <Form.Item name='RegistrationDate' className={style.m_0}>
                 <span>{moment().format('DD/MM/YYYY HH:mm')}</span>
               </Form.Item>
             </Col>
@@ -76,7 +76,7 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
 
           <Row className={style.row}>
             <Col span={18} push={6}>
-              <Form.Item name="RegisterForDate" className={style.m_0}>
+              <Form.Item name='RegisterForDate' className={style.m_0}>
                 <DatePicker className={style.w_40p} />
               </Form.Item>
             </Col>
@@ -88,19 +88,19 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
           <Row className={style.row}>
             <Col span={18} push={6}>
               <Form.Item
-                name="CheckIn"
-                className="m-0"
+                name='CheckIn'
+                className='m-0'
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter the time',
-                  },
+                    message: 'Please enter the time'
+                  }
                 ]}
               >
                 <TimePicker
                   disabledHours={() => disabledTimeCheckIn}
                   className={style.w_40p}
-                  format="HH:mm"
+                  format='HH:mm'
                   onChange={onCheckin}
                 />
               </Form.Item>
@@ -115,19 +115,19 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
           <Row className={style.row}>
             <Col span={18} push={6}>
               <Form.Item
-                name="CheckOut"
+                name='CheckOut'
                 className={style.m_0}
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter the time',
-                  },
+                    message: 'Please enter the time'
+                  }
                 ]}
               >
                 <TimePicker
                   disabledHours={() => disabledTimeCheckIn}
                   className={style.w_40p}
-                  format="HH:mm"
+                  format='HH:mm'
                   onChange={onCheckout}
                 />
               </Form.Item>
@@ -141,7 +141,7 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
 
           <Row className={style.row}>
             <Col span={18} push={6}>
-              <Form.Item name="SpecialReason" className={style.m_0}>
+              <Form.Item name='SpecialReason' className={style.m_0}>
                 <Checkbox.Group>
                   <Checkbox value={'Check not counted as error'}>Check not counted as error</Checkbox>
                 </Checkbox.Group>
@@ -154,7 +154,7 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
 
           <Row className={style.row}>
             <Col span={18} push={6}>
-              <Form.Item name="Reason" className={style.m_0}>
+              <Form.Item name='Reason' className={style.m_0}>
                 <textarea rows={6} cols={65} style={{ padding: '5px 10px', border: '1px solid #d9d9d9' }} />
               </Form.Item>
             </Col>
@@ -178,17 +178,17 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
 
           {hidden ? (
             <div className={style.wrapper_button_form}>
-              <Button className={style.button_form} type="primary">
+              <Button className={style.button_form} type='primary'>
                 Update
               </Button>
-              <Button className={style.button_form} type="primary">
+              <Button className={style.button_form} type='primary'>
                 Delete
               </Button>
               <Button onClick={() => onCancel()}>Cancel</Button>
             </div>
           ) : (
             <div className={style.wrapper_button_form}>
-              <Button loading={isLoading} type="primary" htmlType="submit" className={style.button_form}>
+              <Button loading={isLoading} type='primary' htmlType='submit' className={style.button_form}>
                 Register
               </Button>
               <Button onClick={() => onCancel()}>Cancel</Button>
