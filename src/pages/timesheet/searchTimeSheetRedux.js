@@ -238,7 +238,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                       xs={{ span: 11, offset: 1 }}
                       sm={{ span: 6, offset: 1 }}
                       md={{ span: 4, offset: 1 }}
-                      lg={{ span: 2 }}
+                      lg={{ span: 2, offset: 1 }}
                     >
                       <Form.Item>
                         <Button
