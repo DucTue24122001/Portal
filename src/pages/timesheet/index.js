@@ -112,7 +112,6 @@ const TimesheetPage = () => {
 
   const cancelMadalLate = () => {
     setIsModalLate(false)
-    form.resetFields()
   }
 
   const cancelModalLeave = () => {

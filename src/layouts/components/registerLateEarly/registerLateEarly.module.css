@@ -7,10 +7,23 @@
 }
 .reason {
   line-height: 30px;
-  margin-bottom: 30px;
+}
+.status {
+  line-height: 30px;
+  margin-top: -15px;
+}
+.comment {
+  line-height: 30px;
+  margin-top: 10px;
+}
+.confirm {
+  line-height: 30px;
 }
 .row_lineHeight {
   line-height: 30px;
+}
+.row_button {
+  margin-top: 30px;
 }
 .form_item_rule {
   font-size: 11px;

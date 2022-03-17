@@ -19,6 +19,7 @@ const MyLeavePage = () => {
   const onChangeYear = (date, dateString) => {
     setYear(dateString)
   }
+
   const handleCancel = () => {
     setVisible(false)
   }
@@ -42,7 +43,7 @@ const MyLeavePage = () => {
       key: 'type',
       width: '20%',
       render: (text) => {
-        return <Space>{text === '0' ? 'Original' : 'Additional'}</Space>
+        return <Space>{text === 0 ? 'Original' : 'Additional'}</Space>
       }
     },
     {
@@ -57,9 +58,9 @@ const MyLeavePage = () => {
       width: '10%',
       render: (text) => {
         let status = ''
-        if (text === '0') status = 'Sending'
-        if (text === '1') status = 'Confirmed'
-        if (text === '2') status = 'Approved'
+        if (text === 0) status = 'Sending'
+        if (text === 1) status = 'Confirmed'
+        if (text === 2) status = 'Approved'
         return <Space>{status}</Space>
       }
     }
@@ -85,7 +86,7 @@ const MyLeavePage = () => {
                   <Col span={3} className={styles['row-info-title']}>
                     {leaveQuota?.requests !== undefined
                       ? Array.from(leaveQuota?.requests)
-                        .filter((u) => u.type === '0' && u.status === '2')
+                        .filter((u) => u.type === 0 && u.status === 2)
                         .reduce(function(total, x) {
                           return total + x.quota
                         }, 0)
@@ -98,7 +99,7 @@ const MyLeavePage = () => {
                   <Col span={3} className={styles['row-info-title']}>
                     {leaveQuota?.requests !== undefined
                       ? Array.from(leaveQuota?.requests)
-                        .filter((u) => u.type === '1' && u.status === '2')
+                        .filter((u) => u.type === 1 && u.status === 2)
                         .reduce(function(total, x) {
                           return total + x.quota
                         }, 0)
@@ -118,14 +119,14 @@ const MyLeavePage = () => {
                 <Row className={styles['row-info']}>
                   <Col span={8}>Paid leave:</Col>
                   <Col span={3} className={styles['row-info-title']}>
-                    {leaveQuota?.paid_leave}
+                    {leaveQuota?.paid_leave === null ? '0' : leaveQuota?.paid_leave}
                   </Col>
                   <Col span={3}>day(s)</Col>
                 </Row>
                 <Row className={styles['row-info']}>
                   <Col span={8}>Unpaid leave:</Col>
                   <Col span={3} className={styles['row-info-title']}>
-                    {leaveQuota?.unpaid_leave}
+                    {leaveQuota?.unpaid_leave === null ? '0' : leaveQuota?.unpaid_leave}
                   </Col>
                   <Col span={3}>day(s)</Col>
                 </Row>
