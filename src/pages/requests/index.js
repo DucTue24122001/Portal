@@ -6,8 +6,8 @@ import styles from './request.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { requestsActions } from './../../redux/requests'
 import { useHistory } from 'react-router-dom'
-import FormLeave from '../../components/FormLeave/FormLeave'
 import RegisterLateEarly from '../../layouts/components/registerLateEarly'
+import FormConfirmLeave from '../../components/FormLeave/FormConfirmLeave'
 
 const RequestsPage = () => {
   const history = useHistory()
@@ -418,7 +418,10 @@ const RequestsPage = () => {
                           width={1000}
                           title='Paid Leave'
                           onCancel={() => setVisiblePaiLeave(false)}
-                        ></Modal>
+
+                        >
+                          <FormConfirmLeave dataModalRequest={dataModal} />
+                        </Modal>
                         <Modal
                           visible={visibleUnPaiLeave}
                           footer={false}
@@ -426,7 +429,7 @@ const RequestsPage = () => {
                           title='UnPaid Leave'
                           onCancel={() => setVisibleUnPaiLeave(false)}
                         >
-                          dataModal:{dataModal}
+                          <FormConfirmLeave dataModalRequest={dataModal} />
                         </Modal>
                         <Modal
                           visible={visibleLateEarly}
