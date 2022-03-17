@@ -11,6 +11,7 @@ import { leaveReducer } from '../leave'
 import { noticeReducer } from '../notice'
 import { leaveQuotaReducer } from '../myleave'
 import { forgetCheckReducer } from '../forgetCheck'
+import { requestsReducer } from '../requests'
 
 export default combineReducers({
   auth: authReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
   infoUser: infoUserReducer,
   leave: leaveReducer,
   notice: noticeReducer,
-  leaveQuota: leaveQuotaReducer
+  leaveQuota: leaveQuotaReducer,
+  requests: requestsReducer
 })
