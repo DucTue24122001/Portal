@@ -273,7 +273,7 @@ export const LateEarlyActions = {
       try {
         dispatch({ type: GET_LATE_EARLY_REQUEST })
 
-        const response = await get(`request/${idLateEarly}`)
+        const response = await get(`requests/${idLateEarly}`)
 
         dispatch({ type: GET_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
@@ -286,7 +286,7 @@ export const LateEarlyActions = {
       try {
         dispatch({ type: REGISTER_LATE_EARLY_REQUEST })
 
-        const response = await post('request', dataLateEarly)
+        const response = await post('requests', dataLateEarly)
         dispatch({
           type: REGISTER_LATE_EARLY_SUCCESS,
           payload: response
@@ -304,7 +304,7 @@ export const LateEarlyActions = {
       try {
         dispatch({ type: UPDATE_LATE_EARLY_REQUEST })
 
-        const response = await put(`request/${idLateEarly}`, dataLateEarly)
+        const response = await put(`requests/${idLateEarly}`, dataLateEarly)
 
         dispatch({ type: UPDATE_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
@@ -317,7 +317,7 @@ export const LateEarlyActions = {
       try {
         dispatch({ type: DELETE_LATE_EARLY_REQUEST })
 
-        const response = await del(`request/${idLateEarly}`)
+        const response = await del(`requests/${idLateEarly}`)
 
         dispatch({ type: DELETE_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
@@ -330,7 +330,7 @@ export const LateEarlyActions = {
       try {
         dispatch({ type: CONFIRM_LATE_EARLY_REQUEST })
 
-        const response = await put(`request/${idLateEarly}`, dataLateEarly)
+        const response = await put(`manager/requests/${idLateEarly}`, dataLateEarly)
 
         dispatch({ type: CONFIRM_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
@@ -343,7 +343,7 @@ export const LateEarlyActions = {
       try {
         dispatch({ type: APPROVED_LATE_EARLY_REQUEST })
 
-        const response = await put(`request/${idLateEarly}`, dataLateEarly)
+        const response = await put(`admin/requests/${idLateEarly}`, dataLateEarly)
 
         dispatch({ type: APPROVED_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {

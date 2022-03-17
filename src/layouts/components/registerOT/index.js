@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { registerOT } from '../../../redux/registerOT'
-import { OtAction } from '../../../redux/registerOT'
 import { Row, Col, TimePicker, Button, Modal, Form, Input } from 'antd'
 import 'antd/dist/antd.css'
 import style from './registerOT.module.css'
@@ -29,9 +27,6 @@ const RegisterOT = ({
   isAdmin = true
 }) => {
   const [form] = Form.useForm()
-  const dispatch = useDispatch()
-  const registerOtLoading = useSelector((state) => state.registerOT.loading)
-
   const in_office_seconds = moment.duration(in_office).asSeconds()
 
   const [reason, setReason] = useState('')
@@ -45,7 +40,11 @@ const RegisterOT = ({
 
   useEffect(() => {
     setActualOverTime(
-      moment.utc(moment.duration(in_office_seconds - initial_in_office, 'seconds').as('milliseconds')).format('HH:mm')
+      moment
+        .utc(moment
+          .duration(in_office_seconds - initial_in_office, 'seconds')
+          .as('milliseconds'))
+        .format('HH:mm')
     )
   }, [])
 

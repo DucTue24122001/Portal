@@ -18,7 +18,6 @@ const RegisterLateEarly = ({
   onOk
 }) => {
   const { date, checkin, checkout, late, early, member_id } = dataLateEarly
-
   const [form] = Form.useForm()
   const dispatch = useDispatch()
   const { infoUser } = useSelector((state) => state.infoUser)
@@ -87,19 +86,17 @@ const RegisterLateEarly = ({
 
   const dataRequest = {
     request_type: 4,
-    request_for_date: date,
+    request_for_date: date.split('|')[0],
     check_in: checkin,
     check_out: checkout,
     compensation_time: timeRequest,
     compensation_date: dateCoverUp,
-    leave_all_day: '',
-    leave_start: '',
-    leave_end: '',
-    leave_time: '',
+    leave_all_day: '0',
+    leave_start: '8:00',
+    leave_end: '16:00',
+    leave_time: '1:00',
     request_ot_time: '',
-    reason: reason,
-    error_count: '',
-    created_at: moment().format('DD-MM-YY hh:mm')
+    reason: reason
   }
 
   useEffect(() => {
@@ -150,7 +147,7 @@ const RegisterLateEarly = ({
 
   useEffect(() => {
     if ((successRegisterLateEarly || successUpdateLateEarly || successConfirmLateEarly) === true) {
-      dispatch(LateEarlyActions.getRequest(idLateEarly))
+      dispatch(LateEarlyActions.getRequest(member_id))
     }
     if (successRegisterLateEarly === true) {
       toast('successRegisterLateEarly')
@@ -218,9 +215,7 @@ const RegisterLateEarly = ({
   const handleRegister = () => {
     if (reason !== '' && dateCoverUp !== 0) {
       dispatch(LateEarlyActions.registerLateEarly(dataRequest))
-      setReason('')
-      setDateCoverUp('')
-      onOk()
+      // onOk()
     }
   }
 
@@ -248,10 +243,10 @@ const RegisterLateEarly = ({
   const handleApprovedLateEarly = () => {
     const dataApproved = {
       ...dataRequest,
-      admin_confirmed_status: 1,
+      admin_approved_status: 1,
       admin_id: 68,
-      admin_confirmed_comment: comment,
-      admin_confirmed_at: moment().format('DD-MM-YY hh:mm')
+      admin_approved_comment: comment,
+      admin_approved_at: moment().format('DD-MM-YY hh:mm')
     }
     dispatch(LateEarlyActions.approved(dataApproved, dataApproved.admin_id))
   }
@@ -300,7 +295,7 @@ const RegisterLateEarly = ({
           <Col xs={10} sm={5}>
             Register for date:
           </Col>
-          <Col sm={7}>{date}</Col>
+          <Col sm={7}>{date.split('|')[0]}</Col>
         </Row>
 
         <Row className={style.row_lineHeight}>
