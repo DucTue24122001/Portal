@@ -43,12 +43,31 @@ export const requestsReducer = (state = initialState, action) => {
 
 // Actions
 export const requestsActions = {
-  getRequests(params) {
+  getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth) {
     return async(dispatch) => {
       try {
         dispatch({ type: GET_REQUESTS_REQUEST })
-        const data = await get('requests', params)
-
+        const config = {
+          page: params.page,
+          per_page: params.per_page,
+          sort: valueSort,
+          status: valueSearchStatus,
+          select_type: selectType,
+          list_selected: valueCheckboxMonth
+        }
+        const data = await get('admin/requests', config)
+        dispatch({ type: GET_REQUESTS_SUCCESS, payload: data })
+      } catch (error) {
+        dispatch({ type: GET_REQUESTS_FAIL, payload: 'Get Requests fail' })
+      }
+    }
+  },
+  getManagerRequests(params) {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: GET_REQUESTS_REQUEST })
+        const data = await get('manager/requests', params)
+        console.log(data)
         dispatch({ type: GET_REQUESTS_SUCCESS, payload: data })
       } catch (error) {
         dispatch({ type: GET_REQUESTS_FAIL, payload: 'Get Requests fail' })

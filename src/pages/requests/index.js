@@ -9,22 +9,27 @@ import { useHistory } from 'react-router-dom'
 
 const RequestsPage = () => {
   const history = useHistory()
+  const [dataModal, setDataModal] = useState()
   const { Option } = Select
   const { RangePicker } = DatePicker
   const [selectDisabled, setSelectDisable] = useState(true)
   const [rangePickerDisabled, setRangePickerDisable] = useState(true)
-  const [params, setParams] = useState({ page: 1, limit: 5 })
+  const [params, setParams] = useState({ page: 1, per_page: 5 })
   const [visibleForgetCheck, setVisibleForgetCheck] = useState(false)
   const [visiblePaiLeave, setVisiblePaiLeave] = useState(false)
   const [visibleUnPaiLeave, setVisibleUnPaiLeave] = useState(false)
   const [visibleLateEarly, setVisibleLateEarly] = useState(false)
   const [visibleOT, setVisibleOT] = useState(false)
   const valuecheckbox = ['this month', 'last month']
-  const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
+  const valueStatus = ['Sent', 'Confirmed', 'Approved']
+  const valuePerPage = [30, 50, 100]
   const dispacth = useDispatch()
   const { requests, loadingRequests } = useSelector((state) => state.requests)
   const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
-
+  const [valueCheckboxMonth, setValueCheckboxMonth] = useState()
+  const [selectType, setSelectType] = useState()
+  const [valueSort, setValueSort] = useState()
+  const [valueSearchStatus, setValueSearchStatus] = useState()
   useEffect(() => {
     if (successGetInfo) {
       if (infoUser?.roles?.find((u) => ['Member'].includes(u.title)) && infoUser?.roles?.length === 1) {
@@ -34,24 +39,38 @@ const RequestsPage = () => {
   }, [successGetInfo])
 
   useEffect(() => {
-    dispacth(requestsActions.getRequests(params))
-  }, [params])
+    dispacth(requestsActions.getAdminRequests(params))
+  }, [])
 
   const onCheckboxChange = (e) => {
-    if (e.target.value === 0) {
+    if (e.target.value === 1) {
+      setSelectType(e.target.value)
       setSelectDisable(!selectDisabled)
       setRangePickerDisable(true)
     } else {
+      setSelectType(e.target.value)
       setRangePickerDisable(!rangePickerDisabled)
       setSelectDisable(true)
     }
   }
 
   const handleChange = (value) => {
-    console.log(value)
+    setValueCheckboxMonth(value)
+  }
+  const handleSortChange = (value) => {
+    setValueSort(value)
   }
 
-  const handleChangeSearchStatus = (value) => {}
+  const handleChangeSearchStatus = (value) => {
+    setValueSearchStatus(value)
+  }
+
+  const handleChangePerPage = (value) => {
+    setParams({
+      ...params,
+      per_page: value
+    })
+  }
 
   const onChangePage = (e) => {
     setParams({
@@ -64,21 +83,28 @@ const RequestsPage = () => {
     console.log('From: ', dateString[0], ', to: ', dateString[1])
   }
 
-  const handleReset = () => {}
+  const handleReset = () => {
+    setParams({
+      page: 1,
+      per_page: 5
+    })
+    dispacth(requestsActions.getAdminRequests(params))
+  }
 
   const handleSearch = () => {
     setParams({
       ...params,
       page: 1
     })
+    dispacth(requestsActions.getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
   }
 
-  const onActionClick = (record) => {
-    console.log(record)
-  }
+  const onActionClick = (record) => {}
 
   const onActionView = (record) => {
-    switch (record.requests_type) {
+    console.log(record.id)
+    setDataModal(record.id)
+    switch (record.request_type) {
       case 1:
         return setVisibleForgetCheck(true)
       case 2:
@@ -118,8 +144,8 @@ const RequestsPage = () => {
     },
     {
       title: 'Request type',
-      dataIndex: 'requests_type',
-      key: 'requests_type',
+      dataIndex: 'request_type',
+      key: 'request_type',
       width: '9%',
       align: 'center',
       render: (record) => {
@@ -138,7 +164,7 @@ const RequestsPage = () => {
       align: 'center',
       width: '6%',
       render: (record) => {
-        return <Space>{record.requests_type === 5 ? `${record.request_ot_time}` : ''}</Space>
+        return <Space>{record.request_type === 5 ? `${record.request_ot_time}` : ''}</Space>
       }
     },
     {
@@ -159,7 +185,7 @@ const RequestsPage = () => {
       align: 'center',
       width: '7%',
       render: (record) => {
-        return <Space>{record.requests_type === 2 ? `${record.compensation_time}` : ''}</Space>
+        return <Space>{record.request_type === 2 ? `${record.compensation_time}` : ''}</Space>
       }
     },
     {
@@ -168,7 +194,7 @@ const RequestsPage = () => {
       align: 'center',
       width: '7%',
       render: (record) => {
-        return <Space>{record.requests_type === 3 ? `${record.compensation_time}` : ''}</Space>
+        return <Space>{record.request_type === 3 ? `${record.compensation_time}` : ''}</Space>
       }
     },
     {
@@ -188,8 +214,8 @@ const RequestsPage = () => {
     },
     {
       title: 'Request date',
-      dataIndex: 'compensation_date',
-      key: 'compensation_date',
+      dataIndex: 'request_for_date',
+      key: 'request_for_date',
       align: 'center',
       width: '8%',
       render: (record) => {
@@ -221,7 +247,6 @@ const RequestsPage = () => {
       }
     }
   ]
-
   return (
     <div>
       <Row>
@@ -237,7 +262,7 @@ const RequestsPage = () => {
                         <Space direction='vertical' size={30}>
                           <Row justify='space-around' align='middle'>
                             <Col span={24}>
-                              <Radio value={0} checked={true}>
+                              <Radio value={1} checked={true}>
                                 Choose from list
                               </Radio>
                               <Select style={{ width: 150 }} disabled={selectDisabled} onChange={handleChange}>
@@ -251,7 +276,7 @@ const RequestsPage = () => {
                           </Row>
                           <Row justify='space-around' align='middle'>
                             <Col>
-                              <Radio value={1}>Choose start,end</Radio>
+                              <Radio value={2}>Choose start,end</Radio>
                               <RangePicker
                                 disabled={rangePickerDisabled}
                                 ranges={{
@@ -270,7 +295,7 @@ const RequestsPage = () => {
                         <Row justify='space-around' align='middle'>
                           <Col span={12}>Sort by requests date</Col>
                           <Col span={12}>
-                            <Select style={{ width: 150 }} onChange={handleChange}>
+                            <Select style={{ width: 150 }} onChange={handleSortChange}>
                               <Option value={'asc'}>Asecending</Option>
                               <Option value={'desc'}>Decrease</Option>
                             </Select>
@@ -281,7 +306,7 @@ const RequestsPage = () => {
                           <Col span={12}>
                             <Select style={{ width: 150 }} onChange={handleChangeSearchStatus}>
                               {valueStatus.map((item, index) => (
-                                <Option key={item} value={index - 1}>
+                                <Option key={item} value={index}>
                                   {item}
                                 </Option>
                               ))}
@@ -309,12 +334,21 @@ const RequestsPage = () => {
             <Row justify='space-around' align='middle'>
               <Col span={22}>
                 <div className={styles['content1-body']}>
-                  <Row style={{ paddingTop: 10 }}>
-                    <Col span={4}>
+                  <Row style={{ paddingTop: 10 }} align='middle'>
+                    <Col span={4} offset={1}>
                       Total number of records: <b>{requests?.total}</b>
                     </Col>
-                    <Col span={2} offset={17}>
-                      Items per page
+                    <Col span={2} offset={15}>
+                      Items per page:
+                    </Col>
+                    <Col>
+                      <Select style={{ width: 70 }} onChange={handleChangePerPage}>
+                        {valuePerPage.map((item) => (
+                          <Option key={item} value={item}>
+                            {item}
+                          </Option>
+                        ))}
+                      </Select>
                     </Col>
                   </Row>
                   <Row>
@@ -330,42 +364,57 @@ const RequestsPage = () => {
                           className={styles['table']}
                           tableLayout='fixed'
                         />
-                        <Pagination total={20} onChange={onChangePage} defaultCurrent={params.page}></Pagination>
+                        <Pagination
+                          total={requests?.total}
+                          pageSize={params.per_page}
+                          onChange={onChangePage}
+                          defaultCurrent={params.page}
+                        ></Pagination>
                         <Modal
                           visible={visibleForgetCheck}
                           footer={false}
                           width={1000}
-                          title='title1'
+                          title='Forget Check/in'
                           onCancel={() => setVisibleForgetCheck(false)}
-                        ></Modal>
+                        >
+                          dataModal:{dataModal}
+                        </Modal>
                         <Modal
                           visible={visiblePaiLeave}
                           footer={false}
                           width={1000}
-                          title='title2'
+                          title='Paid Leave'
                           onCancel={() => setVisiblePaiLeave(false)}
-                        ></Modal>
+                        >
+                          dataModal:{dataModal}
+                        </Modal>
                         <Modal
                           visible={visibleUnPaiLeave}
                           footer={false}
                           width={1000}
-                          title='title3'
+                          title='UnPaid Leave'
                           onCancel={() => setVisibleUnPaiLeave(false)}
-                        ></Modal>
+                        >
+                          dataModal:{dataModal}
+                        </Modal>
                         <Modal
                           visible={visibleLateEarly}
                           footer={false}
                           width={1000}
-                          title='title4'
+                          title='Late Early'
                           onCancel={() => setVisibleLateEarly(false)}
-                        ></Modal>
+                        >
+                          dataModal:{dataModal}
+                        </Modal>
                         <Modal
                           visible={visibleOT}
                           footer={false}
                           width={1000}
-                          title='title5'
+                          title='OT '
                           onCancel={() => setVisibleOT(false)}
-                        ></Modal>
+                        >
+                          dataModal:{dataModal}
+                        </Modal>
                       </Space>
                     </Col>
                   </Row>
