@@ -129,12 +129,8 @@ export const noticeRedux = {
       })
       const dataBase = dataSort.filter((item) => {
         if (item.subject.toUpperCase().includes(inputSearch.toUpperCase()) === true) {
-          if (item.published_to === null && Department === 'all') {
+          if (item.published_to.toUpperCase().includes(Department.toUpperCase())) {
             return item
-          } else if (item.published_to !== null && Department !== 'all') {
-            if (item.published_to.toUpperCase().includes(Department.toUpperCase())) {
-              return item
-            }
           }
         }
       })

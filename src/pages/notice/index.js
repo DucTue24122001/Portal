@@ -117,12 +117,12 @@ const NoticePage = () => {
     {
       title: 'Atttachment',
       dataIndex: 'attachment',
-      render: (attachment) => {
+      render: (attachment, record) => {
         return (
           <>
-            <Link to='#' target='_blank'>
-              {attachment}
-            </Link>
+            <Typography.Link href={attachment} underline target='_blank'>
+              {record.attachment_link}
+            </Typography.Link>
           </>
         )
       }
