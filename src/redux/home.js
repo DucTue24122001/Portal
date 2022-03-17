@@ -1,4 +1,6 @@
-import { R_POINT_GETDATA, R_POINT_GETDATA_FAIL, SHOW_LOADING_RPOINT } from './Constants/constants'
+const R_POINT_GETDATA = 'R_POINT_GETDATA'
+const SHOW_LOADING_RPOINT = 'SHOW_LOADING_RPOINT'
+const R_POINT_GETDATA_FAIL = 'R_POINT_GETDATA_FAIL'
 import axios from 'axios'
 
 const initState = {
@@ -31,9 +33,7 @@ export default RPointReducer
 
 export const getRpointApi = (page) => async(dispatch) => {
   try {
-    const { data } = await axios.get(
-      `https://6215ef287428a1d2a354d464.mockapi.io/points?page=${page}&limit=10`
-    )
+    const { data } = await axios.get(`https://6215ef287428a1d2a354d464.mockapi.io/points?page=${page}&limit=10`)
     dispatch({ type: R_POINT_GETDATA, payload: data })
   } catch (error) {
     dispatch({ type: R_POINT_GETDATA_FAIL, payload: error })

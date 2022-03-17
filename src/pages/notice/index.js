@@ -9,9 +9,10 @@ import { noticeRedux } from '../../redux/notice'
 import { convertDataNotice } from './convertData'
 import ModalNoticeEdit from '../../components/modalNotice/modamEdit'
 import ModalNoticeView from '../../components/modalNotice/modalView'
+import { Link } from 'react-router-dom'
 
 const NoticePage = () => {
-  const { Text, Link } = Typography
+  const { Text } = Typography
 
   const [isModalEdit, setIsModalEdit] = useState(false)
   const [isModalView, setIsModalView] = useState(false)
@@ -93,9 +94,9 @@ const NoticePage = () => {
       render: (subject, record) => {
         return (
           <>
-            <Text className={styles.buttonTable} underline>
+            <Link to='/notice/1' className={styles.buttonTable} underline>
               {subject}
-            </Text>
+            </Link>
           </>
         )
       }
