@@ -277,7 +277,7 @@ export const LateEarlyActions = {
 
         dispatch({ type: GET_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: GET_LATE_EARLY_FAIL, payload: 'Register leave failed' })
+        dispatch({ type: GET_LATE_EARLY_FAIL, payload: 'Register Late Early failed' })
       }
     }
   },
@@ -308,7 +308,7 @@ export const LateEarlyActions = {
 
         dispatch({ type: UPDATE_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: UPDATE_LATE_EARLY_FAIL, payload: 'Update leave failed' })
+        dispatch({ type: UPDATE_LATE_EARLY_FAIL, payload: 'Update Late Early failed' })
       }
     }
   },
@@ -321,7 +321,7 @@ export const LateEarlyActions = {
 
         dispatch({ type: DELETE_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: DELETE_LATE_EARLY_FAIL, payload: 'Delete leave failed' })
+        dispatch({ type: DELETE_LATE_EARLY_FAIL, payload: 'Delete Late Early failed' })
       }
     }
   },
@@ -334,7 +334,7 @@ export const LateEarlyActions = {
 
         dispatch({ type: CONFIRM_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: CONFIRM_LATE_EARLY_FAIL, payload: 'Confirm leave failed' })
+        dispatch({ type: CONFIRM_LATE_EARLY_FAIL, payload: 'Confirm Late Early failed' })
       }
     }
   },
@@ -360,7 +360,7 @@ export const LateEarlyActions = {
 
         dispatch({ type: REJECT_LATE_EARLY_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: REJECT_LATE_EARLY_FAIL, payload: 'Reject leave failed' })
+        dispatch({ type: REJECT_LATE_EARLY_FAIL, payload: 'Reject Late Early failed' })
       }
     }
   },
@@ -378,7 +378,7 @@ export const LateEarlyActions = {
 
         dispatch({ type: GET_DATE_COVER_UP_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: GET_DATE_COVER_UP_FAIL, payload: 'Reject leave failed' })
+        dispatch({ type: GET_DATE_COVER_UP_FAIL, payload: 'Reject Late Early failed' })
       }
     }
   }
