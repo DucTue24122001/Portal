@@ -396,6 +396,7 @@ const RequestsPage = () => {
                           onCancel={() => setVisibleUnPaiLeave(false)}
                         >
                           dataModal:{dataModal}
+                          <FormLeave status={1} onCancel={setVisibleUnPaiLeave} />
                         </Modal>
                         <Modal
                           visible={visibleLateEarly}

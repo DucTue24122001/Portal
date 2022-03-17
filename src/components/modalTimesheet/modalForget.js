@@ -7,8 +7,8 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
   const onOk = () => handleOk()
 
   const onCancel = () => handleCancel()
-
   const dataModal = useSelector((state) => state.timesheet.modalRowTable)
+
   return (
     <>
       <Modal
