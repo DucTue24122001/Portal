@@ -42,7 +42,7 @@ const TimesheetPage = () => {
   useEffect(() => {
     if (optionSearch === 1) {
       dispatch(timeSheetRedux.searchTableTimeSheetApI(valueSearch, params, false))
-    } else {
+    } else if (optionSearch === 0) {
       dispatch(timeSheetRedux.selectTableTimeSheetApI(params))
     }
   }, [params])
@@ -75,9 +75,10 @@ const TimesheetPage = () => {
   const onSearch = (values) => {
     dispatch(timeSheetRedux.searchTableTimeSheetApI(values, params, true))
     setValueSearch(values)
+    dispatch(timeSheetRedux.optionSearchorReset(1))
     if (values.radioBtn === 3) {
       setParams({ page: 1, pageSize: 30 })
-      dispatch(timeSheetRedux.selectTableTimeSheetApI({ page: 1, pageSize: 30 }))
+      dispatch(timeSheetRedux.optionSearchorReset(0))
       dispatch(timeSheetRedux.loadingTableTrue())
     }
   }
@@ -123,7 +124,7 @@ const TimesheetPage = () => {
   }
 
   const onClickRow = (record) => {
-    setValueModal(record.id)
+    setValueModal(record.date)
     setIsModalVisible(true)
   }
 
@@ -343,7 +344,7 @@ const TimesheetPage = () => {
       </Row>
       <StyledTable
         columns={columns}
-        dataSource={dataSource || []}
+        dataSource={dataSource}
         pagination={{
           position: ['bottomCenter'],
           pageSize: params.pageSize,

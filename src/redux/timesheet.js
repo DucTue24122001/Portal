@@ -16,8 +16,7 @@ export const timeSheetReducer = (state = initState, action) => {
     case 'timeSheet/search': {
       return {
         ...state,
-        data: action.payload,
-        optionSearch: 1
+        data: action.payload
       }
     }
     case 'timeSheet/loading': {
@@ -35,8 +34,7 @@ export const timeSheetReducer = (state = initState, action) => {
     case 'timeSheet/getdata': {
       return {
         ...state,
-        data: action.payload,
-        optionSearch: 0
+        data: action.payload
       }
     }
     case 'timeSheet/btnLoading': {
@@ -55,6 +53,12 @@ export const timeSheetReducer = (state = initState, action) => {
       return {
         ...state,
         dataTimeLog: action.payload
+      }
+    }
+    case 'timesheet/optionSearch': {
+      return {
+        ...state,
+        optionSearch: action.payload
       }
     }
     default:
@@ -89,9 +93,9 @@ export const timeSheetRedux = {
     }
   },
   searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
-    const { Date, radioBtn, dateStart, dateEnd } = value
-    const { page, pageSize } = params
     try {
+      const { Date, radioBtn, dateStart, dateEnd } = value
+      const { page, pageSize } = params
       const sortOption = { select_type: radioBtn, order: 'asc', sort: page, per_page: pageSize }
       if (radioBtn === 1) {
         sortOption.list_selected = Date
@@ -125,12 +129,12 @@ export const timeSheetRedux = {
       })
     }
   },
-  searchTimeLogs: (id) => async(dispatch) => {
+  searchTimeLogs: (date) => async(dispatch) => {
     try {
-      const data = await get('checklogs')
+      const data = await get(`checklogs/${date}`)
       dispatch({
         type: 'timesheet/timelog',
-        payload: data.data
+        payload: data
       })
     } catch (err) {
       dispatch({
@@ -155,6 +159,19 @@ export const timeSheetRedux = {
       dispatch({
         type: 'timeSheet/modalRowTable',
         payload: {}
+      })
+    }
+  },
+  optionSearchorReset: (record) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'timesheet/optionSearch',
+        payload: record
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timesheet/optionSearch',
+        payload: 0
       })
     }
   },
