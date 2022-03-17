@@ -9,11 +9,14 @@ import MyLeavePage from './pages/myleave'
 import NoicePage from './pages/notice'
 import RequestsPage from './pages/requests'
 import TimesheetPage from './pages/timesheet'
+import profileContentPage from './pages/profile/profileContent'
+import profileContentUpdate from './pages/profile/profileContentUpdate'
 import Home from './pages/home'
 import RegisterLateEarly from './layouts/components/registerLateEarly'
 import EditLateEarly from './layouts/components/updateLateEarly'
 import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
 import RegisterOT from './layouts/components/registerOT'
+import ArticleNoticePage from './pages/articleNotice'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
@@ -74,6 +77,28 @@ export const appRouter = [
     }
   },
   {
+    name: 'Profile',
+    path: '/profile',
+    component: profileContentPage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'ProfileUpdate',
+    path: '/profileUpdate',
+    component: profileContentUpdate,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
     name: 'MyLeave',
     path: '/leave',
     component: MyLeavePage,
@@ -88,6 +113,17 @@ export const appRouter = [
     name: 'Notice',
     path: '/notice',
     component: NoicePage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Notice',
+    path: '/notice/:id',
+    component: ArticleNoticePage,
     meta: {
       role: '*',
       isPrivate: true,

@@ -3,6 +3,7 @@ import moment from 'moment'
 import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination, Modal } from 'antd'
 import { useState } from 'react'
 import styles from './request.module.css'
+import FormLeave from '../../components/FormLeave/FormLeave'
 
 const RequestsPage = () => {
   const { Option } = Select
@@ -369,14 +370,18 @@ const RequestsPage = () => {
                           width={1000}
                           title='title2'
                           onCancel={() => setVisiblePaiLeave(false)}
-                        ></Modal>
+                        >
+                          <FormLeave status={0} onCancel={setVisibleUnPaiLeave} />
+                        </Modal>
                         <Modal
                           visible={visibleUnPaiLeave}
                           footer={false}
                           width={1000}
                           title='title3'
                           onCancel={() => setVisibleUnPaiLeave(false)}
-                        ></Modal>
+                        >
+                          <FormLeave status={1} onCancel={setVisibleUnPaiLeave} />
+                        </Modal>
                         <Modal
                           visible={visibleLateEarly}
                           footer={false}
