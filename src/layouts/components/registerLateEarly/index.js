@@ -33,7 +33,6 @@ const RegisterLateEarly = ({
   const [isUser, setIsUser] = useState(false)
   const [isManager, setIsManager] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
-  console.log('status', statusRequest)
 
   const [dateCoverUp, setDateCoverUp] = useState('')
   const [reason, setReason] = useState('')
