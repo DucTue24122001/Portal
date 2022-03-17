@@ -393,7 +393,7 @@ const RequestsPage = () => {
                           columns={columns}
                           dataSource={requests?.data}
                           pagination={false}
-                          rowKey={(dataSource) => dataSource?.id}
+                          rowKey={requests?.data?.id}
                           bordered
                           loading={loadingRequests}
                           className={styles['table']}
