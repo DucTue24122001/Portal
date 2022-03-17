@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const { RangePicker } = TimePicker
 const rangeConfig = {
-  rules: [{ type: 'array', required: true, message: 'Please select time!' }]
+  rules: [{ type: 'array', required: true, message: 'Please select time!' }],
 }
 const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
@@ -32,7 +32,7 @@ const dataLeave = {
   // admin_approved_comment: 'admin_approved_comment',
 }
 
-const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
+const FormLeave = ({ status: statusRequest, onCancel, dataModal = {} }) => {
   const { checkin, checkout, date, Worktime, lack } = dataModal
   const dispatch = useDispatch()
   const [form] = Form.useForm()
@@ -69,7 +69,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
     errorConfirmLeave,
     errorDeletetLeaveRequest,
     errorApprovedLeave,
-    errorRejectLeaveRequest
+    errorRejectLeaveRequest,
   } = useSelector((state) => state.leave)
 
   const onFinish = (values) => {
@@ -86,19 +86,19 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
       leave_end: moment.utc(moment.duration(Range[1], 'seconds').as('milliseconds')).format('HH:mm'),
       leave_time: moment.utc(moment.duration(leaveTime, 'seconds').as('milliseconds')).format('HH:mm'),
       request_ot_time: '',
-      reason: reason
+      reason: reason,
     }
     const dataConfirm = {
       ...dataForm,
       manager_confirmed_status: 1,
       manager_id: infoUser?.id,
-      manager_confirmed_at: moment().format('DD-MM-YY hh:mm')
+      manager_confirmed_at: moment().format('DD-MM-YY hh:mm'),
     }
     const dataApprove = {
       ...dataConfirm,
       admin_approved_status: 2,
       admin_id: infoUser?.id,
-      admin_approved_at: moment().format('DD-MM-YY hh:mm')
+      admin_approved_at: moment().format('DD-MM-YY hh:mm'),
     }
 
     if (nameStatus === undefined && isMember) {
@@ -179,7 +179,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
     errorConfirmLeave,
     errorApprovedLeave,
     errorDeletetLeaveRequest,
-    errorRejectLeaveRequest
+    errorRejectLeaveRequest,
   ])
 
   useEffect(() => {
@@ -229,29 +229,29 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
   return (
     <>
       {loadingGetLeaveRequest ? (
-        <Spin tip='Loading...' />
+        <Spin tip="Loading..." />
       ) : (
         <div className={style.wrapper_form}>
           <Form
             form={form}
-            name='basic'
+            name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            autoComplete='off'
+            autoComplete="off"
             initialValues={{
               leave_all_day: dataLeave?.leave_all_day !== 0,
               Range: dataLeave
                 ? [
-                  moment(moment.duration(dataLeave.leave_start).asMilliseconds()),
-                  moment(moment.duration(dataLeave.leave_end).asMilliseconds())
-                ]
+                    moment(moment.duration(dataLeave.leave_start).asMilliseconds()),
+                    moment(moment.duration(dataLeave.leave_end).asMilliseconds()),
+                  ]
                 : [],
               reason: dataLeave ? dataLeave.reason : '',
               manager_confirmed_comment: dataLeave ? dataLeave.manager_confirmed_comment : '',
               admin_approved_comment: dataLeave ? dataLeave.admin_approved_comment : '',
-              request_type: dataLeave ? dataLeave.request_type : ''
+              request_type: dataLeave ? dataLeave.request_type : '',
             }}
           >
             <Row gutter={[10, 10]}>
@@ -308,7 +308,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
               </Col>
 
               <Col span={24} className={style.leaveAll}>
-                <Form.Item className={style.wrapper_item_form} className={style.item_form} name='leave_all_day' noStyle>
+                <Form.Item className={style.wrapper_item_form} className={style.item_form} name="leave_all_day" noStyle>
                   <Checkbox
                     defaultChecked={dataLeave.leave_all_day !== 0}
                     disabled={
@@ -325,7 +325,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                 Range:
               </Col>
               <Col span={8} className={style.form_item}>
-                <Form.Item name='Range' {...rangeConfig}>
+                <Form.Item name="Range" {...rangeConfig}>
                   <RangePicker
                     disabled={
                       ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
@@ -334,13 +334,13 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                     className={style.timeBox}
                     disabledHours={() => disabledStartTime}
                     onChange={rangerTime}
-                    format='HH:mm'
+                    format="HH:mm"
                   />
                 </Form.Item>
               </Col>
 
               <Col span={4} className={style.form_item} className={style.timeBox}>
-                <Form.Item name='request_type' rules={[{ required: true, message: 'Please pick an item!' }]}>
+                <Form.Item name="request_type" rules={[{ required: true, message: 'Please pick an item!' }]}>
                   <Radio.Group
                     defaultValue={2}
                     disabled={
@@ -359,7 +359,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                 Time count:
                 <span
                   style={{
-                    color: leaveTime < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset'
+                    color: leaveTime < moment.duration(`1:00:00`).asSeconds() ? 'red' : 'unset',
                   }}
                 >
                   {moment.utc(moment.duration(leaveTime, 'seconds').as('milliseconds')).format('HH:mm')}
@@ -372,7 +372,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
               <Col span={20} className={style.form_item}>
                 <Form.Item
                   className={style.item_form}
-                  name='reason'
+                  name="reason"
                   rules={[{ required: true, message: 'Please input Intro' }]}
                 >
                   <Input.TextArea
@@ -424,7 +424,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                   <Col className={style.form_item} span={20}>
                     <Form.Item
                       className={style.item_form}
-                      name='manager_confirmed_comment'
+                      name="manager_confirmed_comment"
                       rules={[{ required: true, message: 'Please input comment' }]}
                     >
                       <Input.TextArea
@@ -447,7 +447,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                   <Col className={style.form_item} span={20}>
                     <Form.Item
                       className={style.item_form}
-                      name='admin_approved_comment'
+                      name="admin_approved_comment"
                       rules={[{ required: true, message: 'Please input comment' }]}
                     >
                       <Input.TextArea
@@ -470,8 +470,8 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                   disabled={(isAdmin || isManager) && true}
                   loading={loadingRegisterLeave}
                   className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
+                  htmlType="submit"
+                  type="primary"
                 >
                   Register
                 </Button>
@@ -480,10 +480,10 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
               {nameStatus && isMember && (
                 <Button
                   loading={loadingUpdateLeave}
-                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
+                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && (isAdmin || isManager) && true}
                   className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
+                  htmlType="submit"
+                  type="primary"
                 >
                   Update
                 </Button>
@@ -493,9 +493,9 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                 <Button
                   loading={loadingDeleteLeaveRequest}
                   onClick={handleDelete}
-                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
+                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && (isAdmin || isManager) && true}
                   className={style.button_form}
-                  type='danger'
+                  type="danger"
                 >
                   Delete
                 </Button>
@@ -504,27 +504,33 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
               {nameStatus !== undefined && isManager && (
                 <Button
                   loading={loadingConfirmLeave}
-                  disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && true}
+                  disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && isMember && true}
                   className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
+                  htmlType="submit"
+                  type="primary"
                 >
                   Confirmed
                 </Button>
               )}
 
               {nameStatus === 'confirm' && isAdmin && (
-                <Button loading={loadingApprovedLeave} className={style.button_form} htmlType='submit' type='primary'>
+                <Button
+                  disabled={nameStatus === 'approved' && isManager && isMember && true}
+                  loading={loadingApprovedLeave}
+                  className={style.button_form}
+                  htmlType="submit"
+                  type="primary"
+                >
                   Approved
                 </Button>
               )}
               {nameStatus !== undefined && isManager && (
                 <Button
                   loading={loadingRejectLeaveRequest}
-                  disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && true}
+                  disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && isMember && true}
                   className={style.button_form}
-                  htmlType='submit'
-                  type='danger'
+                  htmlType="submit"
+                  type="danger"
                 >
                   Reject
                 </Button>
@@ -533,8 +539,8 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
                 <Button
                   loading={loadingRejectLeaveRequest}
                   className={style.button_form}
-                  htmlType='submit'
-                  type='danger'
+                  htmlType="submit"
+                  type="danger"
                 >
                   Reject
                 </Button>
