@@ -14,8 +14,7 @@ export const noticeReducer = (state = initState, action) => {
     case 'notice/search': {
       return {
         ...state,
-        data: action.payload,
-        optionSearch: 1
+        data: action.payload
       }
     }
     case 'notice/loading': {
@@ -33,8 +32,7 @@ export const noticeReducer = (state = initState, action) => {
     case 'notice/getdata': {
       return {
         ...state,
-        data: action.payload,
-        optionSearch: 0
+        data: action.payload
       }
     }
     case 'notice/btnLoading': {
@@ -49,6 +47,12 @@ export const noticeReducer = (state = initState, action) => {
         modalRowTable: action.payload
       }
     }
+    case 'notice/optionSearch': {
+      return {
+        ...state,
+        optionSearch: action.payload
+      }
+    }
     default:
       return state
   }
@@ -59,7 +63,7 @@ export const noticeRedux = {
   selectTableNotice: (params) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const sizePage = { page: page, limit: pageSize }
+      const sizePage = { page: page, per_page: pageSize }
       const data = await get('notifications', sizePage)
       dispatch({
         type: 'notice/length',
@@ -82,13 +86,8 @@ export const noticeRedux = {
   },
   searchTableNotice: (value, params, btnLoading) => async(dispatch) => {
     try {
-      const { Department, SortBy, Status, inputSearch } = value
-      const { page, pageSize } = params
-      const pageSearch = {
-        page: page,
-        limit: pageSize
-      }
-      const data = await get('notifications', pageSearch)
+      const { Department, SortBy, inputSearch } = value
+      const data = await get('notifications')
       const dataSort = data.data.sort(function(a, b) {
         const nameA = a.subject.toUpperCase()
         const nameB = b.subject.toUpperCase()
@@ -164,6 +163,19 @@ export const noticeRedux = {
       dispatch({
         type: 'notice/modalRowTable',
         payload: {}
+      })
+    }
+  },
+  optionSearchorReset: (record) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'notice/optionSearch',
+        payload: record
+      })
+    } catch (err) {
+      dispatch({
+        type: 'notice/optionSearch',
+        payload: 0
       })
     }
   },

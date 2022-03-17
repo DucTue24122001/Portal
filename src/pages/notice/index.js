@@ -20,16 +20,14 @@ const NoticePage = () => {
 
   const dispatch = useDispatch()
   const dataRedux = useSelector((state) => state.notice.data)
-  // console.log(dataRedux)
   const length = useSelector((state) => state.notice.length)
   const loading = useSelector((state) => state.notice.loading)
   const optionSearch = useSelector((state) => state.notice.optionSearch)
-  console.log('option', optionSearch)
 
   useEffect(() => {
     if (optionSearch === 0) {
       dispatch(noticeRedux.selectTableNotice(params))
-    } else {
+    } else if (optionSearch === 1) {
       dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
     }
   }, [params])
@@ -52,10 +50,11 @@ const NoticePage = () => {
   }
 
   const onSearch = (values) => {
-    if (values.btnReset === 3) {
+    if (values.btnForm === 2) {
       setParams({ page: 1, pageSize: 10 })
-    } else {
+    } else if (values.btnForm === 1) {
       dispatch(noticeRedux.searchTableNotice(values, params, true))
+      dispatch(noticeRedux.optionSearchorReset(1))
       setValueSearch(values)
     }
   }
