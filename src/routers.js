@@ -14,6 +14,7 @@ import RegisterLateEarly from './layouts/components/registerLateEarly'
 import EditLateEarly from './layouts/components/updateLateEarly'
 import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
 import RegisterOT from './layouts/components/registerOT'
+import ArticleNoticePage from './pages/articleNotice'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
@@ -88,6 +89,17 @@ export const appRouter = [
     name: 'Notice',
     path: '/notice',
     component: NoicePage,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
+      child: false
+    }
+  },
+  {
+    name: 'Notice',
+    path: '/notice/:id',
+    component: ArticleNoticePage,
     meta: {
       role: '*',
       isPrivate: true,
