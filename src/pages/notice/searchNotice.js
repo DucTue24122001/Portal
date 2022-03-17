@@ -6,6 +6,7 @@ import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
 import { noticeRedux } from '../../redux/notice'
+import { Link } from 'react-router-dom'
 import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import styles from './styles.module.css'
 
@@ -17,16 +18,19 @@ const SearchNotice = ({ onSearch }) => {
   const dispatch = useDispatch()
 
   const btnLoadingRedux = useSelector((state) => state.notice.btnLoading)
+  const optionDepartment = useSelector((state) => state.notice.department)
 
   const onReset = () => {
     form.resetFields()
-    onSearch({ radioBtn: 3 })
+    onSearch({ btnForm: 2 })
+    dispatch(noticeRedux.optionSearchorReset(0))
   }
 
   const onFinish = (value) => {
     dispatch(noticeRedux.btnLoadingSearch(true))
     dispatch(noticeRedux.loadingTableTrue())
-    onSearch(value)
+    const values = { ...value, btnForm: 1 }
+    onSearch(values)
   }
 
   const onFinishFailed = () => {}
@@ -36,7 +40,7 @@ const SearchNotice = ({ onSearch }) => {
       <Row className={styles.marginBottom}>
         <Col span={24} className={styles.toTheRight}>
           <Button type='primary' icon={<PlusOutlined />}>
-            Create New
+            <Link to='/createNotice'>Create New</Link>
           </Button>
         </Col>
       </Row>
@@ -84,7 +88,7 @@ const SearchNotice = ({ onSearch }) => {
                       <Text>Sort by publish date</Text>
                     </Form.Item>
                   </Col>
-                  <Col xs={{ span: 24 }} sm={{ span: 23 }} md={{ span: 12 }} lg={{ span: 4 }}>
+                  <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 4 }}>
                     <Form.Item
                       name='SortBy'
                       rules={[
@@ -118,31 +122,12 @@ const SearchNotice = ({ onSearch }) => {
                       ]}
                     >
                       <Select placeholder='Select time'>
-                        <Option value='all'>All</Option>
-                        <Option value='hrd'>Hrd</Option>
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6, offset: 4 }} lg={{ span: 4, offset: 2 }}>
-                    <Form.Item name='Department'>
-                      <Text>Status</Text>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={{ span: 24 }} sm={{ span: 23 }} md={{ span: 12 }} lg={{ span: 4 }}>
-                    <Form.Item
-                      name='Status'
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your status!'
-                        }
-                      ]}
-                    >
-                      <Select placeholder='Select sort'>
-                        <Option value='all'>All</Option>
-                        <Option value='published'>Published</Option>
-                        <Option value='draft'>Draft</Option>
-                        <Option value='schedule'>Schedule</Option>
+                        {optionDepartment &&
+                          optionDepartment.map((item, index) => (
+                            <Option key={index} value={item}>
+                              {item}
+                            </Option>
+                          ))}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -151,14 +136,25 @@ const SearchNotice = ({ onSearch }) => {
                 <Row gutter={24} justify='center'>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button type='primary' htmlType='submit' icon={<SearchOutlined />} loading={btnLoadingRedux}>
+                      <Button
+                        type='primary'
+                        htmlType='submit'
+                        style={{ display: 'flex', alignItems: 'center' }}
+                        icon={<SearchOutlined />}
+                        loading={btnLoadingRedux}
+                      >
                         Search
                       </Button>
                     </Form.Item>
                   </Col>
                   <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button htmlType='button' onClick={onReset} icon={<ReloadOutlined />}>
+                      <Button
+                        htmlType='button'
+                        style={{ display: 'flex', alignItems: 'center' }}
+                        onClick={onReset}
+                        icon={<ReloadOutlined />}
+                      >
                         Reset
                       </Button>
                     </Form.Item>

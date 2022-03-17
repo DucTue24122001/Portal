@@ -54,12 +54,8 @@ export const convertData = (data, dataComp) => {
         }
       }
     }
-    item.checkin_original === null
-      ? (valueData.checkin = '')
-      : (valueData.checkin = item.checkout_original.slice(10, 16))
-    item.checkout_original === null
-      ? (valueData.checkout = '')
-      : (valueData.checkout = item.checkout_original.slice(10, 16))
+    item.checkin_original === null ? (valueData.checkin = '00:00') : (valueData.checkin = item.checkin_original)
+    item.checkout_original === null ? (valueData.checkout = '00:00') : (valueData.checkout = item.checkout_original)
 
     return valueData
   })

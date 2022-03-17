@@ -13,6 +13,13 @@ import ModalForget from '../../components/modalTimesheet/modalForget'
 import ModalLateEarly from '../../components/modalTimesheet/modalLateEarly'
 import ModalLeave from '../../components/modalTimesheet/modalLeave'
 import ModalOT from '../../components/modalTimesheet/modalOT'
+import styled from 'styled-components'
+
+const StyledTable = styled((props) => <Table {...props} />)`
+  && tbody > tr:hover > td {
+    background: unset;
+  }
+`
 
 const TimesheetPage = () => {
   const { Text } = Typography
@@ -23,7 +30,7 @@ const TimesheetPage = () => {
   const [isModalLeave, setIsModalLeave] = useState(false)
   const [isModalOT, setIsModalOT] = useState(false)
   const [valueModal, setValueModal] = useState(null)
-  const [params, setParams] = useState({ page: 1, pageSize: 10 })
+  const [params, setParams] = useState({ page: 1, pageSize: 30 })
   const [valueSearch, setValueSearch] = useState(null)
 
   const dispatch = useDispatch()
@@ -70,8 +77,8 @@ const TimesheetPage = () => {
     dispatch(timeSheetRedux.searchTableTimeSheetApI(values, params, true))
     setValueSearch(values)
     if (values.radioBtn === 3) {
-      setParams({ page: 1, pageSize: 10 })
-      dispatch(timeSheetRedux.selectTableTimeSheetApI({ page: 1, pageSize: 10 }))
+      setParams({ page: 1, pageSize: 30 })
+      dispatch(timeSheetRedux.selectTableTimeSheetApI({ page: 1, pageSize: 30 }))
       dispatch(timeSheetRedux.loadingTableTrue())
     }
   }
@@ -293,26 +300,26 @@ const TimesheetPage = () => {
       width: '12%',
       render: (index, record) => {
         return (
-          <div>
+          <Space style={{ display: 'flex', justifyContent: 'flex-end' }}>
             {record.is_holiday === 0 ? (
               <>
-                <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
+                <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionForget(e, record)}>
                   Forget
                 </Text>
-                <Text className={styles.buttonTable} underline onClick={(e) => onActionLate(e, record)}>
+                <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionLate(e, record)}>
                   Late/Early
                 </Text>
-                <Text className={styles.buttonTable} underline onClick={(e) => onActionLeave(e, record)}>
+                <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionLeave(e, record)}>
                   Leave
                 </Text>
               </>
             ) : (
               <></>
             )}
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
+            <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
-          </div>
+          </Space>
         )
       }
     }
@@ -328,16 +335,15 @@ const TimesheetPage = () => {
           </Text>
         </Col>
         <Col span={12} className={styles.toTheRight}>
-          <Select defaultValue='10' onChange={onChangeElement}>
-            <Select.Option value='10'>10 / page</Select.Option>
-            <Select.Option value='30'>30 / page</Select.Option>
-            <Select.Option value='50'>50 / page</Select.Option>
-            <Select.Option value='100'>100 / page</Select.Option>
+          <Select defaultValue={30} onChange={onChangeElement}>
+            <Select.Option value={30}>30 / page</Select.Option>
+            <Select.Option value={50}>50 / page</Select.Option>
+            <Select.Option value={100}>100 / page</Select.Option>
           </Select>
           <Text>Item per page &ensp;</Text>
         </Col>
       </Row>
-      <Table
+      <StyledTable
         columns={columns}
         dataSource={dataSource || []}
         pagination={{
@@ -354,7 +360,6 @@ const TimesheetPage = () => {
           }
         }}
         rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : '')}
-        className={styles.boderTable}
         bordered={true}
         loading={loading}
       />
