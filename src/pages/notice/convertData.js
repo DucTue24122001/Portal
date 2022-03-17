@@ -12,8 +12,10 @@ export const convertDataNotice = (data) => {
       created_at: item.created_at,
       attachment_link: item.attachment
     }
+    if (valueData.attachment_link !== null) {
+      valueData.attachment_link = valueData.attachment.split('/')[valueData.attachment.split('/').length - 1]
+    }
     return valueData
   })
-
   return value
 }

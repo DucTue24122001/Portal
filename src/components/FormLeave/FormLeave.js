@@ -14,78 +14,59 @@ const rangeConfig = {
 const disabledTimeAM = [0, 1, 2, 3, 4, 5, 6, 7]
 const disabledTimePM = [18, 19, 20, 21, 22, 23]
 
-const dataLeave = {
-  // check_in: '8:00',
-  // check_out: '16:00',
-  // compensation_date: '',
-  // compensation_time: '',
-  // leave_all_day: 1,
-  // leave_end: '08:07:00',
-  // leave_start: '06:07:00',
-  // leave_time: '01:00',
-  // reason: 'xin nghi 1 ngay',
-  // request_for_date: '2022-01-12',
-  // request_ot_time: '',
-  // request_type: 2,
-  // status: 0,
-  // manager_confirmed_comment: 'manager_confirmed_comment',
-  // admin_approved_comment: 'admin_approved_comment',
-}
-
-const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
-  const { checkin, checkout, date, Worktime, lack } = dataModal
+const FormLeave = ({ onCancel }) => {
   const dispatch = useDispatch()
   const [form] = Form.useForm()
-  const [status] = useState(statusRequest)
+  const dataModal = useSelector((state) => state.timesheet.modalRowTable)
+  const { checkin, checkout, date, Worktime, lack } = dataModal
+  const { infoUser } = useSelector((state) => state.infoUser)
+  const { dataRegister, dataGet } = useSelector((state) => state.leave)
+  const [status, setStatus] = useState()
   const [isMember, setIsMember] = useState(false)
   const [isManager, setIsManager] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
-  const [idLeave] = useState(1)
   const [nameStatus, setNameStatus] = useState()
   const [nameUserConfirm] = useState('Vu Van Vinh')
   const [nameUserApproved] = useState('Tran Xuan Duc')
-  const [leaveTime, setLeaveTime] = useState((dataLeave && dataLeave.leave_time) || '')
+  const [dataLeave, setDataLeave] = useState()
+  const [leaveTime, setLeaveTime] = useState(dataRegister?.leave_time)
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
-  const { infoUser } = useSelector((state) => state.infoUser)
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const {
     loadingRegisterLeave,
     loadingUpdateLeave,
     loadingConfirmLeave,
     loadingGetLeaveRequest,
-    loadingDeleteLeaveRequest,
+    loadingDeleteLeave,
     loadingApprovedLeave,
     loadingRejectLeaveRequest,
 
     successRegisterLeave,
     successUpdateLeave,
     successConfirmLeave,
-    successDeleteLeaveRequest,
+    successDeleteLeave,
     successApprovedLeave,
     successRejectLeaveRequest,
+    successGetLeaveRequest,
 
     errorRegisterLeave,
     errorUpdateLeave,
     errorConfirmLeave,
-    errorDeletetLeaveRequest,
+    errorDeletetLeave,
     errorApprovedLeave,
     errorRejectLeaveRequest
   } = useSelector((state) => state.leave)
 
   const onFinish = (values) => {
     const { reason, Range, request_type, leave_all_day } = values
+    const request_for_date = date.split('|')
     const dataForm = {
       request_type: request_type,
-      request_for_date: date,
-      check_in: checkin,
-      check_out: checkout,
-      compensation_time: '',
-      compensation_date: '',
+      request_for_date: request_for_date[0],
       leave_all_day: leave_all_day ? 1 : 0,
       leave_start: moment.utc(moment.duration(Range[0], 'seconds').as('milliseconds')).format('HH:mm'),
       leave_end: moment.utc(moment.duration(Range[1], 'seconds').as('milliseconds')).format('HH:mm'),
       leave_time: moment.utc(moment.duration(leaveTime, 'seconds').as('milliseconds')).format('HH:mm'),
-      request_ot_time: '',
       reason: reason
     }
     const dataConfirm = {
@@ -105,19 +86,19 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
       dispatch(leaveActions.register(dataForm))
     }
     if (nameStatus === 'sent' && isMember) {
-      dispatch(leaveActions.update(dataForm, idLeave))
+      dispatch(leaveActions.update(dataForm, dataLeave?.id))
     }
     if (nameStatus === 'sent' && isManager) {
-      dispatch(leaveActions.confirm(dataConfirm, idLeave))
+      dispatch(leaveActions.confirm(dataConfirm, dataLeave?.id))
     }
     if (nameStatus === 'confirm' && isAdmin) {
-      dispatch(leaveActions.appproved(dataApprove, idLeave))
+      dispatch(leaveActions.appproved(dataApprove, dataLeave?.id))
     }
   }
 
   useEffect(() => {
     if ((successRegisterLeave || successUpdateLeave || successConfirmLeave) === true) {
-      dispatch(leaveActions.getRequest(idLeave))
+      dispatch(leaveActions.getRequest(dataRegister?.id))
     }
     if (successRegisterLeave === true) {
       toast('successRegisterLeave')
@@ -126,22 +107,39 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
     if (successUpdateLeave === true) {
       toast('successUpdateLeave')
       dispatch(leaveActions.clearSuccess())
+      setTimeout(() => {
+        onCancel()
+      }, loadingUpdateLeave)
     }
     if (successConfirmLeave === true) {
       toast('Success Confirm Leave')
       dispatch(leaveActions.clearSuccess())
+      setTimeout(() => {
+        onCancel()
+      }, loadingConfirmLeave)
     }
-    if (successDeleteLeaveRequest === true) {
+    if (successDeleteLeave === true) {
+      setDataLeave(dataGet)
+      setNameStatus(undefined)
       toast('Success DeleteLeave Request')
       dispatch(leaveActions.clearSuccess())
+      setTimeout(() => {
+        onCancel()
+      }, loadingDeleteLeave)
     }
     if (successApprovedLeave === true) {
       toast('Success Approved Request')
       dispatch(leaveActions.clearSuccess())
+      setTimeout(() => {
+        onCancel()
+      }, loadingApprovedLeave)
     }
     if (successRejectLeaveRequest === true) {
       toast('Success Reject Request')
       dispatch(leaveActions.clearSuccess())
+      setTimeout(() => {
+        onCancel()
+      }, loadingRejectLeaveRequest)
     }
     if (errorRegisterLeave !== '') {
       toast(errorRegisterLeave)
@@ -155,8 +153,8 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
       toast(errorConfirmLeave)
       dispatch(leaveActions.clearSuccess())
     }
-    if (errorDeletetLeaveRequest !== '') {
-      toast(errorDeletetLeaveRequest)
+    if (errorDeletetLeave !== '') {
+      toast(errorDeletetLeave)
       dispatch(leaveActions.clearSuccess())
     }
     if (errorApprovedLeave !== '') {
@@ -171,14 +169,14 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
     successRegisterLeave,
     successUpdateLeave,
     successConfirmLeave,
-    successDeleteLeaveRequest,
+    successDeleteLeave,
     successRejectLeaveRequest,
 
     errorRegisterLeave,
     errorUpdateLeave,
     errorConfirmLeave,
     errorApprovedLeave,
-    errorDeletetLeaveRequest,
+    errorDeletetLeave,
     errorRejectLeaveRequest
   ])
 
@@ -216,6 +214,16 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
     }
   }, [status])
 
+  useEffect(() => {
+    if ((successGetLeaveRequest || successUpdateLeave || successConfirmLeave || successApprovedLeave) === true) {
+      setStatus(dataGet?.status)
+      if (dataGet !== {} && dataGet !== undefined) {
+        setDataLeave({ ...dataLeave, ...dataGet })
+      }
+      dispatch(leaveActions.clearSuccess())
+    }
+  }, [successGetLeaveRequest, successUpdateLeave, successConfirmLeave, successApprovedLeave])
+
   const rangerTime = (time) => {
     const totalSecondsStart = moment.duration(time[0].format('HH:mm')).asSeconds()
     const totalSecondsEnd = moment.duration(time[1].format('HH:mm')).asSeconds()
@@ -223,7 +231,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
   }
 
   const handleDelete = () => {
-    dispatch(leaveActions.delete())
+    dispatch(leaveActions.delete(dataLeave?.id))
   }
 
   return (
@@ -241,17 +249,17 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
             onFinish={onFinish}
             autoComplete='off'
             initialValues={{
-              leave_all_day: dataLeave?.leave_all_day !== 0,
-              Range: dataLeave
+              leave_all_day: dataGet?.leave_all_day !== 0,
+              Range: dataGet
                 ? [
-                  moment(moment.duration(dataLeave.leave_start).asMilliseconds()),
-                  moment(moment.duration(dataLeave.leave_end).asMilliseconds())
+                  moment(moment.duration(dataGet.leave_start).asMilliseconds()),
+                  moment(moment.duration(dataGet.leave_end).asMilliseconds())
                 ]
                 : [],
-              reason: dataLeave ? dataLeave.reason : '',
-              manager_confirmed_comment: dataLeave ? dataLeave.manager_confirmed_comment : '',
-              admin_approved_comment: dataLeave ? dataLeave.admin_approved_comment : '',
-              request_type: dataLeave ? dataLeave.request_type : ''
+              reason: dataGet ? dataGet.reason : '',
+              manager_confirmed_comment: dataGet ? dataGet.manager_confirmed_comment : '',
+              admin_approved_comment: dataGet ? dataGet.admin_approved_comment : '',
+              request_type: dataGet ? dataGet.request_type : ''
             }}
           >
             <Row gutter={[10, 10]}>
@@ -310,7 +318,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
               <Col span={24} className={style.leaveAll}>
                 <Form.Item className={style.wrapper_item_form} className={style.item_form} name='leave_all_day' noStyle>
                   <Checkbox
-                    defaultChecked={dataLeave.leave_all_day !== 0}
+                    defaultChecked={dataGet?.leave_all_day !== 0}
                     disabled={
                       ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
                       (nameStatus !== undefined && (isManager || isAdmin) && true)
@@ -342,7 +350,6 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
               <Col span={4} className={style.form_item} className={style.timeBox}>
                 <Form.Item name='request_type' rules={[{ required: true, message: 'Please pick an item!' }]}>
                   <Radio.Group
-                    defaultValue={2}
                     disabled={
                       ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
                       (nameStatus !== undefined && (isManager || isAdmin) && true)
@@ -491,7 +498,7 @@ const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
 
               {nameStatus && isMember && (
                 <Button
-                  loading={loadingDeleteLeaveRequest}
+                  loading={loadingDeleteLeave}
                   onClick={handleDelete}
                   disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && (isAdmin || isManager) && true}
                   className={style.button_form}
