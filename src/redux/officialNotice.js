@@ -1,8 +1,6 @@
-import {
-  NOTICE_GETDATA,
-  NOTICE_GETDATA_FAIL,
-  SHOW_LOADING_NOTICE
-} from './Constants/constants'
+const NOTICE_GETDATA = 'NOTICE_GETDATA'
+const NOTICE_GETDATA_FAIL = 'NOTICE_GETDATA_FAIL'
+const SHOW_LOADING_NOTICE = 'SHOW_LOADING_NOTICE'
 import axios from 'axios'
 
 const initState = {
@@ -36,9 +34,7 @@ export default NoticeReducers
 
 export const getNoticeData = (page) => async(dispatch) => {
   try {
-    const data = await axios.get(
-      `https://6215ef287428a1d2a354d464.mockapi.io/OfficialNotice?page=${page}&limit=10`
-    )
+    const data = await axios.get(`https://6215ef287428a1d2a354d464.mockapi.io/OfficialNotice?page=${page}&limit=10`)
     dispatch({ type: NOTICE_GETDATA, payload: data.data })
   } catch (error) {
     dispatch({ type: NOTICE_GETDATA_FAIL, payload: error })

@@ -9,9 +9,10 @@ import { noticeRedux } from '../../redux/notice'
 import { convertDataNotice } from './convertData'
 import ModalNoticeEdit from '../../components/modalNotice/modamEdit'
 import ModalNoticeView from '../../components/modalNotice/modalView'
+import { Link } from 'react-router-dom'
 
 const NoticePage = () => {
-  const { Text, Link } = Typography
+  const { Text } = Typography
 
   const [isModalEdit, setIsModalEdit] = useState(false)
   const [isModalView, setIsModalView] = useState(false)
@@ -25,10 +26,10 @@ const NoticePage = () => {
   const optionSearch = useSelector((state) => state.notice.optionSearch)
 
   useEffect(() => {
-    if (optionSearch === 1) {
-      dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
-    } else {
+    if (optionSearch === 0) {
       dispatch(noticeRedux.selectTableNotice(params))
+    } else if (optionSearch === 1) {
+      dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
     }
   }, [params])
 
@@ -50,12 +51,12 @@ const NoticePage = () => {
   }
 
   const onSearch = (values) => {
-    dispatch(noticeRedux.searchTableNotice(values, params, true))
-    setValueSearch(values)
-    if (values.radioBtn === 3) {
+    if (values.btnForm === 2) {
       setParams({ page: 1, pageSize: 10 })
-      dispatch(noticeRedux.selectTableNotice({ page: 1, pageSize: 10 }))
-      dispatch(noticeRedux.loadingTableTrue())
+    } else if (values.btnForm === 1) {
+      dispatch(noticeRedux.searchTableNotice(values, params, true))
+      dispatch(noticeRedux.optionSearchorReset(1))
+      setValueSearch(values)
     }
   }
 
@@ -92,9 +93,9 @@ const NoticePage = () => {
       render: (subject, record) => {
         return (
           <>
-            <Text className={styles.buttonTable} underline>
+            <Link to='/notice/1' className={styles.buttonTable}>
               {subject}
-            </Text>
+            </Link>
           </>
         )
       }
@@ -116,12 +117,12 @@ const NoticePage = () => {
     {
       title: 'Atttachment',
       dataIndex: 'attachment',
-      render: (attachment) => {
+      render: (attachment, record) => {
         return (
           <>
-            <Link href='#' target='_blank'>
-              {attachment}
-            </Link>
+            <Typography.Link href={attachment} underline target='_blank'>
+              {record.attachment_link}
+            </Typography.Link>
           </>
         )
       }
