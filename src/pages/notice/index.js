@@ -26,10 +26,10 @@ const NoticePage = () => {
   const optionSearch = useSelector((state) => state.notice.optionSearch)
 
   useEffect(() => {
-    if (optionSearch === 1) {
-      dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
-    } else {
+    if (optionSearch === 0) {
       dispatch(noticeRedux.selectTableNotice(params))
+    } else if (optionSearch === 1) {
+      dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
     }
   }, [params])
 
@@ -51,12 +51,12 @@ const NoticePage = () => {
   }
 
   const onSearch = (values) => {
-    dispatch(noticeRedux.searchTableNotice(values, params, true))
-    setValueSearch(values)
-    if (values.radioBtn === 3) {
+    if (values.btnForm === 2) {
       setParams({ page: 1, pageSize: 10 })
-      dispatch(noticeRedux.selectTableNotice({ page: 1, pageSize: 10 }))
-      dispatch(noticeRedux.loadingTableTrue())
+    } else if (values.btnForm === 1) {
+      dispatch(noticeRedux.searchTableNotice(values, params, true))
+      dispatch(noticeRedux.optionSearchorReset(1))
+      setValueSearch(values)
     }
   }
 
@@ -93,7 +93,7 @@ const NoticePage = () => {
       render: (subject, record) => {
         return (
           <>
-            <Link to='/notice/1' className={styles.buttonTable} underline>
+            <Link to='/notice/1' className={styles.buttonTable}>
               {subject}
             </Link>
           </>
@@ -120,7 +120,7 @@ const NoticePage = () => {
       render: (attachment) => {
         return (
           <>
-            <Link href='#' target='_blank'>
+            <Link to='#' target='_blank'>
               {attachment}
             </Link>
           </>
