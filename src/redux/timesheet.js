@@ -7,7 +7,8 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  modalRowTable: {}
+  modalRowTable: {},
+  dataTimeLog: []
 }
 // Reducer
 export const timeSheetReducer = (state = initState, action) => {
@@ -48,6 +49,12 @@ export const timeSheetReducer = (state = initState, action) => {
       return {
         ...state,
         modalRowTable: action.payload
+      }
+    }
+    case 'timesheet/timelog': {
+      return {
+        ...state,
+        dataTimeLog: action.payload
       }
     }
     default:
@@ -118,7 +125,20 @@ export const timeSheetRedux = {
       })
     }
   },
-
+  searchTimeLogs: (id) => async(dispatch) => {
+    try {
+      const data = await get('checklogs')
+      dispatch({
+        type: 'timesheet/timelog',
+        payload: data.data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timesheet/timelog',
+        payload: []
+      })
+    }
+  },
   loadingTableTrue: () => {
     return {
       type: 'timeSheet/loading',

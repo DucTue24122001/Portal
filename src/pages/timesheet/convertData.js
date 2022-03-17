@@ -26,7 +26,7 @@ export const convertData = (data) => {
       is_holiday: item.is_holiday,
       member_id: item.member_id,
       requests: item.requests,
-      colorWorkTime: '',
+      colorWorkTime: ''
     }
     if (item.note === null) {
       valueData.Note = ''
