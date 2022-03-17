@@ -1,7 +1,6 @@
 import React from 'react'
 import { Modal } from 'antd'
 import { useSelector } from 'react-redux'
-import React from 'react'
 import FormForgetCheck from '../FormForget/FormForgetCheck'
 
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {

@@ -293,7 +293,7 @@ const TimesheetPage = () => {
       width: '12%',
       render: (index, record) => {
         return (
-          <div>
+          <Space>
             {record.is_holiday === 0 ? (
               <>
                 <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
@@ -312,7 +312,7 @@ const TimesheetPage = () => {
             <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
-          </div>
+          </Space>
         )
       }
     }

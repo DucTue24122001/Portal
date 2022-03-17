@@ -134,10 +134,10 @@ const NoticePage = () => {
       render: (index, record) => {
         return (
           <Space>
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionEdit(e, record)}>
+            <Text className={styles.buttonTable} underline={true} onClick={(e) => onActionEdit(e, record)}>
               Edit
             </Text>
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionView(e, record)}>
+            <Text className={styles.buttonTable} underline={true} onClick={(e) => onActionView(e, record)}>
               View
             </Text>
           </Space>

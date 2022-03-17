@@ -61,6 +61,7 @@ export const noticeRedux = {
       const { page, pageSize } = params
       const sizePage = { page: page, per_page: pageSize }
       const data = await get('notifications', sizePage)
+
       dispatch({
         type: 'notice/length',
         payload: data.total
