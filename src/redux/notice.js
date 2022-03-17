@@ -6,6 +6,7 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
+  department: [],
   modalRowTable: {}
 }
 // Reducer
@@ -53,6 +54,12 @@ export const noticeReducer = (state = initState, action) => {
         optionSearch: action.payload
       }
     }
+    case 'notice/department': {
+      return {
+        ...state,
+        department: action.payload
+      }
+    }
     default:
       return state
   }
@@ -65,6 +72,16 @@ export const noticeRedux = {
       const { page, pageSize } = params
       const sizePage = { page: page, per_page: pageSize }
       const data = await get('notifications', sizePage)
+      if (data !== undefined) {
+        const dataDepartment = data.data.map((item) => item.published_to)
+        const dataFillter = dataDepartment.filter((item) => item)
+        const datalist = dataFillter.filter((item, index) => dataFillter.indexOf(item) === index)
+        dispatch({
+          type: 'notice/department',
+          payload: datalist
+        })
+      }
+
       dispatch({
         type: 'notice/length',
         payload: data.total
@@ -86,8 +103,11 @@ export const noticeRedux = {
   },
   searchTableNotice: (value, params, btnLoading) => async(dispatch) => {
     try {
+      const { page, pageSize } = params
       const { Department, SortBy, inputSearch } = value
-      const data = await get('notifications')
+      const sizePage = { page: page, per_page: pageSize }
+      const data = await get('notifications', sizePage)
+      console.log(data.data)
       const dataSort = data.data.sort(function(a, b) {
         const nameA = a.subject.toUpperCase()
         const nameB = b.subject.toUpperCase()
@@ -110,13 +130,11 @@ export const noticeRedux = {
       })
       const dataBase = dataSort.filter((item) => {
         if (item.subject.toUpperCase().includes(inputSearch.toUpperCase()) === true) {
-          if (item.subject.toUpperCase().includes(inputSearch.toUpperCase())) {
-            if (item.published_to === null && Department === 'all') {
+          if (item.published_to === null && Department === 'all') {
+            return item
+          } else if (item.published_to !== null && Department !== 'all') {
+            if (item.published_to.toUpperCase().includes(Department.toUpperCase())) {
               return item
-            } else if (item.published_to !== null) {
-              if (item.published_to.toUpperCase().includes(Department.toUpperCase())) {
-                return item
-              }
             }
           }
         }

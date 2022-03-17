@@ -17,7 +17,7 @@ const SearchNotice = ({ onSearch }) => {
   const dispatch = useDispatch()
 
   const btnLoadingRedux = useSelector((state) => state.notice.btnLoading)
-  const dataRedux = useSelector((state) => state.notice.data)
+  const optionDepartment = useSelector((state) => state.notice.department)
 
   const onReset = () => {
     form.resetFields()
@@ -122,7 +122,12 @@ const SearchNotice = ({ onSearch }) => {
                     >
                       <Select placeholder='Select time'>
                         <Option value='all'>All</Option>
-                        <Option value='hrd'>Hrd</Option>
+                        {optionDepartment &&
+                          optionDepartment.map((item, index) => (
+                            <Option key={index} value={item}>
+                              {item}
+                            </Option>
+                          ))}
                       </Select>
                     </Form.Item>
                   </Col>

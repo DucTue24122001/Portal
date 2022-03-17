@@ -33,7 +33,7 @@ const Header = () => {
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
-                Welcome <b>{infoUser?.name}</b>
+                Welcome <b>{infoUser?.full_name}</b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>

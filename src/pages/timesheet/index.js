@@ -303,20 +303,20 @@ const TimesheetPage = () => {
           <Space style={{ display: 'flex', justifyContent: 'flex-end' }}>
             {record.is_holiday === 0 ? (
               <>
-                <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
+                <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionForget(e, record)}>
                   Forget
                 </Text>
-                <Text className={styles.buttonTable} underline onClick={(e) => onActionLate(e, record)}>
+                <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionLate(e, record)}>
                   Late/Early
                 </Text>
-                <Text className={styles.buttonTable} underline onClick={(e) => onActionLeave(e, record)}>
+                <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionLeave(e, record)}>
                   Leave
                 </Text>
               </>
             ) : (
               <></>
             )}
-            <Text className={styles.buttonTable} underline onClick={(e) => onActionOT(e, record)}>
+            <Text className={styles.buttonTable} underline='true' onClick={(e) => onActionOT(e, record)}>
               OT
             </Text>
           </Space>

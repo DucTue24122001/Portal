@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { get, post, put, del } from '@/api/BaseRequest'
 
 // Constants
@@ -26,6 +25,12 @@ export const DELETE_LEAVE_REQUEST_LEAVE_REQUEST = 'DELETE_LEAVE_REQUEST_LEAVE_RE
 export const DELETE_LEAVE_REQUEST_LEAVE_SUCCESS = 'DELETE_LEAVE_REQUEST_LEAVE_SUCCESS'
 export const DELETE_LEAVE_REQUEST_LEAVE_FAIL = 'DELETE_LEAVE_REQUEST_LEAVE_FAIL'
 
+export const REJECT_LEAVE_REQUEST = 'REJECT_LEAVE_REQUEST'
+export const REJECT_LEAVE_SUCCESS = 'REJECT_LEAVE_SUCCESS'
+export const REJECT_LEAVE_FAIL = 'REJECT_LEAVE_FAIL'
+
+export const CLEAR_SUCCESS = 'CLEAR_SUCCESS'
+
 // initialState
 const initialState = {
   successRegisterLeave: false,
@@ -50,7 +55,11 @@ const initialState = {
 
   successDeleteLeaveRequest: false,
   errorDeleteLeaveRequest: '',
-  loadingDeleteLeaveRequest: false
+  loadingDeleteLeaveRequest: false,
+
+  successRejectLeaveRequest: false,
+  errorRejectLeaveRequest: '',
+  loadingRejectLeaveRequest: false
 }
 
 // Reducer
@@ -79,6 +88,10 @@ export const leaveReducer = (state = initialState, action) => {
     case DELETE_LEAVE_REQUEST_LEAVE_REQUEST:
       return {
         loadingDeleteLeaveRequest: true
+      }
+    case REJECT_LEAVE_REQUEST:
+      return {
+        loadingRejectdLeave: true
       }
 
     case REGISTER_LEAVE_SUCCESS:
@@ -111,6 +124,11 @@ export const leaveReducer = (state = initialState, action) => {
         loadingDeleteLeaveRequest: false,
         successDeleteLeaveRequest: true
       }
+    case REJECT_LEAVE_SUCCESS:
+      return {
+        loadingRejectLeaveRequest: false,
+        successRejectLeaveRequest: true
+      }
 
     case REGISTER_LEAVE_FAIL:
       return {
@@ -139,14 +157,38 @@ export const leaveReducer = (state = initialState, action) => {
     case GET_LEAVE_REQUEST_LEAVE_FAIL:
       return {
         successGetLeaveRequest: false,
-        errorGetLeaveRequest: false,
-        loadingGetLeaveRequest: action.payload
+        loadingGetLeaveRequest: false,
+        errorGetLeaveRequest: action.payload
       }
     case DELETE_LEAVE_REQUEST_LEAVE_FAIL:
       return {
         successDeletetLeaveRequest: false,
-        errorDeletetLeaveRequest: false,
-        loadingDeletetLeaveRequest: action.payload
+        loadingDeletetLeaveRequest: false,
+        errorDeletetLeaveRequest: action.payload
+      }
+    case REJECT_LEAVE_FAIL:
+      return {
+        successRejectLeaveRequest: false,
+        loadingRejectLeaveRequest: false,
+        errorRejectLeaveRequest: action.payload
+      }
+
+    case CLEAR_SUCCESS:
+      return {
+        successRegisterLeave: false,
+        successConfirmLeave: false,
+        successApprovedLeave: false,
+        successGetLeaveRequest: false,
+        successDeleteLeaveRequest: false,
+        successRejectLeaveRequest: false,
+
+        errorRegisterLeave: '',
+        errorUpdateLeave: '',
+        errorConfirmLeave: '',
+        errorApprovedLeave: '',
+        errorGetLeaveRequest: '',
+        errorDeletetLeaveRequest: '',
+        errorRejecttLeaveRequest: ''
       }
 
     default:
@@ -174,7 +216,7 @@ export const leaveActions = {
       try {
         dispatch({ type: REGISTER_LEAVE_REQUEST })
 
-        const data = await post(`request`, dataForm)
+        const data = await post(`requests`, dataForm)
 
         dispatch({ type: REGISTER_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -187,7 +229,7 @@ export const leaveActions = {
       try {
         dispatch({ type: UPDATE_LEAVE_REQUEST })
 
-        const data = put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: UPDATE_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -200,7 +242,7 @@ export const leaveActions = {
       try {
         dispatch({ type: CONFIRM_LEAVE_REQUEST })
 
-        const data = await put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: CONFIRM_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -213,7 +255,7 @@ export const leaveActions = {
       try {
         dispatch({ type: APPROVED_LEAVE_REQUEST })
 
-        const data = await put(`request/${idLeave}`, dataForm)
+        const data = await put(`requests/${idLeave}`, dataForm)
 
         dispatch({ type: APPROVED_LEAVE_SUCCESS, payload: data })
       } catch (error) {
@@ -226,12 +268,31 @@ export const leaveActions = {
       try {
         dispatch({ type: DELETE_LEAVE_REQUEST })
 
-        const data = await del(`request/${idLeave}`, dataForm)
+        const data = await del(`requests/${idLeave}`)
 
         dispatch({ type: DELETE_LEAVE_SUCCESS, payload: data })
       } catch (error) {
         dispatch({ type: DELETE_LEAVE_FAIL, payload: 'Delete leave failed' })
       }
     }
+  },
+  reject(idLeave) {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: REJECT_LEAVE_REQUEST })
+
+        const data = await put(`requests/${idLeave}`, dataForm)
+
+        dispatch({ type: REJECT_LEAVE_SUCCESS, payload: data })
+      } catch (error) {
+        dispatch({ type: REJECT_LEAVE_FAIL, payload: 'Reject leave failed' })
+      }
+    }
+  },
+  clearSuccess() {
+    return (dispatch) => {
+      dispatch({ type: CLEAR_SUCCESS })
+    }
   }
 }
+
