@@ -15,10 +15,6 @@
   align-items: center;
 }
 
-.w_40p {
-  width: 40%;
-}
-
 .wrapper_button_form {
   display: flex;
   justify-content: center;

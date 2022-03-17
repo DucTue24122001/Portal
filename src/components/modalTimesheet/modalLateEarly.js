@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import RegisterLateEarly from '../../layouts/components/registerLateEarly/index'
 
@@ -7,6 +7,18 @@ export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel 
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
   const dataModal = useSelector((state) => state.timesheet.modalRowTable)
+  const [status, setStatus] = useState()
+
+  useEffect(() => {
+    if (dataModal.requests?.length !== 0) {
+      dataModal.requests?.map(request => {
+        if (request.request_type === 4) {
+          setStatus(request.status)
+        }
+      })
+    }
+  }, [status])
+
   return (
     <>
       <Modal
@@ -18,7 +30,7 @@ export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel 
         width={1000}
         footer={null}
       >
-        <RegisterLateEarly onCancel={onCancel} onOk={onOk} />
+        <RegisterLateEarly onCancel={onCancel} onOk={onOk} dataLateEarly={dataModal} status={1}/>
       </Modal>
     </>
   )

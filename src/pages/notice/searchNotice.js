@@ -6,6 +6,7 @@ import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
 import { noticeRedux } from '../../redux/notice'
+import { Link } from 'react-router-dom'
 import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons'
 import styles from './styles.module.css'
 
@@ -39,7 +40,9 @@ const SearchNotice = ({ onSearch }) => {
       <Row className={styles.marginBottom}>
         <Col span={24} className={styles.toTheRight}>
           <Button type='primary' style={{ display: 'flex', alignItems: 'center' }} icon={<PlusOutlined />}>
-            Create New
+            <Link to='/createNotice' className={styles.btnCreate}>
+              Create New
+            </Link>
           </Button>
         </Col>
       </Row>
@@ -146,7 +149,7 @@ const SearchNotice = ({ onSearch }) => {
                       </Button>
                     </Form.Item>
                   </Col>
-                  <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
+                  <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4, offset: 1 }} lg={{ span: 2, offset: 1 }}>
                     <Form.Item>
                       <Button
                         htmlType='button'

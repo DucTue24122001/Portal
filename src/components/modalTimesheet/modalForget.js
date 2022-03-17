@@ -2,7 +2,6 @@ import React from 'react'
 import { Modal } from 'antd'
 import { useSelector } from 'react-redux'
 import FormForgetCheck from '../FormForget/FormForgetCheck'
-
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
 
@@ -19,7 +18,7 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
         onCancel={onCancel}
         width={1000}
       >
-        <FormForgetCheck onCancel={onCancel} />
+        <FormForgetCheck onCancel={onCancel} dataModal = {dataModal}/>
       </Modal>
     </>
   )
