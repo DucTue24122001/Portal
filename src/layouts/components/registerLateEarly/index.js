@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, DatePicker, Button, Modal, Form, Input } from 'antd'
 import 'antd/dist/antd.css'
 import style from './registerLateEarly.module.css'
 import moment from 'moment'
 import { LateEarlyActions } from '../../../redux/lateEarly'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const in_office = '09:50'
 const initial_in_office = moment.duration(`09:00:00`).asSeconds()
@@ -38,6 +40,28 @@ const RegisterLateEarly = ({
   const [dateConfirm] = useState('2022-02-20 12:04')
   const [status] = useState(1)
   const [nameStatus, setNameStatus] = useState()
+  const {
+    loadingRegisterLateEarly,
+    loadingUpdateLateEarly,
+    loadingDeleteLateEarly,
+    loadingConfirmLateEarly,
+    loadingApprovedLateEarly,
+    loadingRejectLateEarly,
+
+    successRegisterLateEarly,
+    successUpdateLateEarly,
+    successDeleteLateEarly,
+    successConfirmLateEarly,
+    successApprovedLateEarly,
+    successRejectLateEarly,
+
+    errorRegisterLateEarly,
+    errorUpdateLateEarly,
+    errorDeleteLateEarly,
+    errorConfirmLateEarly,
+    errorApprovedLateEarly,
+    errorRejectLateEarly
+  } = useSelector((state) => state.lateEarly)
 
   const dataDefaultLateEarly = {
     request_type: 4,
@@ -102,6 +126,73 @@ const RegisterLateEarly = ({
     }
   }, [])
 
+  useEffect(() => {
+    if ((successRegisterLateEarly || successUpdateLateEarly || successConfirmLateEarly) === true) {
+      dispatch(LateEarlyActions.getRequest(idLateEarly))
+    }
+    if (successRegisterLateEarly === true) {
+      toast('successRegisterLateEarly')
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (successUpdateLateEarly === true) {
+      toast('successUpdateLateEarly')
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (successConfirmLateEarly === true) {
+      toast('Success Confirm LateEarly')
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (successDeleteLateEarly === true) {
+      toast('Success DeleteLateEarly Request')
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (successApprovedLateEarly === true) {
+      toast('Success Approved Request')
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (successRejectLateEarly === true) {
+      toast('Success Reject Request')
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (errorRegisterLateEarly !== '') {
+      toast(errorRegisterLateEarly)
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (errorUpdateLateEarly !== '') {
+      toast(errorUpdateLateEarly)
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (errorConfirmLateEarly !== '') {
+      toast(errorConfirmLateEarly)
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (errorDeleteLateEarly !== '') {
+      toast(errorDeleteLateEarly)
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (errorApprovedLateEarly !== '') {
+      toast(errorApprovedLateEarly)
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+    if (errorRejectLateEarly !== '') {
+      toast(errorRejectLateEarly)
+      dispatch(LateEarlyActions.clearSuccess())
+    }
+  }, [
+    successRegisterLateEarly,
+    successUpdateLateEarly,
+    successConfirmLateEarly,
+    successDeleteLateEarly,
+    successRejectLateEarly,
+
+    errorRegisterLateEarly,
+    errorUpdateLateEarly,
+    errorConfirmLateEarly,
+    errorApprovedLateEarly,
+    errorDeleteLateEarly,
+    errorRejectLateEarly
+  ])
+
   const handleRegister = () => {
     if (reason !== '' && dateCoverUp !== 0) {
       dispatch(LateEarlyActions.registerLateEarly(dataRequest))
@@ -116,7 +207,7 @@ const RegisterLateEarly = ({
     onOk()
   }
 
-  const hanleDeleteLateEarly = () => {
+  const handleDeleteLateEarly = () => {
     dispatch(LateEarlyActions.deleteLateEarly(member_id))
     onOk()
   }
@@ -351,7 +442,12 @@ const RegisterLateEarly = ({
         <Row gutter={30} justify='center' className={style.row_button}>
           {!nameStatus && (
             <Col>
-              <Button htmlType='submit' type='primary' onClick={handleRegister}>
+              <Button
+                htmlType='submit'
+                type='primary'
+                onClick={handleRegister}
+                loading={loadingRegisterLateEarly}
+              >
                 Register
               </Button>
             </Col>
@@ -367,6 +463,7 @@ const RegisterLateEarly = ({
                 htmlType='submit'
                 type='primary'
                 onClick={handleUpdateLateEarly}
+                loading={loadingUpdateLateEarly}
               >
                 Update
               </Button>
@@ -382,7 +479,8 @@ const RegisterLateEarly = ({
                 }
                 htmlType='submit'
                 type='primary'
-                onClick={hanleDeleteLateEarly}
+                onClick={handleDeleteLateEarly}
+                loading={loadingDeleteLateEarly}
               >
                 Delete
               </Button>
@@ -399,6 +497,7 @@ const RegisterLateEarly = ({
                 htmlType='submit'
                 type='primary'
                 onClick={handleConfirmLateEarly}
+                loading={loadingConfirmLateEarly}
               >
                 Confirmed
               </Button>
@@ -411,6 +510,7 @@ const RegisterLateEarly = ({
                 htmlType='submit'
                 type='primary'
                 onClick={handleApprovedLateEarly}
+                loading={loadingApprovedLateEarly}
               >
                 Approved
               </Button>
@@ -425,6 +525,7 @@ const RegisterLateEarly = ({
                 }
                 htmlType='submit'
                 type='primary'
+                loading={loadingRejectLateEarly}
               >
                 Reject
               </Button>
@@ -432,7 +533,11 @@ const RegisterLateEarly = ({
           )}
           {nameStatus === 'confirm' && isAdmin && (
             <Col>
-              <Button htmlType='submit' type='primary'>
+              <Button
+                htmlType='submit'
+                type='primary'
+                loading={loadingRejectLateEarly}
+              >
                 Reject
               </Button>
             </Col>
@@ -444,6 +549,7 @@ const RegisterLateEarly = ({
           </Col>
         </Row>
       </Form>
+      <ToastContainer />
     </div>
   )
 }
