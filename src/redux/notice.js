@@ -84,21 +84,47 @@ export const noticeRedux = {
     try {
       const { Department, SortBy, Status, inputSearch } = value
       const { page, pageSize } = params
-      console.log(value, params)
-      const data = await get('notifications')
-      console.log(data)
-      // const dataSort = data.sort()
-
-      // console.log(dataBase)
-      // const   dataBase = (dataSort).map((item)=>{
-      //     if(item.subject.inludes(inputSearch)===true && (item.published_to.inludes(Department)===true)){
-      //       return item
-      //     }
-      //   })
-
+      const pageSearch = {
+        page: page,
+        limit: pageSize
+      }
+      const data = await get('notifications', pageSearch)
+      const dataSort = data.data.sort(function(a, b) {
+        const nameA = a.subject.toUpperCase()
+        const nameB = b.subject.toUpperCase()
+        if (SortBy === 'asc') {
+          if (nameA < nameB) {
+            return -1
+          }
+          if (nameA > nameB) {
+            return 1
+          }
+        } else if (SortBy === 'desc') {
+          if (nameA > nameB) {
+            return -1
+          }
+          if (nameA < nameB) {
+            return 1
+          }
+        }
+        return 0
+      })
+      const dataBase = dataSort.filter((item) => {
+        if (item.subject.toUpperCase().includes(inputSearch.toUpperCase()) === true) {
+          if (item.subject.toUpperCase().includes(inputSearch.toUpperCase())) {
+            if (item.published_to === null && Department === 'all') {
+              return item
+            } else if (item.published_to !== null) {
+              if (item.published_to.toUpperCase().includes(Department.toUpperCase())) {
+                return item
+              }
+            }
+          }
+        }
+      })
       dispatch({
         type: 'notice/length',
-        payload: data.total
+        payload: dataBase.length
       })
       if (btnLoading === true) {
         dispatch({
@@ -108,7 +134,7 @@ export const noticeRedux = {
       }
       dispatch({
         type: 'notice/search',
-        payload: data.data
+        payload: dataBase
       })
       dispatch({
         type: 'notice/loading',

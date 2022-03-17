@@ -300,7 +300,7 @@ const TimesheetPage = () => {
       width: '12%',
       render: (index, record) => {
         return (
-          <Space>
+          <Space style={{ display: 'flex', justifyContent: 'flex-end' }}>
             {record.is_holiday === 0 ? (
               <>
                 <Text className={styles.buttonTable} underline onClick={(e) => onActionForget(e, record)}>
@@ -360,7 +360,6 @@ const TimesheetPage = () => {
           }
         }}
         rowClassName={(record, rowIndex) => (record.is_holiday === 1 ? styles.tableRowLight : '')}
-        className={styles.boderTable}
         bordered={true}
         loading={loading}
       />

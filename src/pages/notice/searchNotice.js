@@ -20,7 +20,9 @@ const SearchNotice = ({ onSearch }) => {
 
   const onReset = () => {
     form.resetFields()
-    onSearch({ radioBtn: 3 })
+    onSearch({ btnReset: 3 })
+    dispatch(noticeRedux.selectTableNotice({ page: 1, pageSize: 10 }))
+    dispatch(noticeRedux.loadingTableTrue())
   }
 
   const onFinish = (value) => {
@@ -35,7 +37,7 @@ const SearchNotice = ({ onSearch }) => {
     <>
       <Row className={styles.marginBottom}>
         <Col span={24} className={styles.toTheRight}>
-          <Button type='primary' icon={<PlusOutlined />}>
+          <Button type='primary' style={{ display: 'flex', alignItems: 'center' }} icon={<PlusOutlined />}>
             Create New
           </Button>
         </Col>
@@ -84,7 +86,7 @@ const SearchNotice = ({ onSearch }) => {
                       <Text>Sort by publish date</Text>
                     </Form.Item>
                   </Col>
-                  <Col xs={{ span: 24 }} sm={{ span: 23 }} md={{ span: 12 }} lg={{ span: 4 }}>
+                  <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 4 }}>
                     <Form.Item
                       name='SortBy'
                       rules={[
@@ -119,7 +121,7 @@ const SearchNotice = ({ onSearch }) => {
                     >
                       <Select placeholder='Select time'>
                         <Option value='all'>All</Option>
-                        <Option value='hrd'>Hrd</Option>
+                        <Option value='D2'>D2</Option>
                       </Select>
                     </Form.Item>
                   </Col>
@@ -128,7 +130,7 @@ const SearchNotice = ({ onSearch }) => {
                       <Text>Status</Text>
                     </Form.Item>
                   </Col>
-                  <Col xs={{ span: 24 }} sm={{ span: 23 }} md={{ span: 12 }} lg={{ span: 4 }}>
+                  <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 4 }}>
                     <Form.Item name='Status'>
                       <Select placeholder='Select sort'>
                         <Option value='all'>All</Option>
@@ -141,16 +143,27 @@ const SearchNotice = ({ onSearch }) => {
                 </Row>
 
                 <Row gutter={24} justify='center'>
-                  <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
+                  <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 1 }}>
                     <Form.Item>
-                      <Button type='primary' icon={<SearchOutlined />} htmlType='submit' loading={btnLoadingRedux}>
+                      <Button
+                        type='primary'
+                        icon={<SearchOutlined />}
+                        style={{ display: 'flex', alignItems: 'center' }}
+                        htmlType='submit'
+                        loading={btnLoadingRedux}
+                      >
                         Search
                       </Button>
                     </Form.Item>
                   </Col>
-                  <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
+                  <Col xs={{ span: 11, offset: 1 }} sm={{ span: 6, offset: 1 }} md={{ span: 4 }} lg={{ span: 2 }}>
                     <Form.Item>
-                      <Button htmlType='button' icon={<ReloadOutlined />} onClick={onReset}>
+                      <Button
+                        htmlType='button'
+                        icon={<ReloadOutlined />}
+                        style={{ display: 'flex', alignItems: 'center' }}
+                        onClick={onReset}
+                      >
                         Reset
                       </Button>
                     </Form.Item>
