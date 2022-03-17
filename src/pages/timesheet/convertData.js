@@ -36,13 +36,15 @@ export const convertData = (data) => {
         valueData.Worktime = '08:00'
       }
       if (item.lack !== null) {
-        !dataComp.map((itemcomp) => {
+        // if (dataComp.length === 0) {
+        dataComp.map((itemcomp) => {
           if (itemcomp.work_date.includes(item.note.slice(9))) {
             if (moment(item.lack, 'H:mm') <= moment(itemcomp.compensation, 'H:mm')) {
               valueData.colorWorkTime = 'default'
             }
           }
         })
+        // }
       }
       if (item.is_holiday === 0) {
         if (item.checkin_original === null) {

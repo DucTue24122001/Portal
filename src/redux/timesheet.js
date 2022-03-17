@@ -93,15 +93,9 @@ export const timeSheetRedux = {
         sortOption.end_date = dateEnd.format('YYYY-MM-DD')
       }
       const data = await get('timesheets', sortOption)
-      const dataComp = () =>
-        data.map((item) => {
-          if (item.compensation !== null) {
-            return item
-          }
-        })
       dispatch({
         type: 'timeSheet/length',
-        payload: { dataComp: dataComp, length: data.total }
+        payload: data.total
       })
       if (btnLoading === true) {
         dispatch({
