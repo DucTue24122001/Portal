@@ -23,6 +23,7 @@ const NoticePage = () => {
   const length = useSelector((state) => state.notice.length)
   const loading = useSelector((state) => state.notice.loading)
   const optionSearch = useSelector((state) => state.notice.optionSearch)
+  console.log(optionSearch)
 
   useEffect(() => {
     if (optionSearch === 1) {

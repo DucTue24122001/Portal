@@ -59,7 +59,7 @@ export const noticeRedux = {
   selectTableNotice: (params) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const sizePage = { page: page, limit: pageSize }
+      const sizePage = { page: page, per_page: pageSize }
       const data = await get('notifications', sizePage)
       dispatch({
         type: 'notice/length',
@@ -88,7 +88,7 @@ export const noticeRedux = {
         sortBy: 'id',
         order: SortBy,
         page: page,
-        limit: pageSize
+        per_page: pageSize
       }
       const data = await get('notifications', pageSearch)
       dispatch({

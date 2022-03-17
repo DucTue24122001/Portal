@@ -1,5 +1,6 @@
 import { Modal } from 'antd'
 import { useSelector } from 'react-redux'
+import React from 'react'
 import FormForgetCheck from '../FormForget/FormForgetCheck'
 
 export default function ModalForget({ isModalVisible, handleOk, handleCancel }) {
@@ -7,7 +8,6 @@ export default function ModalForget({ isModalVisible, handleOk, handleCancel }) 
 
   const onCancel = () => handleCancel()
 
-  const dataModal = useSelector((state) => state.timesheet.modalRowTable)
   return (
     <>
       <Modal
