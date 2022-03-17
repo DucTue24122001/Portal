@@ -167,7 +167,7 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
             <Row className={style.row}>
               <Col span={18} push={6}>
                 <Form.Item className={style.m_0}>
-                  <span>{status}</span>
+                  <span>{nameStatus}</span>
                 </Form.Item>
               </Col>
               <Col span={6} pull={18}>
