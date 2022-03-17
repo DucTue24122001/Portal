@@ -121,7 +121,6 @@ const SearchNotice = ({ onSearch }) => {
                       ]}
                     >
                       <Select placeholder='Select time'>
-                        <Option value='all'>All</Option>
                         {optionDepartment &&
                           optionDepartment.map((item, index) => (
                             <Option key={index} value={item}>
