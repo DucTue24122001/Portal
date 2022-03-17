@@ -23,10 +23,15 @@ const RequestsPage = () => {
   const valueStatus = ['Reject', 'Sent', 'Confirmed', 'Approved']
   const dispacth = useDispatch()
   const { requests, loadingRequests } = useSelector((state) => state.requests)
-  const { infoUser } = useSelector((state) => state.infoUser)
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
+
   useEffect(() => {
-    if (infoUser?.roles !== undefined) { console.log }
-  }, [])
+    if (successGetInfo) {
+      if (infoUser?.roles?.find((u) => ['Member'].includes(u.title)) && infoUser?.roles?.length === 1) {
+        history.push('/')
+      }
+    }
+  }, [successGetInfo])
 
   useEffect(() => {
     dispacth(requestsActions.getRequests(params))
