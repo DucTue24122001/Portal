@@ -107,10 +107,9 @@ export const noticeRedux = {
       const { Department, SortBy, inputSearch } = value
       const sizePage = { page: page, per_page: pageSize }
       const data = await get('notifications', sizePage)
-      console.log(data.data)
       const dataSort = data.data.sort(function(a, b) {
-        const nameA = a.subject.toUpperCase()
-        const nameB = b.subject.toUpperCase()
+        const nameA = a.published_date.toUpperCase()
+        const nameB = b.published_date.toUpperCase()
         if (SortBy === 'asc') {
           if (nameA < nameB) {
             return -1
