@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Menu, Row, Col, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { SettingOutlined, PoweroffOutlined } from '@ant-design/icons'
@@ -10,7 +10,29 @@ import { authActions } from '../../../redux/auth'
 const { Title } = Typography
 const Header = () => {
   const dispatch = useDispatch()
-  const { infoUser } = useSelector((state) => state.infoUser)
+  const [nameRole, setNameRole] = useState('')
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
+
+  useEffect(() => {
+    if (successGetInfo === true) {
+      const arrRoleId = []
+      infoUser.roles.map((role) => {
+        arrRoleId.push(role.id)
+      })
+      if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
+        setNameRole('Admin')
+        return
+      }
+      if (arrRoleId.includes(3)) {
+        setNameRole('Manager')
+        return
+      }
+      if (arrRoleId.includes(4)) {
+        setNameRole('Member')
+        return
+      }
+    }
+  }, [successGetInfo])
 
   const handleLogout = async() => {
     await dispatch(authActions.logout())
@@ -33,7 +55,7 @@ const Header = () => {
                 </Title>
               </Col>
               <Col span={6} className={style.header_info}>
-                Welcome <b>{infoUser?.full_name}</b>
+                Welcome <b>{infoUser?.full_name} | <span style={{ color: 'red' }}>{nameRole}</span></b>
               </Col>
               <Col span={6} className={style.header_nav_right}>
                 <Menu style={{ border: 'none' }} mode='horizontal'>

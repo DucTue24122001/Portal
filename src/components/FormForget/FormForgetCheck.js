@@ -34,7 +34,7 @@ const FormForgetCheck = ({ onCancel, isUser = false, isManager = false, isAdmin 
   }
 
   const onFinishFailed = () => {}
-  
+
   const onCheckin = (time) => {
     const disabledTimeCheckOut = []
     if (time) {
