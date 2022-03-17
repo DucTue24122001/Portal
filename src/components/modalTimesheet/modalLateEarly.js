@@ -11,7 +11,6 @@ export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel 
 
   useEffect(() => {
     if (dataModal.requests?.length !== 0) {
-      console.log('vao request')
       dataModal.requests?.map(request => {
         if (request.request_type === 4) {
           setStatus(request.status)

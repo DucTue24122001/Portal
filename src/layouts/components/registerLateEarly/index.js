@@ -15,10 +15,7 @@ const RegisterLateEarly = ({
   dataLateEarly = {},
   status: statusRequest,
   onCancel,
-  onOk,
-  isUser = true,
-  isManager = false,
-  isAdmin = false
+  onOk
 }) => {
   const { date, checkin, checkout, late, early, member_id } = dataLateEarly
 
@@ -33,9 +30,9 @@ const RegisterLateEarly = ({
   const timeRequest = moment.utc(timeRequestSeconds * 1000).format('HH:mm')
   const overtimeSeconds = in_office_seconds - initial_in_office
 
-  // const [isUser, setIsUser] = useState(false)
-  // const [isManager, setIsManager] = useState(false)
-  // const [isAdmin, setIsAdmin] = useState(false)
+  const [isUser, setIsUser] = useState(false)
+  const [isManager, setIsManager] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   console.log('status', statusRequest)
 
   const [dateCoverUp, setDateCoverUp] = useState('')
@@ -106,24 +103,24 @@ const RegisterLateEarly = ({
     created_at: moment().format('DD-MM-YY hh:mm')
   }
 
-  // useEffect(() => {
-  //   const arrRoleId = []
-  //   infoUser.roles.map((role) => {
-  //     arrRoleId.push(role.id)
-  //   })
-  //   if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
-  //     setIsAdmin(true)
-  //     return
-  //   }
-  //   if (arrRoleId.includes(3)) {
-  //     setIsManager(true)
-  //     return
-  //   }
-  //   if (arrRoleId.includes(4)) {
-  //     setIsUser(true)
-  //     return
-  //   }
-  // }, [])
+  useEffect(() => {
+    const arrRoleId = []
+    infoUser.roles.map((role) => {
+      arrRoleId.push(role.id)
+    })
+    if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
+      setIsAdmin(true)
+      return
+    }
+    if (arrRoleId.includes(3)) {
+      setIsManager(true)
+      return
+    }
+    if (arrRoleId.includes(4)) {
+      setIsUser(true)
+      return
+    }
+  }, [])
 
   useEffect(() => {
     setOverTime(
