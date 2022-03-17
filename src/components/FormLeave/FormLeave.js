@@ -20,16 +20,16 @@ const FormLeave = ({ onCancel }) => {
   const dataModal = useSelector((state) => state.timesheet.modalRowTable)
   const { checkin, checkout, date, Worktime, lack } = dataModal
   const { infoUser } = useSelector((state) => state.infoUser)
-  const { dataRegister, dataGet } = useSelector((state) => state.leave)
+  const { dataLeave } = useSelector((state) => state.leave)
   const [status, setStatus] = useState()
+  const [idRequest, setIdRequest] = useState()
   const [isMember, setIsMember] = useState(false)
   const [isManager, setIsManager] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const [nameStatus, setNameStatus] = useState()
   const [nameUserConfirm] = useState('Vu Van Vinh')
   const [nameUserApproved] = useState('Tran Xuan Duc')
-  const [dataLeave, setDataLeave] = useState()
-  const [leaveTime, setLeaveTime] = useState(dataRegister?.leave_time)
+  const [leaveTime, setLeaveTime] = useState(dataLeave?.leave_time)
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const {
@@ -56,6 +56,22 @@ const FormLeave = ({ onCancel }) => {
     errorApprovedLeave,
     errorRejectLeaveRequest
   } = useSelector((state) => state.leave)
+
+  useEffect(() => {
+    if (
+      successGetLeaveRequest ||
+      successUpdateLeave ||
+      successConfirmLeave ||
+      successApprovedLeave ||
+      successRegisterLeave
+    ) {
+      if (dataLeave !== {} && dataLeave !== undefined) {
+        dispatch(leaveActions.getRequest(dataLeave?.id))
+        setStatus(dataLeave?.status)
+        setIdRequest(dataLeave?.id)
+      }
+    }
+  }, [successRegisterLeave, successGetLeaveRequest, successUpdateLeave, successConfirmLeave, successApprovedLeave])
 
   const onFinish = (values) => {
     const { reason, Range, request_type, leave_all_day } = values
@@ -86,40 +102,36 @@ const FormLeave = ({ onCancel }) => {
       dispatch(leaveActions.register(dataForm))
     }
     if (nameStatus === 'sent' && isMember) {
-      dispatch(leaveActions.update(dataForm, dataLeave?.id))
+      dispatch(leaveActions.update(dataForm, idRequest))
     }
     if (nameStatus === 'sent' && isManager) {
-      dispatch(leaveActions.confirm(dataConfirm, dataLeave?.id))
+      dispatch(leaveActions.confirm(dataConfirm, idRequest))
     }
     if (nameStatus === 'confirm' && isAdmin) {
-      dispatch(leaveActions.appproved(dataApprove, dataLeave?.id))
+      dispatch(leaveActions.appproved(dataApprove, idRequest))
     }
   }
 
   useEffect(() => {
-    if ((successRegisterLeave || successUpdateLeave || successConfirmLeave) === true) {
-      dispatch(leaveActions.getRequest(dataRegister?.id))
-    }
-    if (successRegisterLeave === true) {
+    if (successRegisterLeave) {
       toast('successRegisterLeave')
       dispatch(leaveActions.clearSuccess())
     }
-    if (successUpdateLeave === true) {
+    if (successUpdateLeave) {
       toast('successUpdateLeave')
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
       }, loadingUpdateLeave)
     }
-    if (successConfirmLeave === true) {
+    if (successConfirmLeave) {
       toast('Success Confirm Leave')
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
       }, loadingConfirmLeave)
     }
-    if (successDeleteLeave === true) {
-      setDataLeave(dataGet)
+    if (successDeleteLeave) {
       setNameStatus(undefined)
       toast('Success DeleteLeave Request')
       dispatch(leaveActions.clearSuccess())
@@ -127,14 +139,14 @@ const FormLeave = ({ onCancel }) => {
         onCancel()
       }, loadingDeleteLeave)
     }
-    if (successApprovedLeave === true) {
+    if (successApprovedLeave) {
       toast('Success Approved Request')
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
       }, loadingApprovedLeave)
     }
-    if (successRejectLeaveRequest === true) {
+    if (successRejectLeaveRequest) {
       toast('Success Reject Request')
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
@@ -214,16 +226,6 @@ const FormLeave = ({ onCancel }) => {
     }
   }, [status])
 
-  useEffect(() => {
-    if ((successGetLeaveRequest || successUpdateLeave || successConfirmLeave || successApprovedLeave) === true) {
-      setStatus(dataGet?.status)
-      if (dataGet !== {} && dataGet !== undefined) {
-        setDataLeave({ ...dataLeave, ...dataGet })
-      }
-      dispatch(leaveActions.clearSuccess())
-    }
-  }, [successGetLeaveRequest, successUpdateLeave, successConfirmLeave, successApprovedLeave])
-
   const rangerTime = (time) => {
     const totalSecondsStart = moment.duration(time[0].format('HH:mm')).asSeconds()
     const totalSecondsEnd = moment.duration(time[1].format('HH:mm')).asSeconds()
@@ -231,7 +233,8 @@ const FormLeave = ({ onCancel }) => {
   }
 
   const handleDelete = () => {
-    dispatch(leaveActions.delete(dataLeave?.id))
+    dispatch(leaveActions.delete(idRequest))
+    form.resetFields()
   }
 
   return (
@@ -249,17 +252,17 @@ const FormLeave = ({ onCancel }) => {
             onFinish={onFinish}
             autoComplete='off'
             initialValues={{
-              leave_all_day: dataGet?.leave_all_day !== 0,
-              Range: dataGet
+              leave_all_day: dataLeave?.leave_all_day !== 0,
+              Range: dataLeave
                 ? [
-                  moment(moment.duration(dataGet.leave_start).asMilliseconds()),
-                  moment(moment.duration(dataGet.leave_end).asMilliseconds())
+                  moment(moment.duration(dataLeave.leave_start).asMilliseconds()),
+                  moment(moment.duration(dataLeave.leave_end).asMilliseconds())
                 ]
                 : [],
-              reason: dataGet ? dataGet.reason : '',
-              manager_confirmed_comment: dataGet ? dataGet.manager_confirmed_comment : '',
-              admin_approved_comment: dataGet ? dataGet.admin_approved_comment : '',
-              request_type: dataGet ? dataGet.request_type : ''
+              reason: dataLeave ? dataLeave.reason : '',
+              manager_confirmed_comment: dataLeave ? dataLeave.manager_confirmed_comment : '',
+              admin_approved_comment: dataLeave ? dataLeave.admin_approved_comment : '',
+              request_type: dataLeave ? dataLeave.request_type : ''
             }}
           >
             <Row gutter={[10, 10]}>
@@ -318,7 +321,7 @@ const FormLeave = ({ onCancel }) => {
               <Col span={24} className={style.leaveAll}>
                 <Form.Item className={style.wrapper_item_form} className={style.item_form} name='leave_all_day' noStyle>
                   <Checkbox
-                    defaultChecked={dataGet?.leave_all_day !== 0}
+                    defaultChecked={dataLeave?.leave_all_day !== 0}
                     disabled={
                       ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
                       (nameStatus !== undefined && (isManager || isAdmin) && true)

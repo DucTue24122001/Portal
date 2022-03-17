@@ -33,15 +33,15 @@ export const CLEAR_SUCCESS = 'CLEAR_SUCCESS'
 
 // initialState
 const initialState = {
+  dataLeave: {},
+
   successRegisterLeave: false,
   errorRegisterLeave: '',
   loadingRegisterLeave: false,
-  dataRegister: {},
 
   successUpdateLeave: false,
   errorUpdateLeave: '',
   loadingUpdateLeave: false,
-  dataUpdate: {},
 
   successConfirmLeave: false,
   errorConfirmLeave: '',
@@ -58,7 +58,6 @@ const initialState = {
   successGetLeaveRequest: false,
   errorGetLeaveRequest: '',
   loadingGetLeaveRequest: false,
-  dataGet: {},
 
   successDeleteLeaveRequest: false,
   errorDeleteLeaveRequest: '',
@@ -105,23 +104,25 @@ export const leaveReducer = (state = initialState, action) => {
       return {
         loadingRegisterLeave: false,
         successRegisterLeave: true,
-        dataRegister: action.payload
+        dataLeave: action.payload
       }
     case UPDATE_LEAVE_SUCCESS:
       return {
         loadingUpdateLeave: false,
         successUpdateLeave: true,
-        dataUpdate: action.payload
+        dataLeave: { ...state.dataLeave, ...action.payload }
       }
     case CONFIRM_LEAVE_SUCCESS:
       return {
         loadingConfirmLeave: false,
-        successConfirmLeave: true
+        successConfirmLeave: true,
+        dataLeave: { ...state.dataLeave, ...action.payload }
       }
     case APPROVED_LEAVE_SUCCESS:
       return {
         loadingApprovedLeave: false,
-        successApprovedLeave: true
+        successApprovedLeave: true,
+        dataLeave: { ...state.dataLeave, ...action.payload }
       }
     case DELETE_LEAVE_SUCCESS:
       return {
@@ -132,7 +133,7 @@ export const leaveReducer = (state = initialState, action) => {
       return {
         loadingGetLeaveRequest: false,
         successGetLeaveRequest: true,
-        dataGet: action.payload
+        dataLeave: { ...state.dataLeave, ...action.payload }
       }
     case REJECT_LEAVE_SUCCESS:
       return {
