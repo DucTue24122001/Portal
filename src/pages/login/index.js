@@ -3,19 +3,17 @@ import style from './login.module.css'
 import { Form, Input, Button, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { authActions } from '../../redux/auth'
-import { useHistory } from 'react-router'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const { Title } = Typography
 const LoginPage = () => {
-  const history = useHistory()
   const { successLogin, loadingLogin, errorLogin } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (successLogin === true) {
-      history.push('/')
+      window.location.href = '/'
     }
   }, [successLogin])
 
