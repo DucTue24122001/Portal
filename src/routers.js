@@ -17,6 +17,7 @@ import EditLateEarly from './layouts/components/updateLateEarly'
 import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
 import RegisterOT from './layouts/components/registerOT'
 import ArticleNoticePage from './pages/articleNotice'
+import CreateNotice from './components/FormNotice/FormCreateNotice'
 // import { createBrowserHistory } from 'history'
 
 // const browserHistory = createBrowserHistory()
@@ -205,6 +206,17 @@ export const appRouter = [
       role: '*',
       isPrivate: true,
       hidden: true,
+      child: false
+    }
+  },
+  {
+    name: 'CreateNotice',
+    path: '/createNotice',
+    component: CreateNotice,
+    meta: {
+      role: '*',
+      isPrivate: true,
+      hidden: false,
       child: false
     }
   }

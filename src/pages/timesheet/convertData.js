@@ -1,6 +1,11 @@
 import moment from 'moment'
 
-export const convertData = (data, dataComp) => {
+export const convertData = (data) => {
+  const dataComp = data.filter((item) => {
+    if (item.compensation !== null) {
+      return item
+    }
+  })
   const value = data.map((item) => {
     const valueData = {
       key: item.id,
@@ -31,7 +36,7 @@ export const convertData = (data, dataComp) => {
         valueData.Worktime = '08:00'
       }
       if (item.lack !== null) {
-        dataComp.map((itemcomp) => {
+        !dataComp.map((itemcomp) => {
           if (itemcomp.work_date.includes(item.note.slice(9))) {
             if (moment(item.lack, 'H:mm') <= moment(itemcomp.compensation, 'H:mm')) {
               valueData.colorWorkTime = 'default'

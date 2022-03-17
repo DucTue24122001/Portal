@@ -7,6 +7,7 @@ import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
 import styles from './styles.module.css'
+import moment from 'moment'
 
 const SearchTimeSheetRedux = ({ onSearch }) => {
   const { Text } = Typography
@@ -94,6 +95,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
     if (!startValue || !endValue) {
       return false
     }
+
     return startValue.valueOf() > endValue.valueOf()
   }
 
@@ -236,7 +238,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                       xs={{ span: 11, offset: 1 }}
                       sm={{ span: 6, offset: 1 }}
                       md={{ span: 4, offset: 1 }}
-                      lg={{ span: 2 }}
+                      lg={{ span: 2, offset: 1 }}
                     >
                       <Form.Item>
                         <Button

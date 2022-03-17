@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import RegisterOT from '../../layouts/components/registerOT'
 
@@ -7,6 +7,17 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
   const onOk = () => handleOk()
   const onCancel = () => handleCancel()
   const dataModal = useSelector((state) => state.timesheet.modalRowTable)
+  const [status, setStatus] = useState()
+
+  useEffect(() => {
+    if (dataModal.requests?.length !== 0) {
+      dataModal.requests?.map(request => {
+        if (request.request_type === 5) {
+          setStatus(request.status)
+        }
+      })
+    }
+  }, [])
 
   return (
     <>
@@ -19,7 +30,7 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
         width={1000}
         footer={null}
       >
-        <RegisterOT onCancel={onCancel} onOk={onOk} />
+        <RegisterOT onCancel={onCancel} onOk={onOk} status = {status} dataOT={dataModal} />
       </Modal>
     </>
   )
