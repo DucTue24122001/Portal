@@ -32,25 +32,22 @@ const dataLeave = {
   // admin_approved_comment: 'admin_approved_comment',
 }
 
-const FormLeave = ({
-  status: statusRequest,
-  onCancel,
-  isUser = false,
-  isManager = false,
-  isAdmin = false,
-  dataModal = {}
-}) => {
+const FormLeave = ({ status: statusRequest, onCancel, dataModal = {}}) => {
   const { checkin, checkout, date, Worktime, lack } = dataModal
+  const dispatch = useDispatch()
   const [form] = Form.useForm()
   const [status] = useState(statusRequest)
+  const [isMember, setIsMember] = useState(false)
+  const [isManager, setIsManager] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [idLeave] = useState(1)
-  const dispatch = useDispatch()
-  const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const [nameStatus, setNameStatus] = useState()
   const [nameUserConfirm] = useState('Vu Van Vinh')
   const [nameUserApproved] = useState('Tran Xuan Duc')
   const [leaveTime, setLeaveTime] = useState((dataLeave && dataLeave.leave_time) || '')
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
+  const { infoUser } = useSelector((state) => state.infoUser)
+  const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const {
     loadingRegisterLeave,
     loadingUpdateLeave,
@@ -94,20 +91,20 @@ const FormLeave = ({
     const dataConfirm = {
       ...dataForm,
       manager_confirmed_status: 1,
-      manager_id: '',
+      manager_id: infoUser?.id,
       manager_confirmed_at: moment().format('DD-MM-YY hh:mm')
     }
     const dataApprove = {
       ...dataConfirm,
       admin_approved_status: 2,
-      admin_id: '',
+      admin_id: infoUser?.id,
       admin_approved_at: moment().format('DD-MM-YY hh:mm')
     }
 
-    if (nameStatus === undefined && isUser) {
+    if (nameStatus === undefined && isMember) {
       dispatch(leaveActions.register(dataForm))
     }
-    if (nameStatus === 'sent' && isUser) {
+    if (nameStatus === 'sent' && isMember) {
       dispatch(leaveActions.update(dataForm, idLeave))
     }
     if (nameStatus === 'sent' && isManager) {
@@ -186,6 +183,25 @@ const FormLeave = ({
   ])
 
   useEffect(() => {
+    const arrRoleId = []
+    infoUser.roles.map((role) => {
+      arrRoleId.push(role.id)
+    })
+    if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
+      setIsAdmin(true)
+      return
+    }
+    if (arrRoleId.includes(3)) {
+      setIsManager(true)
+      return
+    }
+    if (arrRoleId.includes(4)) {
+      setIsMember(true)
+      return
+    }
+  }, [])
+
+  useEffect(() => {
     if (status === 0) {
       setNameStatus('sent')
     }
@@ -239,7 +255,7 @@ const FormLeave = ({
             }}
           >
             <Row gutter={[10, 10]}>
-              {nameStatus !== undefined && !isUser && (
+              {nameStatus !== undefined && !isMember && (
                 <div style={{ display: 'flex', width: '100%' }}>
                   <Col className={style.form_item} span={4}>
                     Member:
@@ -380,7 +396,7 @@ const FormLeave = ({
                   </Col>
                 </div>
               )}
-              {(nameStatus == 'confirm' || nameStatus == 'approved') && isUser && (
+              {(nameStatus == 'confirm' || nameStatus == 'approved') && isMember && (
                 <div style={{ display: 'flex', width: '100%' }}>
                   <Col className={style.form_item} span={4}>
                     {nameUserConfirm}:
@@ -450,12 +466,18 @@ const FormLeave = ({
 
             <div className={style.wrapper_item_button_form}>
               {!nameStatus && (
-                <Button loading={loadingRegisterLeave} className={style.button_form} htmlType='submit' type='primary'>
+                <Button
+                  disabled={(isAdmin || isManager) && true}
+                  loading={loadingRegisterLeave}
+                  className={style.button_form}
+                  htmlType='submit'
+                  type='primary'
+                >
                   Register
                 </Button>
               )}
 
-              {nameStatus && isUser && (
+              {nameStatus && isMember && (
                 <Button
                   loading={loadingUpdateLeave}
                   disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
@@ -467,7 +489,7 @@ const FormLeave = ({
                 </Button>
               )}
 
-              {nameStatus && isUser && (
+              {nameStatus && isMember && (
                 <Button
                   loading={loadingDeleteLeaveRequest}
                   onClick={handleDelete}

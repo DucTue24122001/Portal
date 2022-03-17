@@ -371,7 +371,7 @@ const RequestsPage = () => {
                           title='title2'
                           onCancel={() => setVisiblePaiLeave(false)}
                         >
-                          <FormLeave status={0} isManager={true} onCancel={setVisibleUnPaiLeave} />
+                          <FormLeave status={0} onCancel={setVisibleUnPaiLeave} />
                         </Modal>
                         <Modal
                           visible={visibleUnPaiLeave}
@@ -380,7 +380,7 @@ const RequestsPage = () => {
                           title='title3'
                           onCancel={() => setVisibleUnPaiLeave(false)}
                         >
-                          <FormLeave status={1} isAdmin={true} onCancel={setVisibleUnPaiLeave} />
+                          <FormLeave status={1} onCancel={setVisibleUnPaiLeave} />
                         </Modal>
                         <Modal
                           visible={visibleLateEarly}
