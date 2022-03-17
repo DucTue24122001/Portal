@@ -65,6 +65,8 @@ const RegisterLateEarly = ({
     errorRejectLateEarly
   } = useSelector((state) => state.lateEarly)
 
+  console.log('status', statusRequest, nameStatus)
+
   const dataDefaultLateEarly = {
     request_type: 4,
     request_for_date: date,
@@ -221,12 +223,12 @@ const RegisterLateEarly = ({
 
   const handleUpdateLateEarly = () => {
     dispatch(LateEarlyActions.updateLateEarly(dataRequest, member_id))
-    onOk()
+    // onOk()
   }
 
   const handleDeleteLateEarly = () => {
     dispatch(LateEarlyActions.deleteLateEarly(member_id))
-    onOk()
+    // onOk()
   }
 
   const handleConfirmLateEarly = () => {
@@ -262,6 +264,11 @@ const RegisterLateEarly = ({
       (current < moment().subtract(2, 'days').endOf('day') ||
         current >= moment().startOf('day'))
     )
+  }
+
+  const handleChangeDateCoverUp = (e) => {
+    setDateCoverUp(e.format('YYYY-MM-DD'))
+    dispatch(LateEarlyActions.getDataDateCoverUp(e.format('YYYY-MM-DD')))
   }
 
   return (
@@ -346,7 +353,7 @@ const RegisterLateEarly = ({
                 }
                 format='YYYY-MM-DD'
                 disabledDate={disabledDate}
-                onChange={(e) => setDateCoverUp(e.format('YYYY-MM-DD'))}
+                onChange={handleChangeDateCoverUp}
               />
             </Form.Item>
           </Col>
@@ -474,8 +481,7 @@ const RegisterLateEarly = ({
           {nameStatus && isUser && (
             <Col>
               <Button
-                disabled={(nameStatus === 'confirm' || nameStatus === 'approved') &&
-                (isAdmin || isManager) && true}
+                disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
                 htmlType='submit'
                 type='primary'
                 onClick={handleUpdateLateEarly}
@@ -490,8 +496,7 @@ const RegisterLateEarly = ({
             <Col>
               <Button
                 disabled={
-                  (nameStatus === 'confirm' || nameStatus === 'approved') &&
-                  (isAdmin || isManager) && true
+                  (nameStatus === 'confirm' || nameStatus === 'approved') && true
                 }
                 htmlType='submit'
                 type='primary'

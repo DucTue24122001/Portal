@@ -6,8 +6,8 @@ import styles from './request.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { requestsActions } from './../../redux/requests'
 import { useHistory } from 'react-router-dom'
-import RegisterLateEarly from '../../layouts/components/registerLateEarly'
 import FormConfirmLeave from '../../components/FormLeave/FormConfirmLeave'
+import ConfirmLateEarly from '../../layouts/components/confirmRegisterLateEarly'
 
 const RequestsPage = () => {
   const history = useHistory()
@@ -273,6 +273,7 @@ const RequestsPage = () => {
       }
     }
   ]
+  console.log('data', dataModal)
   return (
     <div>
       <Row>
@@ -438,7 +439,7 @@ const RequestsPage = () => {
                           title='Late Early'
                           onCancel={() => setVisibleLateEarly(false)}
                         >
-                          <RegisterLateEarly status={1} onCancel={setVisibleLateEarly} />
+                          <ConfirmLateEarly status={dataModal?.status} dataLateEarly={dataModal} onCancel={setVisibleLateEarly} />
                         </Modal>
                         <Modal
                           visible={visibleOT}

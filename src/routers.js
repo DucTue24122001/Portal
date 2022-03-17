@@ -14,7 +14,7 @@ import profileContentUpdate from './pages/profile/profileContentUpdate'
 import Home from './pages/home'
 import RegisterLateEarly from './layouts/components/registerLateEarly'
 import EditLateEarly from './layouts/components/updateLateEarly'
-import ConfirmRegisterLateEarly from './layouts/components/confirmRegisterLateEarly'
+import ConfirmLateEarly from './layouts/components/confirmRegisterLateEarly'
 import RegisterOT from './layouts/components/registerOT'
 import ArticleNoticePage from './pages/articleNotice'
 import CreateNotice from './components/FormNotice/FormCreateNotice'
@@ -190,7 +190,7 @@ export const appRouter = [
   {
     name: 'confirmLateEarly',
     path: '/confirmLateEarly',
-    component: ConfirmRegisterLateEarly,
+    component: ConfirmLateEarly,
     meta: {
       role: '*',
       isPrivate: true,

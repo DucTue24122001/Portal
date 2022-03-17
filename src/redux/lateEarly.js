@@ -31,9 +31,13 @@ export const APPROVED_LATE_EARLY_REQUEST = 'APPROVED_LATE_EARLY_REQUEST'
 export const APPROVED_LATE_EARLY_SUCCESS = 'APPROVED_LATE_EARLY_SUCCESS'
 export const APPROVED_LATE_EARLY_FAIL = 'APPROVED_LATE_EARLY_FAIL'
 
-export const REJECT_LATE_EARLY_REQUEST = 'REJECT_LATE_EARLY_REQUEST'
-export const REJECT_LATE_EARLY_SUCCESS = 'REJECT_LATE_EARLY_SUCCESS'
-export const REJECT_LATE_EARLY_FAIL = 'REJECT_LATE_EARLY_FAIL'
+export const REJECT_LATE_EARLY_ADMIN_REQUEST = 'REJECT_LATE_EARLY_ADMIN_REQUEST'
+export const REJECT_LATE_EARLY_ADMIN_SUCCESS = 'REJECT_LATE_EARLY_ADMIN_SUCCESS'
+export const REJECT_LATE_EARLY_ADMIN_FAIL = 'REJECT_LATE_EARLY_ADMIN_FAIL'
+
+export const REJECT_LATE_EARLY_MANAGER_REQUEST = 'REJECT_LATE_EARLY_MANAGER_REQUEST'
+export const REJECT_LATE_EARLY_MANAGER_SUCCESS = 'REJECT_LATE_EARLY_MANAGER_SUCCESS'
+export const REJECT_LATE_EARLY_MANAGER_FAIL = 'REJECT_LATE_EARLY_MANAGER_FAIL'
 
 export const GET_DATE_COVER_UP_REQUEST = 'GET_DATE_COVER_UP_REQUEST'
 export const GET_DATE_COVER_UP_SUCCESS = 'GET_DATE_COVER_UP_SUCCESS'
@@ -193,18 +197,36 @@ export const lateEarlyReducer = (state = initState, action) => {
         errorApprovedLateEarly: action.payload
       }
 
-    case REJECT_LATE_EARLY_REQUEST:
+    case REJECT_LATE_EARLY_ADMIN_REQUEST:
       return {
         loadingRejectLateEarly: true
       }
-    case REJECT_LATE_EARLY_SUCCESS:
+    case REJECT_LATE_EARLY_ADMIN_SUCCESS:
       return {
         ...state,
         loadingRejectLateEarly: false,
         successRejectLateEarly: true,
         lateEarly: action.payload
       }
-    case REJECT_LATE_EARLY_FAIL:
+    case REJECT_LATE_EARLY_ADMIN_FAIL:
+      return {
+        loadingRejectLateEarly: false,
+        successRejectLateEarly: false,
+        errorRejectLateEarly: action.payload
+      }
+
+    case REJECT_LATE_EARLY_MANAGER_REQUEST:
+      return {
+        loadingRejectLateEarly: true
+      }
+    case REJECT_LATE_EARLY_MANAGER_SUCCESS:
+      return {
+        ...state,
+        loadingRejectLateEarly: false,
+        successRejectLateEarly: true,
+        lateEarly: action.payload
+      }
+    case REJECT_LATE_EARLY_MANAGER_FAIL:
       return {
         loadingRejectLateEarly: false,
         successRejectLateEarly: false,
@@ -351,16 +373,29 @@ export const LateEarlyActions = {
       }
     }
   },
-  rejectLateEarly(dataLateEarly, idLateEarly) {
+  rejectLateEarlyAdmin(dataLateEarly, idLateEarly) {
     return async(dispatch) => {
       try {
-        dispatch({ type: REJECT_LATE_EARLY_REQUEST })
+        dispatch({ type: REJECT_LATE_EARLY_ADMIN_REQUEST })
 
-        const response = await put(`requests/${idLateEarly}`, dataLateEarly)
+        const response = await put(`admin/requests/${idLateEarly}`, dataLateEarly)
 
-        dispatch({ type: REJECT_LATE_EARLY_SUCCESS, payload: response })
+        dispatch({ type: REJECT_LATE_EARLY_ADMIN_SUCCESS, payload: response })
       } catch (error) {
-        dispatch({ type: REJECT_LATE_EARLY_FAIL, payload: 'Reject Late Early failed' })
+        dispatch({ type: REJECT_LATE_EARLY_ADMIN_FAIL, payload: 'Reject Late Early failed' })
+      }
+    }
+  },
+  rejectLateEarlyApproved(dataLateEarly, idLateEarly) {
+    return async(dispatch) => {
+      try {
+        dispatch({ type: REJECT_LATE_EARLY_MANAGER_REQUEST })
+
+        const response = await put(`manager/requests/${idLateEarly}`, dataLateEarly)
+
+        dispatch({ type: REJECT_LATE_EARLY_MANAGER_SUCCESS, payload: response })
+      } catch (error) {
+        dispatch({ type: REJECT_LATE_EARLY_MANAGER_FAIL, payload: 'Reject Late Early failed' })
       }
     }
   },
