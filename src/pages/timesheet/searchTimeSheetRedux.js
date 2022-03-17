@@ -221,12 +221,12 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                     </Col>
                   </Row>
                   <Row gutter={24} justify='center'>
-                    <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 1 }}>
+                    <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4 }} lg={{ span: 2 }}>
                       <Form.Item>
                         <Button
                           type='primary'
-                          style={{ display: 'flex', alignItems: 'center' }}
                           htmlType='submit'
+                          style={{ display: 'flex', alignItems: 'center' }}
                           icon={<SearchOutlined />}
                           loading={btnLoadingRedux}
                         >
@@ -234,12 +234,7 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
                         </Button>
                       </Form.Item>
                     </Col>
-                    <Col
-                      xs={{ span: 11, offset: 1 }}
-                      sm={{ span: 6, offset: 1 }}
-                      md={{ span: 4, offset: 1 }}
-                      lg={{ span: 2, offset: 1 }}
-                    >
+                    <Col xs={{ span: 12 }} sm={{ span: 6 }} md={{ span: 4, offset: 1 }} lg={{ span: 2, offset: 1 }}>
                       <Form.Item>
                         <Button
                           htmlType='button'

@@ -53,6 +53,7 @@ const NoticePage = () => {
   const onSearch = (values) => {
     if (values.btnForm === 2) {
       setParams({ page: 1, pageSize: 10 })
+      dispatch(noticeRedux.loadingTableTrue())
     } else if (values.btnForm === 1) {
       dispatch(noticeRedux.searchTableNotice(values, params, true))
       dispatch(noticeRedux.optionSearchorReset(1))
