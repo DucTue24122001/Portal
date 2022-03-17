@@ -13,16 +13,18 @@ const initial_in_office = moment.duration(`09:00:00`).asSeconds()
 
 const RegisterLateEarly = ({
   dataLateEarly = {},
+  status: statusRequest,
   onCancel,
   onOk,
-  isUser = false,
+  isUser = true,
   isManager = false,
-  isAdmin = true
+  isAdmin = false
 }) => {
-  const { date, checkin, checkout, late, early, request, member_id } = dataLateEarly
+  const { date, checkin, checkout, late, early, member_id } = dataLateEarly
 
   const [form] = Form.useForm()
   const dispatch = useDispatch()
+  const { infoUser } = useSelector((state) => state.infoUser)
 
   const in_office_seconds = moment.duration(in_office).asSeconds()
   const timeLateSeconds = moment.duration(late).asSeconds()
@@ -31,6 +33,11 @@ const RegisterLateEarly = ({
   const timeRequest = moment.utc(timeRequestSeconds * 1000).format('HH:mm')
   const overtimeSeconds = in_office_seconds - initial_in_office
 
+  // const [isUser, setIsUser] = useState(false)
+  // const [isManager, setIsManager] = useState(false)
+  // const [isAdmin, setIsAdmin] = useState(false)
+  console.log('status', statusRequest)
+
   const [dateCoverUp, setDateCoverUp] = useState('')
   const [reason, setReason] = useState('')
   const [comment, setComment] = useState('')
@@ -38,7 +45,7 @@ const RegisterLateEarly = ({
   const [nameUserConfirm] = useState('Vu Van Vinh')
   const [nameUserApproved] = useState('Trần Xuân Đức')
   const [dateConfirm] = useState('2022-02-20 12:04')
-  const [status] = useState(1)
+  const [status] = useState(statusRequest)
   const [nameStatus, setNameStatus] = useState()
   const {
     loadingRegisterLateEarly,
@@ -99,6 +106,25 @@ const RegisterLateEarly = ({
     created_at: moment().format('DD-MM-YY hh:mm')
   }
 
+  // useEffect(() => {
+  //   const arrRoleId = []
+  //   infoUser.roles.map((role) => {
+  //     arrRoleId.push(role.id)
+  //   })
+  //   if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
+  //     setIsAdmin(true)
+  //     return
+  //   }
+  //   if (arrRoleId.includes(3)) {
+  //     setIsManager(true)
+  //     return
+  //   }
+  //   if (arrRoleId.includes(4)) {
+  //     setIsUser(true)
+  //     return
+  //   }
+  // }, [])
+
   useEffect(() => {
     setOverTime(
       moment
@@ -124,7 +150,7 @@ const RegisterLateEarly = ({
     if (status === -1) {
       setNameStatus('reject')
     }
-  }, [])
+  }, [status])
 
   useEffect(() => {
     if ((successRegisterLateEarly || successUpdateLateEarly || successConfirmLateEarly) === true) {
@@ -447,6 +473,7 @@ const RegisterLateEarly = ({
                 type='primary'
                 onClick={handleRegister}
                 loading={loadingRegisterLateEarly}
+                disabled={(isAdmin || isManager) && true}
               >
                 Register
               </Button>
@@ -456,10 +483,8 @@ const RegisterLateEarly = ({
           {nameStatus && isUser && (
             <Col>
               <Button
-                disabled={
-                  (nameStatus === 'confirm' || nameStatus === 'approved') &&
-                  true
-                }
+                disabled={(nameStatus === 'confirm' || nameStatus === 'approved') &&
+                (isAdmin || isManager) && true}
                 htmlType='submit'
                 type='primary'
                 onClick={handleUpdateLateEarly}
@@ -475,7 +500,7 @@ const RegisterLateEarly = ({
               <Button
                 disabled={
                   (nameStatus === 'confirm' || nameStatus === 'approved') &&
-                  true
+                  (isAdmin || isManager) && true
                 }
                 htmlType='submit'
                 type='primary'
@@ -492,7 +517,7 @@ const RegisterLateEarly = ({
               <Button
                 disabled={
                   (nameStatus === 'approved' || nameStatus === 'confirm') &&
-                  true
+                  isUser && true
                 }
                 htmlType='submit'
                 type='primary'
@@ -507,6 +532,7 @@ const RegisterLateEarly = ({
           {nameStatus === 'confirm' && isAdmin && (
             <Col>
               <Button
+                disabled={nameStatus === 'approved' && isManager && isUser && true}
                 htmlType='submit'
                 type='primary'
                 onClick={handleApprovedLateEarly}
@@ -519,10 +545,7 @@ const RegisterLateEarly = ({
           {nameStatus !== undefined && isManager && (
             <Col>
               <Button
-                disabled={
-                  (nameStatus === 'approved' || nameStatus === 'confirm') &&
-                  true
-                }
+                disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && isUser && true}
                 htmlType='submit'
                 type='primary'
                 loading={loadingRejectLateEarly}
