@@ -4,6 +4,7 @@ import { Row, Col, Radio, Space, Select, DatePicker, Button, Table, Pagination, 
 import { useState } from 'react'
 import styles from './request.module.css'
 import FormLeave from '../../components/FormLeave/FormLeave'
+import RegisterLateEarly from '../../layouts/components/registerLateEarly'
 
 const RequestsPage = () => {
   const { Option } = Select
@@ -388,7 +389,9 @@ const RequestsPage = () => {
                           width={1000}
                           title='title4'
                           onCancel={() => setVisibleLateEarly(false)}
-                        ></Modal>
+                        >
+                          <RegisterLateEarly status={1} onCancel={setVisibleLateEarly} />
+                        </Modal>
                         <Modal
                           visible={visibleOT}
                           footer={false}
