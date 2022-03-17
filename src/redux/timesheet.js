@@ -7,7 +7,6 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  listMemberComp: [],
   modalRowTable: {}
 }
 // Reducer
@@ -29,8 +28,7 @@ export const timeSheetReducer = (state = initState, action) => {
     case 'timeSheet/length': {
       return {
         ...state,
-        length: action.payload.length,
-        listMemberComp: action.payload.dataComp
+        length: action.payload
       }
     }
     case 'timeSheet/getdata': {
@@ -64,15 +62,9 @@ export const timeSheetRedux = {
       const { page, pageSize } = params
       const sizePage = { page: page, limit: pageSize }
       const data = await get('timesheets', sizePage)
-      const dataComp = () =>
-        data.map((item) => {
-          if (item.compensation !== null) {
-            return item
-          }
-        })
       dispatch({
         type: 'timeSheet/length',
-        payload: { dataComp: dataComp, length: data.total }
+        payload: data.total
       })
       dispatch({
         type: 'timeSheet/getdata',

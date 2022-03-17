@@ -7,6 +7,7 @@ import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { timeSheetRedux } from '../../redux/timesheet'
 import styles from './styles.module.css'
+import moment from 'moment'
 
 const SearchTimeSheetRedux = ({ onSearch }) => {
   const { Text } = Typography
@@ -94,7 +95,8 @@ const SearchTimeSheetRedux = ({ onSearch }) => {
     if (!startValue || !endValue) {
       return false
     }
-    return startValue.valueOf() > endValue.valueOf()
+
+    return startValue.valueOf() < Date.now() || startValue.valueOf() > endValue.valueOf()
   }
 
   const disabledEndDate = (endValue) => {
