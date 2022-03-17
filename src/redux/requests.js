@@ -62,12 +62,19 @@ export const requestsActions = {
       }
     }
   },
-  getManagerRequests(params) {
+  getManagerRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth) {
     return async(dispatch) => {
       try {
         dispatch({ type: GET_REQUESTS_REQUEST })
-        const data = await get('manager/requests', params)
-        console.log(data)
+        const config = {
+          page: params.page,
+          per_page: params.per_page,
+          sort: valueSort,
+          status: valueSearchStatus,
+          select_type: selectType,
+          list_selected: valueCheckboxMonth
+        }
+        const data = await get('manager/requests', config)
         dispatch({ type: GET_REQUESTS_SUCCESS, payload: data })
       } catch (error) {
         dispatch({ type: GET_REQUESTS_FAIL, payload: 'Get Requests fail' })

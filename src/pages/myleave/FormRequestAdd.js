@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { leaveQuotaActions } from '../../redux/myleave'
 
 const FormRequestAdd = ({ onCancel, year }) => {
+  const [form] = Form.useForm()
   const dispacth = useDispatch()
   const { leaveQuota, successPostLeaveQuota } = useSelector((state) => state.leaveQuota)
   const { TextArea } = Input
   const onFinish = (values) => {
     const { quota, reason } = values
-    const dataForm = { year: year, type: 1, quota: quota, note: reason }
+    const dataForm = { quota: quota, note: reason }
     dispacth(leaveQuotaActions.postLeaveQuota(dataForm))
   }
   const onFinishFailed = (errorInfo) => {}
@@ -21,7 +22,7 @@ const FormRequestAdd = ({ onCancel, year }) => {
 
   return (
     <div>
-      <Form onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete='off'>
+      <Form onFinish={onFinish} form={form} onFinishFailed={onFinishFailed} autoComplete='off'>
         <Row className={styles['form-requests']}>
           <Col span={24}>
             <Row>
@@ -70,7 +71,7 @@ const FormRequestAdd = ({ onCancel, year }) => {
             </Button>
           </Col>
           <Col>
-            <Button type='primary' onClick={(e) => onCancel()}>
+            <Button type='primary' onClick={(e) => onCancel(form.resetFields())}>
               Cancel
             </Button>
           </Col>

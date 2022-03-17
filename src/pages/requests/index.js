@@ -12,7 +12,7 @@ const RequestsPage = () => {
   const [dataModal, setDataModal] = useState()
   const { Option } = Select
   const { RangePicker } = DatePicker
-  const [selectDisabled, setSelectDisable] = useState(true)
+  const [selectDisabled, setSelectDisable] = useState(false)
   const [rangePickerDisabled, setRangePickerDisable] = useState(true)
   const [params, setParams] = useState({ page: 1, per_page: 5 })
   const [visibleForgetCheck, setVisibleForgetCheck] = useState(false)
@@ -26,21 +26,29 @@ const RequestsPage = () => {
   const dispacth = useDispatch()
   const { requests, loadingRequests } = useSelector((state) => state.requests)
   const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
-  const [valueCheckboxMonth, setValueCheckboxMonth] = useState()
-  const [selectType, setSelectType] = useState()
-  const [valueSort, setValueSort] = useState()
-  const [valueSearchStatus, setValueSearchStatus] = useState()
+  const [valueCheckboxMonth, setValueCheckboxMonth] = useState(1)
+  const [selectType, setSelectType] = useState(1)
+  const [valueSort, setValueSort] = useState('asc')
+  const [valueSearchStatus, setValueSearchStatus] = useState(0)
+  const [role, setRole] = useState()
+
   useEffect(() => {
     if (successGetInfo) {
       if (infoUser?.roles?.find((u) => ['Member'].includes(u.title)) && infoUser?.roles?.length === 1) {
         history.push('/')
-      }
+      } else if (infoUser?.roles?.find((u) => ['Manager'].includes(u.title)) && infoUser?.roles?.length === 2) {
+        setRole('Manager')
+      } else setRole('Admin')
     }
   }, [successGetInfo])
 
   useEffect(() => {
-    dispacth(requestsActions.getAdminRequests(params))
-  }, [])
+    if (role === 'Admin') {
+      dispacth(requestsActions.getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    } else {
+      dispacth(requestsActions.getManagerRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    }
+  }, [params])
 
   const onCheckboxChange = (e) => {
     if (e.target.value === 1) {
@@ -77,6 +85,11 @@ const RequestsPage = () => {
       ...params,
       page: e
     })
+    if (role === 'Admin') {
+      dispacth(requestsActions.getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    } else {
+      dispacth(requestsActions.getManagerRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    }
   }
 
   const onDateChange = (date, dateString) => {
@@ -84,11 +97,19 @@ const RequestsPage = () => {
   }
 
   const handleReset = () => {
+    setSelectType(1)
+    setValueCheckboxMonth(1)
+    setValueSearchStatus(0)
+    setValueSort('asc')
     setParams({
       page: 1,
       per_page: 5
     })
-    dispacth(requestsActions.getAdminRequests(params))
+    if (role === 'Admin') {
+      dispacth(requestsActions.getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    } else {
+      dispacth(requestsActions.getManagerRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    }
   }
 
   const handleSearch = () => {
@@ -96,14 +117,17 @@ const RequestsPage = () => {
       ...params,
       page: 1
     })
-    dispacth(requestsActions.getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    if (role === 'Admin') {
+      dispacth(requestsActions.getAdminRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    } else {
+      dispacth(requestsActions.getManagerRequests(params, valueSort, valueSearchStatus, selectType, valueCheckboxMonth))
+    }
   }
 
   const onActionClick = (record) => {}
 
   const onActionView = (record) => {
-    console.log(record.id)
-    setDataModal(record.id)
+    setDataModal(record)
     switch (record.request_type) {
       case 1:
         return setVisibleForgetCheck(true)
@@ -258,14 +282,19 @@ const RequestsPage = () => {
                   <div className={styles['content1-header-title']}>Requests</div>
                   <Row justify='space-around'>
                     <Col className={styles['cow-content']}>
-                      <Radio.Group onChange={onCheckboxChange}>
+                      <Radio.Group onChange={onCheckboxChange} defaultValue={selectType}>
                         <Space direction='vertical' size={30}>
                           <Row justify='space-around' align='middle'>
                             <Col span={24}>
                               <Radio value={1} checked={true}>
                                 Choose from list
                               </Radio>
-                              <Select style={{ width: 150 }} disabled={selectDisabled} onChange={handleChange}>
+                              <Select
+                                style={{ width: 150 }}
+                                disabled={selectDisabled}
+                                onChange={handleChange}
+                                defaultValue={valuecheckbox}
+                              >
                                 {valuecheckbox.map((item, index) => (
                                   <Option key={item} value={index + 1}>
                                     {item}
@@ -295,7 +324,7 @@ const RequestsPage = () => {
                         <Row justify='space-around' align='middle'>
                           <Col span={12}>Sort by requests date</Col>
                           <Col span={12}>
-                            <Select style={{ width: 150 }} onChange={handleSortChange}>
+                            <Select style={{ width: 150 }} onChange={handleSortChange} defaultValue={valueSort}>
                               <Option value={'asc'}>Asecending</Option>
                               <Option value={'desc'}>Decrease</Option>
                             </Select>
@@ -304,7 +333,11 @@ const RequestsPage = () => {
                         <Row justify='space-around' align='middle'>
                           <Col span={12}>Status</Col>
                           <Col span={12}>
-                            <Select style={{ width: 150 }} onChange={handleChangeSearchStatus}>
+                            <Select
+                              style={{ width: 150 }}
+                              onChange={handleChangeSearchStatus}
+                              defaultValue={valueStatus}
+                            >
                               {valueStatus.map((item, index) => (
                                 <Option key={item} value={index}>
                                   {item}
@@ -368,7 +401,7 @@ const RequestsPage = () => {
                           total={requests?.total}
                           pageSize={params.per_page}
                           onChange={onChangePage}
-                          defaultCurrent={params.page}
+                          defaultCurrent={requests?.current_page}
                         ></Pagination>
                         <Modal
                           visible={visibleForgetCheck}
@@ -376,18 +409,14 @@ const RequestsPage = () => {
                           width={1000}
                           title='Forget Check/in'
                           onCancel={() => setVisibleForgetCheck(false)}
-                        >
-                          dataModal:{dataModal}
-                        </Modal>
+                        ></Modal>
                         <Modal
                           visible={visiblePaiLeave}
                           footer={false}
                           width={1000}
                           title='Paid Leave'
                           onCancel={() => setVisiblePaiLeave(false)}
-                        >
-                          dataModal:{dataModal}
-                        </Modal>
+                        ></Modal>
                         <Modal
                           visible={visibleUnPaiLeave}
                           footer={false}
@@ -396,7 +425,6 @@ const RequestsPage = () => {
                           onCancel={() => setVisibleUnPaiLeave(false)}
                         >
                           dataModal:{dataModal}
-                          <FormLeave status={1} onCancel={setVisibleUnPaiLeave} />
                         </Modal>
                         <Modal
                           visible={visibleLateEarly}
@@ -404,18 +432,14 @@ const RequestsPage = () => {
                           width={1000}
                           title='Late Early'
                           onCancel={() => setVisibleLateEarly(false)}
-                        >
-                          dataModal:{dataModal}
-                        </Modal>
+                        ></Modal>
                         <Modal
                           visible={visibleOT}
                           footer={false}
                           width={1000}
                           title='OT '
                           onCancel={() => setVisibleOT(false)}
-                        >
-                          dataModal:{dataModal}
-                        </Modal>
+                        ></Modal>
                       </Space>
                     </Col>
                   </Row>

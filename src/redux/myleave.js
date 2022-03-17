@@ -77,7 +77,8 @@ export const leaveQuotaActions = {
         dispatch({ type: GET_LEAVE_QUOTA_REQUEST })
         const params = { year: year }
         const data = await get('leave_quotas', params)
-        dispatch({ type: GET_LEAVE_QUOTA_SUCCESS, payload: data })
+        console.log(data.data)
+        dispatch({ type: GET_LEAVE_QUOTA_SUCCESS, payload: data.data })
       } catch (error) {
         dispatch({ type: GET_LEAVE_QUOTA_FAIL, payload: 'Get Leave quotas fail' })
       }
