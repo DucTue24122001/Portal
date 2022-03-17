@@ -83,7 +83,8 @@ const FormLeave = ({ onCancel }) => {
       leave_start: moment.utc(moment.duration(Range[0], 'seconds').as('milliseconds')).format('HH:mm'),
       leave_end: moment.utc(moment.duration(Range[1], 'seconds').as('milliseconds')).format('HH:mm'),
       leave_time: moment.utc(moment.duration(leaveTime, 'seconds').as('milliseconds')).format('HH:mm'),
-      reason: reason
+      reason: reason,
+      member_id: infoUser?.id
     }
     const dataConfirm = {
       ...dataForm,
@@ -122,14 +123,14 @@ const FormLeave = ({ onCancel }) => {
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
-      }, loadingUpdateLeave)
+      }, 5000)
     }
     if (successConfirmLeave) {
       toast('Success Confirm Leave')
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
-      }, loadingConfirmLeave)
+      }, 5000)
     }
     if (successDeleteLeave) {
       setNameStatus(undefined)
@@ -137,7 +138,7 @@ const FormLeave = ({ onCancel }) => {
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
-      }, loadingDeleteLeave)
+      }, 5000)
     }
     if (successApprovedLeave) {
       toast('Success Approved Request')

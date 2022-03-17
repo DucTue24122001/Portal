@@ -38,7 +38,6 @@ const TimesheetPage = () => {
   const length = useSelector((state) => state.timesheet.length)
   const loading = useSelector((state) => state.timesheet.loading)
   const optionSearch = useSelector((state) => state.timesheet.optionSearch)
-  const dataComp = useSelector((state) => state.timesheet.listMemberComp)
 
   useEffect(() => {
     if (optionSearch === 1) {
@@ -48,7 +47,7 @@ const TimesheetPage = () => {
     }
   }, [params])
 
-  const dataSource = convertData(dataRedux, dataComp)
+  const dataSource = convertData(dataRedux)
 
   const handleOk = () => {
     setIsModalVisible(false)
@@ -113,7 +112,6 @@ const TimesheetPage = () => {
 
   const cancelMadalLate = () => {
     setIsModalLate(false)
-    form.resetFields()
   }
 
   const cancelModalLeave = () => {
@@ -125,7 +123,7 @@ const TimesheetPage = () => {
   }
 
   const onClickRow = (record) => {
-    setValueModal([record])
+    setValueModal(record.id)
     setIsModalVisible(true)
   }
 
