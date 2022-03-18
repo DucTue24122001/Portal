@@ -9,7 +9,6 @@ const Notice = () => {
   const [param, setParam] = useState(1)
   const dispatch = useDispatch()
   const { data, loading } = useSelector((state) => state.notices)
-  console.log(data)
 
   useEffect(() => {
     dispatch(notice.getNoticeData(param))
