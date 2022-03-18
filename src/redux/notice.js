@@ -6,7 +6,6 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  department: [],
   modalRowTable: {}
 }
 // Reducer
@@ -54,12 +53,6 @@ export const noticeReducer = (state = initState, action) => {
         optionSearch: action.payload
       }
     }
-    case 'notice/department': {
-      return {
-        ...state,
-        department: action.payload
-      }
-    }
     default:
       return state
   }
@@ -70,17 +63,8 @@ export const noticeRedux = {
   selectTableNotice: (params) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const sizePage = { page: page, per_page: pageSize }
-      const data = await get('notifications', sizePage)
-      if (data !== undefined) {
-        const dataDepartment = data.data.map((item) => item.published_to)
-        const dataFillter = dataDepartment.filter((item) => item)
-        const datalist = dataFillter.filter((item, index) => dataFillter.indexOf(item) === index)
-        dispatch({
-          type: 'notice/department',
-          payload: datalist
-        })
-      }
+      const sizePage = { page: page, per_page: pageSize, status: 2 }
+      const data = await get('admin/notifications', sizePage)
 
       dispatch({
         type: 'notice/length',
@@ -104,39 +88,22 @@ export const noticeRedux = {
   searchTableNotice: (value, params, btnLoading) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const { Department, SortBy, inputSearch } = value
-      const sizePage = { page: page, per_page: pageSize }
-      const data = await get('notifications', sizePage)
-      const dataSort = data.data.sort(function(a, b) {
-        const nameA = a.published_date.toUpperCase()
-        const nameB = b.published_date.toUpperCase()
-        if (SortBy === 'asc') {
-          if (nameA < nameB) {
-            return -1
-          }
-          if (nameA > nameB) {
-            return 1
-          }
-        } else if (SortBy === 'desc') {
-          if (nameA > nameB) {
-            return -1
-          }
-          if (nameA < nameB) {
-            return 1
-          }
-        }
-        return 0
-      })
-      const dataBase = dataSort.filter((item) => {
-        if (item.subject.toUpperCase().includes(inputSearch.toUpperCase()) === true) {
-          if (item.published_to.toUpperCase().includes(Department.toUpperCase())) {
-            return item
-          }
-        }
-      })
+      const { Department, SortBy, inputSearch, Status } = value
+      const sizePage = {
+        page: page,
+        per_page: pageSize,
+        published_to: Department,
+        sort: SortBy,
+        status: Status,
+        subject: inputSearch
+      }
+      if (Department === 0) {
+        sizePage.published_to = null
+      }
+      const data = await get('admin/notifications', sizePage)
       dispatch({
         type: 'notice/length',
-        payload: dataBase.length
+        payload: data.total
       })
       if (btnLoading === true) {
         dispatch({
@@ -146,7 +113,7 @@ export const noticeRedux = {
       }
       dispatch({
         type: 'notice/search',
-        payload: dataBase
+        payload: data.data
       })
       dispatch({
         type: 'notice/loading',
