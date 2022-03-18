@@ -9,7 +9,7 @@ import { noticeRedux } from '../../redux/notice'
 import { convertDataNotice } from './convertData'
 import ModalNoticeEdit from '../../components/modalNotice/modamEdit'
 import ModalNoticeView from '../../components/modalNotice/modalView'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const NoticePage = () => {
   const { Text } = Typography
@@ -20,10 +20,12 @@ const NoticePage = () => {
   const [valueSearch, setValueSearch] = useState(null)
 
   const dispatch = useDispatch()
+  const history = useHistory()
   const dataRedux = useSelector((state) => state.notice.data)
   const length = useSelector((state) => state.notice.length)
   const loading = useSelector((state) => state.notice.loading)
   const optionSearch = useSelector((state) => state.notice.optionSearch)
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
 
   useEffect(() => {
     if (optionSearch === 0) {
@@ -33,19 +35,27 @@ const NoticePage = () => {
     }
   }, [params])
 
+  useEffect(() => {
+    if (successGetInfo) {
+      if (infoUser?.roles?.find((u) => ['Manager', 'Member'].includes(u.title)) && infoUser?.roles?.length === 1) {
+        history.push('/')
+      }
+    }
+  }, [successGetInfo])
+
   const dataSource = convertDataNotice(dataRedux)
 
   const onChangeElement = (e) => {
     setParams({
       ...params,
-      pageSize: e
+      pageSize: e,
     })
   }
 
   const handleChange = (e) => {
     setParams({
       ...params,
-      page: e
+      page: e,
     })
     dispatch(noticeRedux.loadingTableTrue())
   }
@@ -85,7 +95,7 @@ const NoticePage = () => {
     {
       title: 'No',
       dataIndex: 'id',
-      sorter: (a, b) => a.id < b.id
+      sorter: (a, b) => a.id < b.id,
     },
     {
       title: 'Subject',
@@ -94,30 +104,30 @@ const NoticePage = () => {
       render: (subject, record) => {
         return (
           <>
-            <Link to='/notice/1' className={styles.buttonTable}>
+            <Link to="/notice/1" className={styles.buttonTable}>
               {subject}
             </Link>
           </>
         )
-      }
+      },
     },
     {
       title: 'Author',
-      dataIndex: 'author'
+      dataIndex: 'author',
     },
     {
       title: 'To Department',
       dataIndex: 'published_to',
-      sorter: (a, b) => a.published_to < b.published_to
+      sorter: (a, b) => a.published_to < b.published_to,
     },
     {
       title: 'Publish Date',
       dataIndex: 'published_date',
-      sorter: (a, b) => a.published_date < b.published_date
+      sorter: (a, b) => a.published_date < b.published_date,
     },
     {
       title: 'Status',
-      dataIndex: 'status'
+      dataIndex: 'status',
     },
     {
       title: 'Atttachment',
@@ -125,12 +135,12 @@ const NoticePage = () => {
       render: (attachment, record) => {
         return (
           <>
-            <Typography.Link href={attachment} underline target='_blank'>
+            <Typography.Link href={attachment} underline target="_blank">
               {record.attachment_link}
             </Typography.Link>
           </>
         )
-      }
+      },
     },
     {
       title: 'Detail',
@@ -146,8 +156,8 @@ const NoticePage = () => {
             </Text>
           </Space>
         )
-      }
-    }
+      },
+    },
   ]
 
   return (
@@ -161,11 +171,11 @@ const NoticePage = () => {
           </Text>
         </Col>
         <Col span={12} className={styles.toTheRight}>
-          <Select defaultValue='10' onChange={onChangeElement}>
-            <Select.Option value='10'>10 / page</Select.Option>
-            <Select.Option value='20'>20 / page</Select.Option>
-            <Select.Option value='50'>50 / page</Select.Option>
-            <Select.Option value='100'>100 / page</Select.Option>
+          <Select defaultValue="10" onChange={onChangeElement}>
+            <Select.Option value="10">10 / page</Select.Option>
+            <Select.Option value="20">20 / page</Select.Option>
+            <Select.Option value="50">50 / page</Select.Option>
+            <Select.Option value="100">100 / page</Select.Option>
           </Select>
           <Text>Item per page &ensp;</Text>
         </Col>
@@ -179,7 +189,7 @@ const NoticePage = () => {
           total: length,
           current: params.page,
           onChange: handleChange,
-          showSizeChanger: false
+          showSizeChanger: false,
         }}
         className={styles.boderTable}
         bordered={true}
