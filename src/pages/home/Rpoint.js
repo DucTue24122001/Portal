@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Pagination } from 'antd'
-import { getRpointApi, showloading } from '../../redux/home'
 import { useDispatch, useSelector } from 'react-redux'
 import { Select } from 'antd'
 import style from './home.module.css'
+import { rpoint } from '../../redux/home'
 
 const Rpoint = () => {
   const { Option } = Select
@@ -11,21 +11,13 @@ const Rpoint = () => {
   const dispatch = useDispatch()
   const { data, loading } = useSelector((state) => state.rpoint)
 
-  let listData = data
-  if (data[0]) {
-    listData = data[0].data
-  }
-  const total = listData.reduce((result, prod) => {
-    return result + parseInt(prod.point.split('.').join(''))
-  }, 0)
-
   useEffect(() => {
-    dispatch(getRpointApi(pages))
+    dispatch(rpoint.getRpointApi(pages))
   }, [])
 
   useEffect(() => {
-    dispatch(showloading(true))
-    dispatch(getRpointApi(pages))
+    dispatch(rpoint.showloading(true))
+    dispatch(rpoint.getRpointApi(pages))
   }, [pages])
 
   const columns = [
@@ -46,18 +38,18 @@ const Rpoint = () => {
       dataIndex: 'action',
       key: 'action',
       defaltSortOrder: 'descend',
-      sorter: (a, b) => a.action == b.action
+      sorter: (a, b) => a.action === b.action
     },
     {
       title: 'Point',
       dataIndex: 'point',
       key: 'point',
-      render: (text) => <a style={{ color: text.slice(0, 1) === '-' ? '#cf2b32' : '#3779e4' }}>{text}</a>,
+      render: (text) => <a style={text < 0 ? { color: 'red' } : { color: 'blue' }}>{text}</a>,
       sorter: (a, b) => a.point < b.point
     }
   ]
 
-  const dataSource = listData.map((item) => {
+  const dataSource = data?.data?.map((item) => {
     return {
       key: item.id,
       txt: item.id,
@@ -85,10 +77,10 @@ const Rpoint = () => {
         <div className={style.d_flex}>
           <h1 className={style.l_name}>R-Point</h1>
           <p className={style.mrl_10}>
-            Total points: <span className={style.l_name}>{data.length > 0 ? data[0].current_point : null}</span>
+            Total points: <span className={style.l_name}>{data?.current_point}</span>
           </p>
           <p className={style.mrl_10}>
-            This month: <span className={style.s_point}>{total}</span>
+            This month: <span className={style.s_point}>{data?.month_point}</span>
           </p>
         </div>
 
@@ -106,10 +98,10 @@ const Rpoint = () => {
         loading={loading}
         pagination={false}
       />
-      <Pagination className={style.pagination} total={50} current={pages} onChange={handlePageClick} />
+      <Pagination className={style.pagination} pageSize={5} total={data?.total} current={pages} onChange={handlePageClick} />
       <p className={style.l_total}>
         Total numbers of records:
-        <label className={style.l_name}>{dataSource.length}</label>
+        <label className={style.l_name}>{data?.total}</label>
       </p>
       <hr className={style.custom_hr} />
     </div>

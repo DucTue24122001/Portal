@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Pagination, Table } from 'antd'
-import { getNoticeData, showLoadingNotice } from '../../redux/officialNotice'
 import { useDispatch, useSelector } from 'react-redux'
-import moment from 'moment'
+import { notice } from '../../redux/officialNotice'
+import { Link } from 'react-router-dom'
 import 'antd/dist/antd.css'
 import style from './home.module.css'
 
@@ -10,14 +10,15 @@ const Notice = () => {
   const [param, setParam] = useState(1)
   const dispatch = useDispatch()
   const { data, loading } = useSelector((state) => state.notices)
+  console.log(data)
 
   useEffect(() => {
-    dispatch(getNoticeData(param))
+    dispatch(notice.getNoticeData(param))
   }, [])
 
   useEffect(() => {
-    dispatch(showLoadingNotice(true))
-    dispatch(getNoticeData(param))
+    dispatch(notice.showLoadingNotice(true))
+    dispatch(notice.getNoticeData(param))
   }, [param])
 
   const columns = [
@@ -31,14 +32,14 @@ const Notice = () => {
       dataIndex: 'subject',
       key: 'subject',
       defaltSortOrder: 'descend',
-      sorter: (a, b) => a.subject == b.subject
+      sorter: (a, b) => a.subject === b.subject
     },
     {
       title: 'Author',
       dataIndex: 'authorName',
       key: 'authorName',
       defaltSortOrder: 'descend',
-      sorter: (a, b) => a.authorName == b.authorName
+      sorter: (a, b) => a.authorName === b.authorName
     },
     {
       title: 'To Department',
@@ -56,7 +57,7 @@ const Notice = () => {
       title: 'Attachment',
       dataIndex: 'attachment',
       key: 'attachment',
-      render: (text) => <a>{text}</a>
+      render: (text) => <Link>{text.slice(27)}</Link>
     },
     {
       title: 'Detail',
@@ -65,15 +66,15 @@ const Notice = () => {
       render: (text) => <a>{text}</a>
     }
   ]
-  const dataSource = data.map((item) => {
+  const dataSource = data?.data?.map((item) => {
     return {
       key: item.No,
-      id: item.No,
-      subject: item.Subject,
-      authorName: item.Author,
-      department: item.ToDepartment,
-      date: moment(item.PushlishDate != null ? item.PushlishDate.slice(0, 10) : null).format('DD-MM-YYYY'),
-      attachment: item.Attachment
+      id: item.id,
+      subject: item.subject,
+      authorName: item.author,
+      department: item.published_to,
+      date: item.published_date,
+      attachment: item.attachment
     }
   })
 
@@ -88,14 +89,15 @@ const Notice = () => {
       <h1>Official Notice</h1>
       <Table className={style.b_table} dataSource={dataSource} columns={columns} loading={loading} pagination={false} />
       <Pagination
-        total={50}
+        total={data?.total}
+        pageSize={5}
         current={param}
         onChange={handleClickPage}
         className={style.pagination}
       />
 
       <p>
-        Total numbers of records: <label className={style.l_name}>{dataSource.length}</label>
+        Total numbers of records: <label className={style.l_name}>{data.total}</label>
       </p>
     </div>
   )
