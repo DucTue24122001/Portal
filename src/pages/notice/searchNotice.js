@@ -18,7 +18,6 @@ const SearchNotice = ({ onSearch }) => {
   const dispatch = useDispatch()
 
   const btnLoadingRedux = useSelector((state) => state.notice.btnLoading)
-  const optionDepartment = useSelector((state) => state.notice.department)
 
   const onReset = () => {
     form.resetFields()
@@ -125,12 +124,31 @@ const SearchNotice = ({ onSearch }) => {
                       ]}
                     >
                       <Select placeholder='Select time'>
-                        {optionDepartment &&
-                          optionDepartment.map((item, index) => (
-                            <Option key={index} value={item}>
-                              {item}
-                            </Option>
-                          ))}
+                        <Option value={0}>All</Option>
+                        <Option value={1}>D1</Option>
+                        <Option value={2}>D2</Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 6, offset: 4 }} lg={{ span: 4, offset: 2 }}>
+                    <Form.Item>
+                      <Text>Status</Text>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 12 }} lg={{ span: 4 }}>
+                    <Form.Item
+                      name='Status'
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Please input your Status!'
+                        }
+                      ]}
+                    >
+                      <Select placeholder='Option Status'>
+                        <Option value={0}>0</Option>
+                        <Option value={1}>1</Option>
+                        <Option value={2}>2</Option>
                       </Select>
                     </Form.Item>
                   </Col>

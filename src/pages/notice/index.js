@@ -116,6 +116,10 @@ const NoticePage = () => {
       sorter: (a, b) => a.published_date < b.published_date
     },
     {
+      title: 'Status',
+      dataIndex: 'status'
+    },
+    {
       title: 'Atttachment',
       dataIndex: 'attachment',
       render: (attachment, record) => {
