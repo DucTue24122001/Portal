@@ -29,7 +29,7 @@ export default function ModalLateEarly({ isModalVisible, handleOk, handleCancel 
         width={1000}
         footer={null}
       >
-        <RegisterLateEarly onCancel={onCancel} onOk={onOk} dataLateEarly={dataModal} status={status}/>
+        <RegisterLateEarly isUser={true} onCancel={onCancel} onOk={onOk} dataLateEarly={dataModal} status={status}/>
       </Modal>
     </>
   )

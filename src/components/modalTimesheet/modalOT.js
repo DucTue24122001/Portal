@@ -21,7 +21,7 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
   return (
     <>
       <Modal
-        title='Register Late/Early'
+        title='Register OT'
         visible={isModalVisible}
         onOk={onOk}
         onCancel={onCancel}
