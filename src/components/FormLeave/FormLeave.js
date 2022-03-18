@@ -174,12 +174,6 @@ const FormLeave = ({ onCancel }) => {
             autoComplete='off'
             initialValues={{
               leave_all_day: dataLeave?.leave_all_day !== 0,
-              Range: dataLeave
-                ? [
-                  moment(moment.duration(dataLeave.leave_start).asMilliseconds()),
-                  moment(moment.duration(dataLeave.leave_end).asMilliseconds())
-                ]
-                : [],
               reason: dataLeave ? dataLeave.reason : '',
               manager_confirmed_comment: dataLeave ? dataLeave.manager_confirmed_comment : '',
               admin_approved_comment: dataLeave ? dataLeave.admin_approved_comment : '',
