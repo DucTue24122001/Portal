@@ -63,7 +63,7 @@ export const noticeRedux = {
   selectTableNotice: (params) => async(dispatch) => {
     try {
       const { page, pageSize } = params
-      const sizePage = { page: page, per_page: pageSize, status: 2 }
+      const sizePage = { page: page, per_page: pageSize, status: 0 }
       const data = await get('admin/notifications', sizePage)
 
       dispatch({

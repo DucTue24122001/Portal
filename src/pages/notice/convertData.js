@@ -11,7 +11,7 @@ export const convertDataNotice = (data) => {
       published_to: item.published_to,
       created_at: item.created_at,
       attachment_link: item.attachment,
-      status: item.status,
+      status: item.status
     }
     if (valueData.attachment_link !== null) {
       valueData.attachment_link = valueData.attachment.split('/')[valueData.attachment.split('/').length - 1]
