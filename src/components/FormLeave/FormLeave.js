@@ -253,10 +253,6 @@ const FormLeave = ({ onCancel }) => {
               <Col span={8} className={style.form_item}>
                 <Form.Item name='Range' {...rangeConfig}>
                   <RangePicker
-                    disabled={
-                      ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
-                      (nameStatus !== undefined && (isManager || isAdmin) && true)
-                    }
                     className={style.timeBox}
                     disabledHours={() => disabledStartTime}
                     onChange={rangerTime}
@@ -268,10 +264,6 @@ const FormLeave = ({ onCancel }) => {
               <Col span={4} className={style.form_item} className={style.timeBox}>
                 <Form.Item name='request_type' rules={[{ required: true, message: 'Please pick an item!' }]}>
                   <Radio.Group
-                    disabled={
-                      ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
-                      (nameStatus !== undefined && (isManager || isAdmin) && true)
-                    }
                     className={style.wrapper_button_radio}
                   >
                     <Radio value={2}>Paid</Radio>
@@ -301,10 +293,6 @@ const FormLeave = ({ onCancel }) => {
                   rules={[{ required: true, message: 'Please input Intro' }]}
                 >
                   <Input.TextArea
-                    disabled={
-                      ((nameStatus == 'confirm' || nameStatus == 'approved') && true) ||
-                      (nameStatus !== undefined && (isManager || isAdmin) && true)
-                    }
                     showCount
                     maxLength={100}
                     rows={4}
@@ -401,10 +389,10 @@ const FormLeave = ({ onCancel }) => {
                 </Button>
               )}
 
-              {nameStatus && isMember && (
+              {nameStatus && (
                 <Button
                   loading={loadingUpdateLeave}
-                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && (isAdmin || isManager) && true}
+                  disabled={nameStatus === 'confirm' || nameStatus === 'approved'}
                   className={style.button_form}
                   htmlType='submit'
                   type='primary'
@@ -413,7 +401,7 @@ const FormLeave = ({ onCancel }) => {
                 </Button>
               )}
 
-              {nameStatus && isMember && (
+              {nameStatus && (
                 <Button
                   loading={loadingDeleteLeave}
                   onClick={handleDelete}
