@@ -183,10 +183,6 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
             autoComplete='off'
             initialValues={{
               leave_all_day: leave_all_day !== 0,
-              Range: [
-                moment(moment.duration(leave_start).asMilliseconds()),
-                moment(moment.duration(leave_end).asMilliseconds())
-              ],
               reason: reason,
               manager_confirmed_comment: manager_confirmed_comment,
               admin_approved_comment: admin_approved_comment,

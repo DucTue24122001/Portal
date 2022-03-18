@@ -70,10 +70,10 @@ const FormLeave = ({ onCancel }) => {
       member_id: infoUser?.id
     }
 
-    if (nameStatus === undefined && isMember) {
+    if (nameStatus === undefined) {
       dispatch(leaveActions.register(dataForm))
     }
-    if (nameStatus === 'sent' && isMember) {
+    if (nameStatus === 'sent') {
       dispatch(leaveActions.update(dataForm, idRequest))
     }
   }
@@ -398,7 +398,6 @@ const FormLeave = ({ onCancel }) => {
             <div className={style.wrapper_item_button_form}>
               {!nameStatus && (
                 <Button
-                  disabled={(isAdmin || isManager) && true}
                   loading={loadingRegisterLeave}
                   className={style.button_form}
                   htmlType='submit'
