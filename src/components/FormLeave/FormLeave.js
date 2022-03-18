@@ -27,51 +27,34 @@ const FormLeave = ({ onCancel }) => {
   const [isManager, setIsManager] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const [nameStatus, setNameStatus] = useState()
-  const [nameUserConfirm] = useState('Vu Van Vinh')
-  const [nameUserApproved] = useState('Tran Xuan Duc')
   const [leaveTime, setLeaveTime] = useState(dataLeave?.leave_time)
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const {
     loadingRegisterLeave,
     loadingUpdateLeave,
-    loadingConfirmLeave,
     loadingGetLeaveRequest,
     loadingDeleteLeave,
-    loadingApprovedLeave,
-    loadingRejectLeaveRequest,
 
     successRegisterLeave,
     successUpdateLeave,
-    successConfirmLeave,
     successDeleteLeave,
-    successApprovedLeave,
-    successRejectLeaveRequest,
     successGetLeaveRequest,
 
     errorRegisterLeave,
     errorUpdateLeave,
-    errorConfirmLeave,
-    errorDeletetLeave,
-    errorApprovedLeave,
-    errorRejectLeaveRequest
+    errorDeletetLeave
   } = useSelector((state) => state.leave)
 
   useEffect(() => {
-    if (
-      successGetLeaveRequest ||
-      successUpdateLeave ||
-      successConfirmLeave ||
-      successApprovedLeave ||
-      successRegisterLeave
-    ) {
+    if (successGetLeaveRequest || successUpdateLeave || successRegisterLeave) {
       if (dataLeave !== {} && dataLeave !== undefined) {
         dispatch(leaveActions.getRequest(dataLeave?.id))
         setStatus(dataLeave?.status)
         setIdRequest(dataLeave?.id)
       }
     }
-  }, [successRegisterLeave, successGetLeaveRequest, successUpdateLeave, successConfirmLeave, successApprovedLeave])
+  }, [successRegisterLeave, successGetLeaveRequest, successUpdateLeave])
 
   const onFinish = (values) => {
     const { reason, Range, request_type, leave_all_day } = values
@@ -86,30 +69,12 @@ const FormLeave = ({ onCancel }) => {
       reason: reason,
       member_id: infoUser?.id
     }
-    const dataConfirm = {
-      ...dataForm,
-      manager_confirmed_status: 1,
-      manager_id: infoUser?.id,
-      manager_confirmed_at: moment().format('DD-MM-YY hh:mm')
-    }
-    const dataApprove = {
-      ...dataConfirm,
-      admin_approved_status: 2,
-      admin_id: infoUser?.id,
-      admin_approved_at: moment().format('DD-MM-YY hh:mm')
-    }
 
     if (nameStatus === undefined && isMember) {
       dispatch(leaveActions.register(dataForm))
     }
     if (nameStatus === 'sent' && isMember) {
       dispatch(leaveActions.update(dataForm, idRequest))
-    }
-    if (nameStatus === 'sent' && isManager) {
-      dispatch(leaveActions.confirm(dataConfirm, idRequest))
-    }
-    if (nameStatus === 'confirm' && isAdmin) {
-      dispatch(leaveActions.appproved(dataApprove, idRequest))
     }
   }
 
@@ -125,13 +90,6 @@ const FormLeave = ({ onCancel }) => {
         onCancel()
       }, 5000)
     }
-    if (successConfirmLeave) {
-      toast('Success Confirm Leave')
-      dispatch(leaveActions.clearSuccess())
-      setTimeout(() => {
-        onCancel()
-      }, 5000)
-    }
     if (successDeleteLeave) {
       setNameStatus(undefined)
       toast('Success DeleteLeave Request')
@@ -139,20 +97,6 @@ const FormLeave = ({ onCancel }) => {
       setTimeout(() => {
         onCancel()
       }, 5000)
-    }
-    if (successApprovedLeave) {
-      toast('Success Approved Request')
-      dispatch(leaveActions.clearSuccess())
-      setTimeout(() => {
-        onCancel()
-      }, loadingApprovedLeave)
-    }
-    if (successRejectLeaveRequest) {
-      toast('Success Reject Request')
-      dispatch(leaveActions.clearSuccess())
-      setTimeout(() => {
-        onCancel()
-      }, loadingRejectLeaveRequest)
     }
     if (errorRegisterLeave !== '') {
       toast(errorRegisterLeave)
@@ -162,36 +106,11 @@ const FormLeave = ({ onCancel }) => {
       toast(errorUpdateLeave)
       dispatch(leaveActions.clearSuccess())
     }
-    if (errorConfirmLeave !== '') {
-      toast(errorConfirmLeave)
-      dispatch(leaveActions.clearSuccess())
-    }
     if (errorDeletetLeave !== '') {
       toast(errorDeletetLeave)
       dispatch(leaveActions.clearSuccess())
     }
-    if (errorApprovedLeave !== '') {
-      toast(errorApprovedLeave)
-      dispatch(leaveActions.clearSuccess())
-    }
-    if (errorRejectLeaveRequest !== '') {
-      toast(errorRejectLeaveRequest)
-      dispatch(leaveActions.clearSuccess())
-    }
-  }, [
-    successRegisterLeave,
-    successUpdateLeave,
-    successConfirmLeave,
-    successDeleteLeave,
-    successRejectLeaveRequest,
-
-    errorRegisterLeave,
-    errorUpdateLeave,
-    errorConfirmLeave,
-    errorApprovedLeave,
-    errorDeletetLeave,
-    errorRejectLeaveRequest
-  ])
+  }, [successRegisterLeave, successUpdateLeave, errorRegisterLeave, errorUpdateLeave, errorDeletetLeave])
 
   useEffect(() => {
     const arrRoleId = []
@@ -235,6 +154,7 @@ const FormLeave = ({ onCancel }) => {
 
   const handleDelete = () => {
     dispatch(leaveActions.delete(idRequest))
+    setStatus(undefined)
     form.resetFields()
   }
 
@@ -273,7 +193,7 @@ const FormLeave = ({ onCancel }) => {
                     Member:
                   </Col>
                   <Col className={style.form_item} span={20}>
-                    <span>{nameUserConfirm}</span>
+                    <span>{dataLeave?.member_full_name}</span>
                   </Col>
                 </div>
               )}
@@ -509,51 +429,6 @@ const FormLeave = ({ onCancel }) => {
                   type='danger'
                 >
                   Delete
-                </Button>
-              )}
-
-              {nameStatus !== undefined && isManager && (
-                <Button
-                  loading={loadingConfirmLeave}
-                  disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && isMember && true}
-                  className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
-                >
-                  Confirmed
-                </Button>
-              )}
-
-              {nameStatus === 'confirm' && isAdmin && (
-                <Button
-                  disabled={nameStatus === 'approved' && isManager && isMember && true}
-                  loading={loadingApprovedLeave}
-                  className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
-                >
-                  Approved
-                </Button>
-              )}
-              {nameStatus !== undefined && isManager && (
-                <Button
-                  loading={loadingRejectLeaveRequest}
-                  disabled={(nameStatus === 'approved' || nameStatus === 'confirm') && isMember && true}
-                  className={style.button_form}
-                  htmlType='submit'
-                  type='danger'
-                >
-                  Reject
-                </Button>
-              )}
-              {nameStatus === 'confirm' && isAdmin && (
-                <Button
-                  loading={loadingRejectLeaveRequest}
-                  className={style.button_form}
-                  htmlType='submit'
-                  type='danger'
-                >
-                  Reject
                 </Button>
               )}
 
