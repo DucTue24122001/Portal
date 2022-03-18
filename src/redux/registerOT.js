@@ -224,7 +224,7 @@ export const OTActions = {
       try {
         dispatch({ type: GET_OT_REQUEST })
 
-        const response = await get(`request/${idOT}`)
+        const response = await get(`requests/${idOT}`)
 
         dispatch({ type: GET_OT_SUCCESS, payload: response })
       } catch (error) {
@@ -232,12 +232,12 @@ export const OTActions = {
       }
     }
   },
-  registerLateEarly(dataOT) {
+  registerOT(dataOT) {
     return async(dispatch) => {
       try {
         dispatch({ type: REGISTER_OT_REQUEST })
 
-        const response = await post('request', dataOT)
+        const response = await post('requests', dataOT)
         dispatch({
           type: REGISTER_OT_SUCCESS,
           payload: response
@@ -250,12 +250,12 @@ export const OTActions = {
       }
     }
   },
-  updateLateEarly(dataOT, idOT) {
+  updateOT(dataOT, idOT) {
     return async(dispatch) => {
       try {
         dispatch({ type: UPDATE_OT_REQUEST })
 
-        const response = await put(`request/${idOT}`, dataOT)
+        const response = await put(`requests/${idOT}`, dataOT)
 
         dispatch({ type: UPDATE_OT_SUCCESS, payload: response })
       } catch (error) {
@@ -263,12 +263,12 @@ export const OTActions = {
       }
     }
   },
-  deleteLateEarly(idOT) {
+  deleteOT(idOT) {
     return async(dispatch) => {
       try {
         dispatch({ type: DELETE_OT_REQUEST })
 
-        const response = await del(`request/${idOT}`)
+        const response = await del(`requests/${idOT}`)
 
         dispatch({ type: DELETE_OT_SUCCESS, payload: response })
       } catch (error) {
@@ -281,7 +281,7 @@ export const OTActions = {
       try {
         dispatch({ type: CONFIRM_OT_REQUEST })
 
-        const response = await put(`request/${idOT}`, dataOT)
+        const response = await put(`requests/${idOT}`, dataOT)
 
         dispatch({ type: CONFIRM_OT_SUCCESS, payload: response })
       } catch (error) {
@@ -294,7 +294,7 @@ export const OTActions = {
       try {
         dispatch({ type: APPROVED_OT_REQUEST })
 
-        const response = await put(`request/${idOT}`, dataOT)
+        const response = await put(`requests/${idOT}`, dataOT)
 
         dispatch({ type: APPROVED_OT_SUCCESS, payload: response })
       } catch (error) {
@@ -302,7 +302,7 @@ export const OTActions = {
       }
     }
   },
-  rejectLateEarly(dataOT, idOT) {
+  rejectOT(dataOT, idOT) {
     return async(dispatch) => {
       try {
         dispatch({ type: REJECT_OT_REQUEST })
