@@ -18,19 +18,18 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
       })
     }
   }, [])
-
   return (
     <>
       <Modal
-        title='Register Late/Early'
+        title='Register OT'
         visible={isModalVisible}
         onOk={onOk}
         onCancel={onCancel}
         style={{ fontWeight: 500 }}
-        width={1000}
+        width={700}
         footer={null}
       >
-        <RegisterOT onCancel={onCancel} onOk={onOk} status = {status} dataOT={dataModal} />
+        <RegisterOT onCancel={onCancel} isUser={true} onOk={onOk} status = {status} dataOT={dataModal} />
       </Modal>
     </>
   )

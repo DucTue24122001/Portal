@@ -15,7 +15,10 @@ const RegisterLateEarly = ({
   dataLateEarly = {},
   status: statusRequest,
   onCancel,
-  onOk
+  onOk,
+  isUser = false,
+  isManager = false,
+  isAdmin = false
 }) => {
   const { date, checkin, checkout, late, early, member_id } = dataLateEarly
   const [form] = Form.useForm()
@@ -29,9 +32,9 @@ const RegisterLateEarly = ({
   const timeRequest = moment.utc(timeRequestSeconds * 1000).format('HH:mm')
   const overtimeSeconds = in_office_seconds - initial_in_office
 
-  const [isUser, setIsUser] = useState(false)
-  const [isManager, setIsManager] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
+  // const [isUser, setIsUser] = useState(false)
+  // const [isManager, setIsManager] = useState(false)
+  // const [isAdmin, setIsAdmin] = useState(false)
 
   const [dateCoverUp, setDateCoverUp] = useState('')
   const [reason, setReason] = useState('')
@@ -99,24 +102,24 @@ const RegisterLateEarly = ({
     reason: reason
   }
 
-  useEffect(() => {
-    const arrRoleId = []
-    infoUser.roles.map((role) => {
-      arrRoleId.push(role.id)
-    })
-    if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
-      setIsAdmin(true)
-      return
-    }
-    if (arrRoleId.includes(3)) {
-      setIsManager(true)
-      return
-    }
-    if (arrRoleId.includes(4)) {
-      setIsUser(true)
-      return
-    }
-  }, [])
+  // useEffect(() => {
+  //   const arrRoleId = []
+  //   infoUser.roles.map((role) => {
+  //     arrRoleId.push(role.id)
+  //   })
+  //   if (arrRoleId.includes(1) || arrRoleId.includes(2)) {
+  //     setIsAdmin(true)
+  //     return
+  //   }
+  //   if (arrRoleId.includes(3)) {
+  //     setIsManager(true)
+  //     return
+  //   }
+  //   if (arrRoleId.includes(4)) {
+  //     setIsUser(true)
+  //     return
+  //   }
+  // }, [])
 
   useEffect(() => {
     setOverTime(
@@ -221,12 +224,12 @@ const RegisterLateEarly = ({
 
   const handleUpdateLateEarly = () => {
     dispatch(LateEarlyActions.updateLateEarly(dataRequest, member_id))
-    onOk()
+    // onOk()
   }
 
   const handleDeleteLateEarly = () => {
     dispatch(LateEarlyActions.deleteLateEarly(member_id))
-    onOk()
+    // onOk()
   }
 
   const handleConfirmLateEarly = () => {
@@ -262,6 +265,11 @@ const RegisterLateEarly = ({
       (current < moment().subtract(2, 'days').endOf('day') ||
         current >= moment().startOf('day'))
     )
+  }
+
+  const handleChangeDateCoverUp = (e) => {
+    setDateCoverUp(e.format('YYYY-MM-DD'))
+    dispatch(LateEarlyActions.getDataDateCoverUp(e.format('YYYY-MM-DD')))
   }
 
   return (
@@ -346,7 +354,7 @@ const RegisterLateEarly = ({
                 }
                 format='YYYY-MM-DD'
                 disabledDate={disabledDate}
-                onChange={(e) => setDateCoverUp(e.format('YYYY-MM-DD'))}
+                onChange={handleChangeDateCoverUp}
               />
             </Form.Item>
           </Col>
@@ -474,8 +482,7 @@ const RegisterLateEarly = ({
           {nameStatus && isUser && (
             <Col>
               <Button
-                disabled={(nameStatus === 'confirm' || nameStatus === 'approved') &&
-                (isAdmin || isManager) && true}
+                disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && true}
                 htmlType='submit'
                 type='primary'
                 onClick={handleUpdateLateEarly}
@@ -490,8 +497,7 @@ const RegisterLateEarly = ({
             <Col>
               <Button
                 disabled={
-                  (nameStatus === 'confirm' || nameStatus === 'approved') &&
-                  (isAdmin || isManager) && true
+                  (nameStatus === 'confirm' || nameStatus === 'approved') && true
                 }
                 htmlType='submit'
                 type='primary'
