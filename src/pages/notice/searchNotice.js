@@ -146,9 +146,9 @@ const SearchNotice = ({ onSearch }) => {
                       ]}
                     >
                       <Select placeholder='Select Status'>
-                        <Option value={0}>0</Option>
-                        <Option value={1}>1</Option>
-                        <Option value={2}>2</Option>
+                        <Option value={0}>draft</Option>
+                        <Option value={1}>published</Option>
+                        <Option value={2}>scheduled</Option>
                       </Select>
                     </Form.Item>
                   </Col>
