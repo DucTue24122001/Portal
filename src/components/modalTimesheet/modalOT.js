@@ -18,7 +18,7 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
       })
     }
   }, [])
-
+  console.log('DataModal', dataModal)
   return (
     <>
       <Modal
@@ -27,10 +27,10 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
         onOk={onOk}
         onCancel={onCancel}
         style={{ fontWeight: 500 }}
-        width={1000}
+        width={700}
         footer={null}
       >
-        <RegisterOT onCancel={onCancel} onOk={onOk} status = {status} dataOT={dataModal} />
+        <RegisterOT onCancel={onCancel} isUser={true} onOk={onOk} status = {status} dataOT={dataModal} />
       </Modal>
     </>
   )
