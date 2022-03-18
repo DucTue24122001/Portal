@@ -65,8 +65,6 @@ const RegisterLateEarly = ({
     errorRejectLateEarly
   } = useSelector((state) => state.lateEarly)
 
-  console.log('status', statusRequest, nameStatus)
-
   const dataDefaultLateEarly = {
     request_type: 4,
     request_for_date: date,

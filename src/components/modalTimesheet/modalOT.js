@@ -18,7 +18,6 @@ export default function ModalOT({ isModalVisible, handleOk, handleCancel }) {
       })
     }
   }, [])
-  console.log('DataModal', dataModal)
   return (
     <>
       <Modal
