@@ -43,25 +43,16 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
   const [disabledStartTime] = useState([...disabledTimeAM, ...disabledTimePM])
   const registerDate = useRef(moment().format('DD-MM-YY hh:mm'))
   const {
-    loadingRegisterLeave,
-    loadingUpdateLeave,
     loadingConfirmLeave,
     loadingGetLeaveRequest,
-    loadingDeleteLeave,
     loadingApprovedLeave,
     loadingRejectLeaveRequest,
 
-    successRegisterLeave,
-    successUpdateLeave,
     successConfirmLeave,
-    successDeleteLeave,
-    successApprovedLeave,
     successRejectLeaveRequest,
+    successApprovedLeave,
 
-    errorRegisterLeave,
-    errorUpdateLeave,
     errorConfirmLeave,
-    errorDeletetLeave,
     errorApprovedLeave,
     errorRejectLeaveRequest
   } = useSelector((state) => state.leave)
@@ -91,12 +82,6 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
       admin_approved_at: moment().format('DD-MM-YY hh:mm')
     }
 
-    if (nameStatus === undefined && isMember) {
-      dispatch(leaveActions.register(dataForm))
-    }
-    if (nameStatus === 'sent' && isMember) {
-      dispatch(leaveActions.update(dataForm, idRequest))
-    }
     if (nameStatus === 'sent' && isAdmin) {
       dispatch(leaveActions.confirm(dataConfirm, idRequest))
     }
@@ -106,27 +91,8 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
   }
 
   useEffect(() => {
-    if (successRegisterLeave) {
-      toast('successRegisterLeave')
-      dispatch(leaveActions.clearSuccess())
-    }
-    if (successUpdateLeave) {
-      toast('successUpdateLeave')
-      dispatch(leaveActions.clearSuccess())
-      setTimeout(() => {
-        onCancel()
-      }, 5000)
-    }
     if (successConfirmLeave) {
       toast('Success Confirm Leave')
-      dispatch(leaveActions.clearSuccess())
-      setTimeout(() => {
-        onCancel()
-      }, 5000)
-    }
-    if (successDeleteLeave) {
-      setNameStatus(undefined)
-      toast('Success DeleteLeave Request')
       dispatch(leaveActions.clearSuccess())
       setTimeout(() => {
         onCancel()
@@ -146,20 +112,8 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
         onCancel()
       }, loadingRejectLeaveRequest)
     }
-    if (errorRegisterLeave !== '') {
-      toast(errorRegisterLeave)
-      dispatch(leaveActions.clearSuccess())
-    }
-    if (errorUpdateLeave !== '') {
-      toast(errorUpdateLeave)
-      dispatch(leaveActions.clearSuccess())
-    }
     if (errorConfirmLeave !== '') {
       toast(errorConfirmLeave)
-      dispatch(leaveActions.clearSuccess())
-    }
-    if (errorDeletetLeave !== '') {
-      toast(errorDeletetLeave)
       dispatch(leaveActions.clearSuccess())
     }
     if (errorApprovedLeave !== '') {
@@ -170,20 +124,7 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
       toast(errorRejectLeaveRequest)
       dispatch(leaveActions.clearSuccess())
     }
-  }, [
-    successRegisterLeave,
-    successUpdateLeave,
-    successConfirmLeave,
-    successDeleteLeave,
-    successRejectLeaveRequest,
-
-    errorRegisterLeave,
-    errorUpdateLeave,
-    errorConfirmLeave,
-    errorApprovedLeave,
-    errorDeletetLeave,
-    errorRejectLeaveRequest
-  ])
+  }, [successConfirmLeave, successRejectLeaveRequest, errorConfirmLeave, errorApprovedLeave, errorRejectLeaveRequest])
 
   useEffect(() => {
     const arrRoleId = []
@@ -242,10 +183,6 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
             autoComplete='off'
             initialValues={{
               leave_all_day: leave_all_day !== 0,
-              Range: [
-                moment(moment.duration(leave_start).asMilliseconds()),
-                moment(moment.duration(leave_end).asMilliseconds())
-              ],
               reason: reason,
               manager_confirmed_comment: manager_confirmed_comment,
               admin_approved_comment: admin_approved_comment,
@@ -462,42 +399,6 @@ const FormConfirmLeave = ({ onCancel, dataModalRequest }) => {
             </Row>
 
             <div className={style.wrapper_item_button_form}>
-              {!nameStatus && (
-                <Button
-                  disabled={isAdmin}
-                  loading={loadingRegisterLeave}
-                  className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
-                >
-                  Register
-                </Button>
-              )}
-
-              {nameStatus && isMember && (
-                <Button
-                  loading={loadingUpdateLeave}
-                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && isAdmin}
-                  className={style.button_form}
-                  htmlType='submit'
-                  type='primary'
-                >
-                  Update
-                </Button>
-              )}
-
-              {nameStatus && isMember && (
-                <Button
-                  loading={loadingDeleteLeave}
-                  onClick={handleDelete}
-                  disabled={(nameStatus === 'confirm' || nameStatus === 'approved') && isAdmin}
-                  className={style.button_form}
-                  type='danger'
-                >
-                  Delete
-                </Button>
-              )}
-
               {nameStatus !== undefined && isAdmin && (
                 <Button
                   loading={loadingConfirmLeave}
