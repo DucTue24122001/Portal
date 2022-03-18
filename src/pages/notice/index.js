@@ -9,7 +9,7 @@ import { noticeRedux } from '../../redux/notice'
 import { convertDataNotice } from './convertData'
 import ModalNoticeEdit from '../../components/modalNotice/modamEdit'
 import ModalNoticeView from '../../components/modalNotice/modalView'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const NoticePage = () => {
   const { Text } = Typography
@@ -20,10 +20,12 @@ const NoticePage = () => {
   const [valueSearch, setValueSearch] = useState(null)
 
   const dispatch = useDispatch()
+  const history = useHistory()
   const dataRedux = useSelector((state) => state.notice.data)
   const length = useSelector((state) => state.notice.length)
   const loading = useSelector((state) => state.notice.loading)
   const optionSearch = useSelector((state) => state.notice.optionSearch)
+  const { infoUser, successGetInfo } = useSelector((state) => state.infoUser)
 
   useEffect(() => {
     if (optionSearch === 0) {
@@ -32,6 +34,14 @@ const NoticePage = () => {
       dispatch(noticeRedux.searchTableNotice(valueSearch, params, false))
     }
   }, [params])
+
+  useEffect(() => {
+    if (successGetInfo) {
+      if (infoUser?.roles?.find((u) => ['Manager', 'Member'].includes(u.title)) && infoUser?.roles?.length === 1) {
+        history.push('/')
+      }
+    }
+  }, [successGetInfo])
 
   const dataSource = convertDataNotice(dataRedux)
 
@@ -117,7 +127,14 @@ const NoticePage = () => {
     },
     {
       title: 'Status',
-      dataIndex: 'status'
+      dataIndex: 'status',
+      render: (status) => {
+        return (
+          <>
+            <Text>{status == 0 ? 'draft' : status === 1 ? 'published' : 'scheduled'}</Text>
+          </>
+        )
+      }
     },
     {
       title: 'Atttachment',

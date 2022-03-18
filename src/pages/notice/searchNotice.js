@@ -100,7 +100,7 @@ const SearchNotice = ({ onSearch }) => {
                         }
                       ]}
                     >
-                      <Select placeholder='Option sort'>
+                      <Select placeholder='Select sort'>
                         <Option value='asc'>Ascending</Option>
                         <Option value='desc'>Decrease</Option>
                       </Select>
@@ -123,7 +123,7 @@ const SearchNotice = ({ onSearch }) => {
                         }
                       ]}
                     >
-                      <Select placeholder='Select time'>
+                      <Select placeholder='Select department'>
                         <Option value={0}>All</Option>
                         <Option value={1}>D1</Option>
                         <Option value={2}>D2</Option>
@@ -145,10 +145,10 @@ const SearchNotice = ({ onSearch }) => {
                         }
                       ]}
                     >
-                      <Select placeholder='Option Status'>
-                        <Option value={0}>0</Option>
-                        <Option value={1}>1</Option>
-                        <Option value={2}>2</Option>
+                      <Select placeholder='Select Status'>
+                        <Option value={0}>draft</Option>
+                        <Option value={1}>published</Option>
+                        <Option value={2}>scheduled</Option>
                       </Select>
                     </Form.Item>
                   </Col>
