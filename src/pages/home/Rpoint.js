@@ -11,6 +11,10 @@ const Rpoint = () => {
   const dispatch = useDispatch()
   const { data, loading } = useSelector((state) => state.rpoint)
 
+  const total = data?.data?.reduce((result, prod) => {
+    return result + prod.point
+  }, 0)
+
   useEffect(() => {
     dispatch(rpoint.getRpointApi(pages))
   }, [])
@@ -64,11 +68,10 @@ const Rpoint = () => {
 
   const handlePageClick = (page) => {
     setPages(page)
-    console.log('page', page)
   }
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`)
+    dispatch(rpoint.updatePeriod(value))
   }
 
   return (
@@ -80,7 +83,7 @@ const Rpoint = () => {
             Total points: <span className={style.l_name}>{data?.current_point}</span>
           </p>
           <p className={style.mrl_10}>
-            This month: <span className={style.s_point}>{data?.month_point}</span>
+            This month: <span className={style.s_point}>{total}</span>
           </p>
         </div>
 

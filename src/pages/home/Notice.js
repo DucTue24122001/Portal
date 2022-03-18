@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Pagination, Table } from 'antd'
+import { Pagination, Table, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { notice } from '../../redux/officialNotice'
-import { Link } from 'react-router-dom'
 import 'antd/dist/antd.css'
 import style from './home.module.css'
 
@@ -57,13 +56,17 @@ const Notice = () => {
       title: 'Attachment',
       dataIndex: 'attachment',
       key: 'attachment',
-      render: (text) => <Link>{text.slice(27)}</Link>
+      render: (text) => (
+        <Typography.Link href={text} underline target='_blank'>
+          {text.slice(27)}
+        </Typography.Link>
+      )
     },
     {
       title: 'Detail',
       dataIndex: 'detail',
       key: 'detail',
-      render: (text) => <a>{text}</a>
+      render: (text) => <a style={{ color: 'blue' }}>{text}</a>
     }
   ]
   const dataSource = data?.data?.map((item) => {
@@ -74,7 +77,8 @@ const Notice = () => {
       authorName: item.author,
       department: item.published_to,
       date: item.published_date,
-      attachment: item.attachment
+      attachment: item.attachment,
+      detail: 'view'
     }
   })
 
@@ -87,7 +91,14 @@ const Notice = () => {
   return (
     <div>
       <h1>Official Notice</h1>
-      <Table className={style.b_table} dataSource={dataSource} columns={columns} loading={loading} pagination={false} />
+      <Table
+        className={style.b_table}
+        rowKey='id'
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        pagination={false}
+      />
       <Pagination
         total={data?.total}
         pageSize={5}
