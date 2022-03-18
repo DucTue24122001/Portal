@@ -7,7 +7,8 @@ const initState = {
   loading: true,
   btnLoading: false,
   optionSearch: 0,
-  modalRowTable: {}
+  modalRowTable: {},
+  dataTimeLog: []
 }
 // Reducer
 export const timeSheetReducer = (state = initState, action) => {
@@ -15,8 +16,7 @@ export const timeSheetReducer = (state = initState, action) => {
     case 'timeSheet/search': {
       return {
         ...state,
-        data: action.payload,
-        optionSearch: 1
+        data: action.payload
       }
     }
     case 'timeSheet/loading': {
@@ -34,8 +34,7 @@ export const timeSheetReducer = (state = initState, action) => {
     case 'timeSheet/getdata': {
       return {
         ...state,
-        data: action.payload,
-        optionSearch: 0
+        data: action.payload
       }
     }
     case 'timeSheet/btnLoading': {
@@ -48,6 +47,18 @@ export const timeSheetReducer = (state = initState, action) => {
       return {
         ...state,
         modalRowTable: action.payload
+      }
+    }
+    case 'timesheet/timelog': {
+      return {
+        ...state,
+        dataTimeLog: action.payload
+      }
+    }
+    case 'timesheet/optionSearch': {
+      return {
+        ...state,
+        optionSearch: action.payload
       }
     }
     default:
@@ -82,9 +93,9 @@ export const timeSheetRedux = {
     }
   },
   searchTableTimeSheetApI: (value, params, btnLoading) => async(dispatch) => {
-    const { Date, radioBtn, dateStart, dateEnd } = value
-    const { page, pageSize } = params
     try {
+      const { Date, radioBtn, dateStart, dateEnd } = value
+      const { page, pageSize } = params
       const sortOption = { select_type: radioBtn, order: 'asc', sort: page, per_page: pageSize }
       if (radioBtn === 1) {
         sortOption.list_selected = Date
@@ -93,15 +104,9 @@ export const timeSheetRedux = {
         sortOption.end_date = dateEnd.format('YYYY-MM-DD')
       }
       const data = await get('timesheets', sortOption)
-      const dataComp = () =>
-        data.map((item) => {
-          if (item.compensation !== null) {
-            return item
-          }
-        })
       dispatch({
         type: 'timeSheet/length',
-        payload: { dataComp: dataComp, length: data.total }
+        payload: data.total
       })
       if (btnLoading === true) {
         dispatch({
@@ -124,7 +129,20 @@ export const timeSheetRedux = {
       })
     }
   },
-
+  searchTimeLogs: (date) => async(dispatch) => {
+    try {
+      const data = await get(`checklogs/${date}`)
+      dispatch({
+        type: 'timesheet/timelog',
+        payload: data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timesheet/timelog',
+        payload: []
+      })
+    }
+  },
   loadingTableTrue: () => {
     return {
       type: 'timeSheet/loading',
@@ -141,6 +159,19 @@ export const timeSheetRedux = {
       dispatch({
         type: 'timeSheet/modalRowTable',
         payload: {}
+      })
+    }
+  },
+  optionSearchorReset: (record) => (dispatch) => {
+    try {
+      dispatch({
+        type: 'timesheet/optionSearch',
+        payload: record
+      })
+    } catch (err) {
+      dispatch({
+        type: 'timesheet/optionSearch',
+        payload: 0
       })
     }
   },

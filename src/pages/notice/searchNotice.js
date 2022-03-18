@@ -23,6 +23,7 @@ const SearchNotice = ({ onSearch }) => {
   const onReset = () => {
     form.resetFields()
     onSearch({ btnForm: 2 })
+    dispatch(noticeRedux.btnLoadingSearch(false))
     dispatch(noticeRedux.optionSearchorReset(0))
   }
 
